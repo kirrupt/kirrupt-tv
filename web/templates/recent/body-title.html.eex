@@ -1,0 +1,1 @@
+<%= render_existing KirruptTv.SharedView, "search.html", assigns %>

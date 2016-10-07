@@ -1,0 +1,530 @@
+* {margin:0px;padding:0px;}
+			html, body {
+				font: 13px/24px 'Segoe UI', Segoe, 'Helvetica Neue', Helvetica, Roboto, Arial, FreeSans, sans-serif;
+				/*'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif;*/
+				margin:0px;
+				padding:0px;
+				border:0px;
+				color:#575757;
+			}
+			img{border:0px}
+
+/* #beta{ background:url('{{url_for('static', filename='beta.png')}}') no-repeat;
+			width:160px;
+			height:161px;
+			position:absolute;
+			left:-4px;
+			top:-4px;
+	}
+*/
+
+body {
+	text-align:center;
+
+	background:#f4f4f4 url('/images/bg.png') fixed;;
+	background-position:center 97px;
+}
+
+a {
+	color: #ed299b;
+	text-decoration:none;
+}
+
+a:hover {
+	color: #c10873;
+}
+
+#auth, #header, #title, #body {
+	width: 900px;
+	text-align:left;
+	margin: 0px auto;
+
+}
+
+#links li, #seasons li {
+	font-size:14px;
+	font-family: 'Segoe UI', Segoe, 'Helvetica Neue', Helvetica, Roboto, Arial, FreeSans, sans-serif;
+	float:left;
+	list-style:none;
+	margin-left:10px;
+}
+
+#links a.active, #seasons a.active {
+	color: rgb(237, 41, 155);
+}
+
+#links a, #seasons a {
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 2px;
+	background:#fff;
+	padding:5px;
+	opacity:0.9;
+	color:rgb(87, 87, 87);
+
+}
+
+#links {
+	position:absolute;
+	opacity:1.0;
+	bottom:10px;
+	left:10px;
+}
+
+
+#genres a, #title_right a {
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 2px;
+	background:#fff;
+	padding:5px;
+	opacity:0.9;
+	color:rgb(87, 87, 87);
+	font-size:14px;
+	font-family: 'Segoe UI', Segoe, 'Helvetica Neue', Helvetica, Roboto, Arial, FreeSans, sans-serif;
+}
+
+#genres {
+	position:absolute;
+	opacity:1.0;
+	bottom:10px;
+	right:10px;
+}
+
+#title_right {
+	position:absolute;
+	opacity:1.0;
+	bottom:10px;
+	right:10px;
+}
+
+#title {
+	position:relative;
+	background:#ffffff;
+
+	padding:10px;
+	margin-top:18px;
+	font-size:34px;
+	padding-bottom:15px;
+	font-weight:none;
+	/*border-bottom:1px #e9e9e9 solid;*/
+
+	font-family: 'Segoe UI Light', Segoe, 'Helvetica Neue', Helvetica, Roboto, Arial, FreeSans, sans-serif;
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px#888;
+	box-shadow: 0 0 5px #888;
+
+}
+
+#title span {
+	margin-left:10px;
+}
+
+#title span span {
+	color: #bfbfbf;
+	margin:0px;
+	padding: 0px;
+}
+
+#title span {
+
+	font-size:30px;
+	display:inline;
+	padding:0px;
+
+	border-radius:5px;
+	padding:2px;
+	/*color:#ed299b;*/
+}
+
+#title h1 {
+	margin-top:60px;
+}
+
+#title{
+	text-align: center;
+}
+
+#title .search {
+	width:80%;
+	margin:0px auto;
+	position: relative;
+	margin-top:75px;
+
+}
+
+#title .search input[type="text"] {
+	width:98%;
+	font-size:25px;
+	padding:5px 10px;
+	border:none;
+	color:#ed299b;
+	border:1px solid #eb91c5;
+	opacity:0.7;
+}
+
+#title .search button { position: absolute; top:10px;right:0px; border:none;background:url('/images/search.png'); width:28px;height:22px; cursor:pointer; }
+
+#show_info {
+
+}
+
+.show_episode {
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
+.show_episode:hover {
+	background: #feeff8;
+}
+
+.show_episode.search:hover {
+	background: none;
+}
+
+.show_episode.search h2 {
+	color: #ed299b;
+	margin-top:10px;
+	margin-left:220px;
+}
+
+.show_episode.search h3 {
+	margin-top:10px;
+	color:#ed299b;
+}
+
+.show_episode img {
+	border-radius: 5px; width:200px;float:left;margin-right:10px;margin-bottom:5px
+}
+
+.show_episode .airdate {
+	 text-align:right;color:#666;font-style:italic;
+}
+
+h2 {
+	font-family: 'Segoe UI Light', Segoe, 'Helvetica Neue', Helvetica, Roboto, Arial, FreeSans, sans-serif;
+	font-weight:normal;
+	margin-bottom:10px;
+}
+
+table,tr,th {border:0px;border-spacing:0;
+  border-collapse:collapse;}
+th {
+	background: #eee;
+	text-transform: uppercase;
+	color: #575757;
+	font-size: 11px;
+	text-align:center;
+}
+
+#auth {
+	height:40px;
+}
+
+#auth li {
+	list-style:none;
+	float: right;
+}
+
+#header {
+	background:#ffffff;
+	padding-left:10px;
+	padding-right:10px;
+	margin-bottom:-18px;
+	padding-bottom:3px;
+	padding-top:10px;
+
+	-moz-box-shadow: 0 0 5px #888;
+-webkit-box-shadow: 0 0 5px#888;
+box-shadow: 0 0 5px #888;
+
+}
+
+#search {
+	margin-top:5px;
+}
+
+#menu {
+    float: left;
+    margin-left:30px;
+    margin-top:10px;
+}
+
+#menu ul {
+
+}
+
+#menu li {
+	float: left;
+	list-style:none;
+
+}
+
+#menu li a {
+	color: #8d8d8d;
+	margin-right: 30px;
+	font-size:18px;
+}
+
+#menu li a.selected, #menu li a:hover {
+	color: #2e2e2e;
+}
+
+#search {
+	float: right;
+	margin-top:13px;
+}
+
+#search_form {
+	width:200px;
+	font-style:italic;
+	color: #d5d4d4;
+	border: 1px #d5d4d4 solid;
+	font-size:11px;
+	padding:1px;
+}
+
+#logo {
+	float: left;
+}
+
+#body_wrapper {
+	padding-top:80px;
+}
+
+#body {
+
+	margin-top:-4px;
+	background :#ffffff;
+	opacity:0.90;
+
+	padding:10px;
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px#888;
+	box-shadow: 0 0 5px #888;
+}
+
+#body_left {
+	float:left;
+	width:150px;
+	margin-right:50px;
+}
+
+#body_left li {
+	list-style:none;
+}
+
+#body_left li a {
+	text-transform: uppercase;
+	color: #575757;
+	font-size: 11px;
+}
+
+#body_left li.line {
+	border-bottom:1px #e9e9e9 solid;
+}
+
+#body_right {
+	float:left;
+	width:700px;
+}
+
+.clear {clear:both;display:block}
+
+
+.errors li {
+	list-style:none;
+	color:#bb3683;
+}
+
+#title {
+				height:200px;
+				overflow:hidden;
+				background:none;
+				-moz-box-shadow: none;
+				-webkit-box-shadow: none;
+				box-shadow: none;
+				position:relative;
+				z-index:1;
+			}
+
+#title:before {
+	background:#fff;
+	opacity:0.4;
+	content:'';
+	width:920px;
+	height:222px;
+	z-index:-1;
+    position:absolute;
+    top:0px;
+    left:0px;
+}
+
+#header_wrapper {
+	background:#f4f4f4;
+	/*opacity:0.95;
+	*/
+	z-index:9999;
+
+	position:fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height:97px;
+	text-align: center;
+}
+
+a.button, input[type="submit"], input[type="button"] {
+	background:#bb3683;
+	text-decoration:none;
+	border:0px;
+	border:1px #bb3683 solid;
+	color:#FFF;
+
+	padding:4px 15px 4px 15px;
+	cursor:pointer;
+	border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+
+}
+
+a.button:hover, input[type="submit"]:hover, input[type="button"]:hover  {
+
+
+}
+
+#spacer {
+	height:70px;
+	display:block;
+}
+
+.recent_episode {
+	width:100%;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
+tr:hover {
+	background: #feeff8;
+}
+
+.recent_episode:hover {
+	background: #feeff8;
+		border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+
+}
+
+.recent_episode img {
+	border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+width:80px;float:left;
+}
+
+.watched_icon {
+	margin:0px;
+	padding-left:10px;
+	padding-top:10px;
+	display:block;
+	padding: 0px 5px 0px 5px;
+
+	border-radius:5px;
+	font-size:12px;
+	border: 1px solid #acacac;
+	color: #acacac;
+	cursor:pointer;
+}
+
+.watched_icon.watched, .watched_icon:hover {
+	border: 1px solid #ed299b;
+	color: #ed299b;
+}
+
+.my_show {
+	margin:0px;
+	padding-left:10px;
+	padding-top:10px;
+	display:block;
+	padding: 0px 5px 0px 5px;
+
+	border-radius:5px;
+	font-size:12px;
+	border: 1px solid #acacac;
+	color: #acacac;
+	cursor:pointer;
+}
+
+.my_show.added, .my_show:hover {
+	border: 1px solid #ed299b;
+	color: #ed299b;
+}
+
+/* Christmas style */
+body.christmas #logo {
+	position:relative;
+}
+
+body.christmas #logo div:before {
+	position: absolute;
+	content: ' ';
+	width: 275px;
+	height: 60px;
+	background: url('logo-christmas.png') no-repeat;
+	bottom:7px;
+	right:0px;
+}
+
+body.christmas #body {
+	padding-bottom:200px;
+	position: relative;
+}
+
+body.christmas #body:after {
+	position: absolute;
+	right:5px;
+	bottom:-5px;
+	content: ' ';
+	background: url('christmas-snowman.png') no-repeat;
+	width: 193px;
+	height: 220px;
+}
+
+/* Recommendations */
+.recommendations {
+	width: 100%;
+	height: 110px;
+	text-align: center;
+}
+
+.recommendations li {
+	float:left;
+	width:200px;
+	margin-right: 32px;
+	list-style: none;
+}
+
+.recommendations li:nth-child(4) {
+	margin-right: 0px;
+}
+
+.recommendations li img {
+	width: 200px;
+	border-radius: 5px;
+}
+
+.recommendations .loader {
+	width:31px;
+	height:31px;
+	margin: 0px auto;
+	padding-top: 35px;
+
+}
+
+.recommendations .loader div {
+	background: url('ajax-loader.gif') no-repeat;
+	width:31px;
+	height:31px;
+}

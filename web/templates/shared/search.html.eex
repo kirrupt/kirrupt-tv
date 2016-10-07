@@ -1,0 +1,6 @@
+<div class="search">
+	<form action="<%= page_path(@conn, :search) %>">
+		<input type="text" id="search_q" data-title="<%= assigns[:search_query] %>" autocomplete="off" name="q" value="<%= assigns[:search_query] %>" />
+		<button></button>
+	</form>
+</div>

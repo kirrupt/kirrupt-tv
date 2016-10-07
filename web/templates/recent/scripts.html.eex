@@ -1,0 +1,27 @@
+<script type="text/javascript">
+(function($) {
+	$('#recommendations').recommendations({'url':'my-recommendations'});
+})(jQuery);
+
+$(document).ready(function() {
+	$('#search_q').val('');
+	$('#search_q').focus();
+
+
+	$('.mark_watched').click(function() {
+	    var url = '{{url_for('mark_as_watched',id=0)}}'.split('0');
+		url=url[0];
+
+		var id = $(this).attr('id').split('_');
+		var ep_id=id[1];
+		$('#div_ep_'+ep_id).css('background-color','#fdffc2');
+		$.get(url+ep_id, function(data) {
+		  $('#div_ep_'+ep_id).slideUp();
+		});
+
+		//$("#content_ajax").load('/episodes/recent');
+	});
+
+	//$('#search_q').focus();
+});
+</script>

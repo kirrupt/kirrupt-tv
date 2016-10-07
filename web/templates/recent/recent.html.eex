@@ -1,0 +1,38 @@
+<%= if !@recent && !@soon && @current_user && !@is_xhr do %>
+	<h2>Looks like you haven't added much shows. Wanna add a new one? <a href="{{url_for('add')}}">Add new show</a></h2>
+<% end %>
+
+<div id="body_right" style="width:600px">
+	<%= if @recent do %>
+  	<h2>recent episodes</h2>
+    <%= render_existing @view_module, "episodes-list.html", %{episodes: @recent, mark_as_watched: true} %>
+  	<br />
+	<% end %>
+
+	<% if @soon do %>
+	 <h2>coming soon</h2>
+   <%= render_existing @view_module, "episodes-list.html", %{episodes: @soon, mark_as_watched: false} %>
+	<% end %>
+</div>
+
+<div id="body_left" style="margin:0px;margin-left:50px;width:250px">
+	<%= if @countdown do %>
+	 <h2>countdown</h2>
+  	<%= for episode <- @countdown do %>
+  		<a href="{{url_for('show', id=get_show_url(show.showid, show.url))}}"><%= episode.show.name %></a><span style="float:right"><%= episode.airdate |> datediff %></span><br />
+  	<% end %>
+	<% end %>
+	<div class="clear" style="margin-bottom:30px"></div>
+
+	<h2>genres</h2>
+	<%= for genre <- @genres do %>
+		<%= if genre.url do %>
+			<a href="{{url_for('genre', url=genre.url)}}"><%= genre.name %></a> /
+		<% end %>
+	<% end %>
+</div>
+
+<div class="clear"></div>
+
+<h2 style="margin-top:20px">You might also like</h2>
+<div id="recommendations"></div>
