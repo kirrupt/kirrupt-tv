@@ -41,7 +41,7 @@
 	<ul>
     <li>Seasons:</li>
 	  <%= for s <- Model.Show.seasons(@show) do %>
-      <li><a <%= if @season == s do %> class="active"<% end %> href="{{url_for('show', season=s, id=get_show_url(show.id, show.url))}}#season"><%= s %></a></li>
+      <li><a <%= if @season == s do %> class="active"<% end %> href="<%= show_path(@conn, :season, @show.url, s) %>#season"><%= s %></a></li>
     <% end %>
 </ul>
 	<div class="clear"></div>

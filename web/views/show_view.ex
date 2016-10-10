@@ -4,6 +4,7 @@ defmodule KirruptTv.ShowView do
   import KirruptTv.GlobalHelpers
 
   def episode_watched?(episode, watched_episodes) do
-    true
+    watched_episodes
+    |> Enum.member? episode.id
   end
 end
