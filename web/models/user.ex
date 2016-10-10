@@ -8,6 +8,8 @@ defmodule Model.User do
   alias KirruptTv.Repo
   alias Model.Episode
   alias Model.Genre
+  alias Model.UserShow
+  alias Model.WatchedEpisode
 
   schema "users" do
     field :username, :string
@@ -39,7 +41,26 @@ defmodule Model.User do
     |> validate_required([])
   end
 
-  def public_overview(search \\ "") do
+  defp overview_limit_query(query, nil) do
+    query
+    |> limit(10)
+  end
+  defp overview_limit_query(query, _user), do: query
+
+  defp overview_user_shows_query(query, nil), do: query
+  defp overview_user_shows_query(query, user) do
+    query
+    |> join(:inner, [e], us in Model.UserShow, us.show_id == e.show_id and us.user_id == ^user.id and us.ignored == 0)
+  end
+
+  defp overview_user_query(query, nil), do: query
+  defp overview_user_query(query, user) do
+    query
+    |> overview_user_shows_query(user)
+    |> join(:left, [e], we in Model.WatchedEpisode, we.episode_id == e.id and we.user_id == ^user.id)
+  end
+
+  def overview(user \\ nil, search \\ "") do
     today = Timex.today
     tomorrow = time_delta(today, 1)
     yesterday = time_delta(today, -1)
@@ -49,31 +70,35 @@ defmodule Model.User do
     search = "%#{search}%"
 
     recent = Repo.all(
-      from e in Episode,
-      join: s in Model.Show, on: s.id == e.show_id,
-      where: e.airdate > ^fourteendays_ago and e.airdate < ^today and fragment("DAY(?)", e.airdate) != 0 and like(s.name, ^search),
-      order_by: [desc: e.airdate],
-      limit: 10)
+      from(e in Episode)
+      |> join(:inner, [e], s in Model.Show, s.id == e.show_id)
+      |> overview_user_query(user)
+      |> where([e, s], e.airdate > ^fourteendays_ago and e.airdate < ^today and fragment("DAY(?)", e.airdate) != 0 and like(s.name, ^search))
+      |> order_by([e], [desc: e.airdate])
+      |> order_by([e, s], [asc: s.name])
+      |> overview_limit_query(user))
     |> Repo.preload([:show])
 
     soon = Repo.all(
-      from e in Episode,
-      join: s in Model.Show, on: s.id == e.show_id,
-      where: e.airdate >= ^today and e.airdate < ^onemonthfromtoday and like(s.name, ^search),
-      order_by: [asc: e.airdate],
-      order_by: [asc: s.name],
-      limit: 10)
+      from(e in Episode)
+      |> join(:inner, [e], s in Model.Show, s.id == e.show_id)
+      |> overview_user_query(user)
+      |> where([e, s], e.airdate >= ^today and e.airdate < ^onemonthfromtoday and like(s.name, ^search))
+      |> order_by([e], [asc: e.airdate])
+      |> order_by([e, s], [asc: s.name])
+      |> limit(10))
     |> Repo.preload([:show])
 
     countdown = Repo.all(
-      from e in Episode,
-      join: s in Model.Show, on: s.id == e.show_id,
-      where: e.airdate >= ^today and like(s.name, ^search),
+      from(e in Episode)
+      |> join(:inner, [e], s in Model.Show, s.id == e.show_id)
+      |> overview_user_shows_query(user)
+      |> where([e, s], e.airdate >= ^today and like(s.name, ^search))
       # group_by: s.id,
-      order_by: [asc: e.airdate],
-      order_by: [asc: s.name],
-      order_by: [desc: e.episode],
-      limit: 55)
+      |> order_by([e], [asc: e.airdate])
+      |> order_by([e, s], [asc: s.name])
+      |> order_by([e], [desc: e.episode])
+      |> limit(55))
     |> Repo.preload([:show])
 
     shows = Enum.map(recent, fn(e) -> e.show end)

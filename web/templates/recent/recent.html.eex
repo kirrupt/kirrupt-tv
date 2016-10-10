@@ -9,7 +9,7 @@
   	<br />
 	<% end %>
 
-	<% if @soon do %>
+	<%= if @soon do %>
 	 <h2>coming soon</h2>
    <%= render_existing @view_module, "episodes-list.html", %{conn: @conn, episodes: @soon, mark_as_watched: false} %>
 	<% end %>

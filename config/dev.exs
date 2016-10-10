@@ -37,7 +37,7 @@ config :phoenix, :stacktrace_depth, 20
 config :kirrupt_tv, KirruptTv.Repo,
   adapter: Ecto.Adapters.MySQL,
   username: "kirrupt",
-  password: "password",
+  password: "Password1!",
   database: "kirrupt",
   hostname: "localhost",
   pool_size: 10

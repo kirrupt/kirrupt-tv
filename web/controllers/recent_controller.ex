@@ -7,6 +7,6 @@ defmodule KirruptTv.RecentController do
   alias Model.User
 
   def index(conn, _params) do
-    render conn, "recent.html", User.public_overview
+    render conn, "recent.html", User.overview(conn.assigns[:current_user])
   end
 end
