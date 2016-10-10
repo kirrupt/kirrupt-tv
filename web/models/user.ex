@@ -10,7 +10,24 @@ defmodule Model.User do
   alias Model.Genre
 
   schema "users" do
+    field :username, :string
+    field :first_name, :string
+    field :last_name, :string
+    field :email, :string
+    field :password, :string
+    field :is_active, :boolean
+    field :last_login, Timex.Ecto.DateTime
+    field :date_joined, Timex.Ecto.DateTime
+    field :auto_hash, :string
+    field :registration_code, :string
+    field :password_code, :string
+    field :is_editor, :integer
+    field :skype_handle, :string
+    field :google_id, :string
+    field :google_session_id, :string
 
+    many_to_many :shows, Model.Show, join_through: "users_shows"
+    many_to_many :episodes, Model.Episode, join_through: "watched_episodes"
   end
 
   @doc """

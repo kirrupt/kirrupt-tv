@@ -1,0 +1,25 @@
+<div class="show_episode">
+  <div style="float:left;width:220px">&nbsp;
+    <%= if @episode.screencap && false do %>
+      <%= if @episode.screencap |> String.contains? "tvrage" do %>
+        <img src="<%= @episode.screencap %>" />
+      <% else %>
+        <img src="<%= static_path(@conn, "/#{@episode.screencap}") %>" />
+      <% end %>
+    <% end %>
+  </div>
+
+  <div style="float:left;width:680px">
+    <div style="color:#ed299b;float:left"><%= @episode.title %> <%= @episode.season |> leading_zero %>x<%= @episode.episode |> leading_zero %></div>
+    <div class="airdate" style="float:right"><%= if @episode.airdate do %><%= @episode.airdate |> format_date %><% end %></div>
+    <div class="clear"></div>
+    <%= if @episode.summary do %> <%= @episode.summary %> <% end %>
+
+    <%= if @show_added do %>
+      <a class="watched_icon<%= if @watched do %> watched<% end %>" style="float:right" id="ep_<%= @episode.id %>">
+        Watched
+      </a>
+    <% end %>
+  </div>
+  <div class="clear"></div>
+</div>

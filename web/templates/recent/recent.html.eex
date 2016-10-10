@@ -5,13 +5,13 @@
 <div id="body_right" style="width:600px">
 	<%= if @recent do %>
   	<h2>recent episodes</h2>
-    <%= render_existing @view_module, "episodes-list.html", %{episodes: @recent, mark_as_watched: true} %>
+    <%= render_existing @view_module, "episodes-list.html", %{conn: @conn, episodes: @recent, mark_as_watched: true} %>
   	<br />
 	<% end %>
 
 	<% if @soon do %>
 	 <h2>coming soon</h2>
-   <%= render_existing @view_module, "episodes-list.html", %{episodes: @soon, mark_as_watched: false} %>
+   <%= render_existing @view_module, "episodes-list.html", %{conn: @conn, episodes: @soon, mark_as_watched: false} %>
 	<% end %>
 </div>
 

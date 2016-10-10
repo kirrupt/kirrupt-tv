@@ -13,6 +13,7 @@ defmodule Model.Episode do
     field :last_updated, Timex.Ecto.DateTime
 
     belongs_to :show, Model.Show
+    many_to_many :users, Model.User, join_through: "watched_episodes"
   end
 
   @doc """

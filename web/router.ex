@@ -18,6 +18,7 @@ defmodule KirruptTv.Router do
 
     get  "/", RecentController, :index
     post "/search", PageController, :search
+    get  "/show/:name", ShowController, :index
   end
 
   # Other scopes may use custom stacks.

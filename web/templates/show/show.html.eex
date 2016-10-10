@@ -1,0 +1,96 @@
+<a name="season"></a>
+<%= if @show.fixed_thumb do %>
+	<img style="border-radius: 5px; width:250px;float:left;margin-right:10px;margin-bottom:5px" src="<%= @show |> Model.Show.show_thumb %>" />
+<% end %>
+
+<%= if @show.summary do %>
+  <%= @show.summary %>
+<% end %>
+
+<%= if @current_user && @current_user.is_editor do %>
+  <div style="text-align:right;font-size:10px">
+    Last updated: <%= @show.last_updated %>, last checked: <%= @show.last_checked %> <a href="{{url_for('admin_force_update', id=get_show_url(show.id, show.url))}}">force update</a>
+    <br />
+  </div>
+<% end %>
+<%= if assigns[:show_added] do %>
+  <%= if assigns[:ignored] do %>
+    <a class="my_show" style="float:right;margin-left:10px" href="{{url_for('ignore', id=show.id)}}" title="Unignore this show">Unignore</a>
+  <% else %>
+    <a class="my_show" style="float:right;margin-left:10px" href="{{url_for('ignore', id=show.id)}}" title="Ignore this show">Ignore</a>
+  <% end %>
+<% end %>
+
+<%= if !assigns[:show_added] do %>
+	<a class="button" style="float:right" href="{{url_for('add_show',id=show.id)}}" title="Add show to your shows">Add to my shows</a>
+<% else %>
+	<a class="my_show added" style="float:right" href="#" title="You are following this show">My show</a>
+<% end %>
+
+<%= if @show.fixed_thumb do %>
+	<div class="clear"></div>
+<% end %>
+<br /><br />
+
+<%= if @next_episode do %>
+	<h2>Next episode</h2>
+  <%= render_existing @view_module, "episode.html", %{conn: @conn, show_added: @show_added, episode: @next_episode, watched: episode_watched?(@next_episode, @watched_episodes)} %>
+<% end %>
+
+<div id="seasons">
+	<ul>
+    <li>Seasons:</li>
+	  <%= for s <- Model.Show.seasons(@show) do %>
+      <li><a <%= if @season == s do %> class="active"<% end %> href="{{url_for('show', season=s, id=get_show_url(show.id, show.url))}}#season"><%= s %></a></li>
+    <% end %>
+</ul>
+	<div class="clear"></div>
+</div>
+<br />
+
+<%= if @season do %>
+  <h2>season <%= @season %></h2>
+<% else %>
+  <h2>Latest episodes</h2>
+<%= end %>
+
+<%= for episode <- @latest_episodes do %>
+  <%= render_existing @view_module, "episode.html", %{conn: @conn, show_added: @show_added, episode: episode, watched: episode_watched?(episode, @watched_episodes)} %>
+<% end %>
+
+
+
+<h2 style="margin-top:20px">Similar shows</h2>
+<div id="recommendations"></div>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+		$('.watched_icon').click(function() {
+            var url = "";
+
+            var has = $(this).hasClass('watched');
+            var el = $(this);
+
+            if($(this).hasClass('watched')) {
+            	url = '{{url_for('mark_as_unwatched',id=0)}}'.split('0');
+            }else{
+            	url = '{{url_for('mark_as_watched',id=0)}}'.split('0');
+            }
+
+            url=url[0];
+
+		    var id = $(this).attr('id').split('_');
+		    var ep_id=id[1];
+
+		    $.get(url+ep_id, function(data) {
+		    	console.log(has);
+		    	if(has) {
+		    		el.removeClass('watched');
+		    	}else{
+		    		el.addClass('watched');
+		    	}
+		    });
+        });
+    });
+</script>
