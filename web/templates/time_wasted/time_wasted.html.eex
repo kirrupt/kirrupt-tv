@@ -1,0 +1,26 @@
+<table style="width:100%">
+	<tr>
+		<th>Name</th>
+		<th>Status</th>
+		<th>Runtime</th>
+		<th>Episodes</th>
+		<th>Time wasted</th>
+	</tr>
+
+	<%= for show <- @shows do %>
+  	<tr>
+  		<td><a href="<%= show_path(@conn, :index, show.show.url) %>"><%= show.name %></a></td>
+  		<td style="text-align:center"><%= show.status %></td>
+  		<td style="text-align:center"><%= show.runtime %></td>
+  		<td style="text-align:center"><%= show.episodes %></td>
+  		<td><%= show.time_wasted %></td>
+  	</tr>
+	<% end %>
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td style="text-align:center"></td>
+		<td style="text-align:left"><%= @time %></td>
+	</tr>
+</table>

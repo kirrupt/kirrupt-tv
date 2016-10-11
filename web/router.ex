@@ -18,6 +18,7 @@ defmodule KirruptTv.Router do
 
     get   "/", RecentController, :index
     post  "/search", PageController, :search
+    get   "/time-wasted", TimeWastedController, :index
     get   "/show/:name", ShowController, :index
     get   "/show/:name/list", ShowController, :list
     get   "/show/:name/season/:season", ShowController, :season
