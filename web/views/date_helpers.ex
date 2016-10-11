@@ -11,8 +11,9 @@ defmodule KirruptTv.DateHelpers do
     formated_date
   end
 
-  def format_date("", _), do: ""
-  def format_date(value, format \\ 'medium') do
+  def format_date(value, format \\ "medium")
+  def format_date("", _format), do: ""
+  def format_date(value, format) do
     value = time_delta(value, 1)
     date = value |> Timex.to_date
     today = Timex.today
@@ -22,17 +23,17 @@ defmodule KirruptTv.DateHelpers do
     diff = Timex.diff(value, today, :days) |> abs
 
     cond do
-      date == today -> 'today'
-      date == tomorrow -> 'tomorrow'
-      date == yesterday -> 'yesterday'
+      date == today -> "today"
+      date == tomorrow -> "tomorrow"
+      date == yesterday -> "yesterday"
       diff > 0 && diff < 8 -> value |> format("{WDfull}") |> String.downcase
-      format == 'diff' -> "#{diff} days"
-      format == 'full' -> value |> format "{WDfull}, {0D}. {Mfull}. {YYYY}"
-      format == 'medium' -> value |> format "{0D}.{0M}.{YYYY}"
+      format == "diff" -> "#{diff} days"
+      format == "full" -> value |> format("{WDfull}, {0D}. {Mfull}. {YYYY}")
+      format == "medium" -> value |> format("{0D}.{0M}.{YYYY}")
     end
   end
 
   def datediff(value) do
-    format_date(value, 'diff')
+    format_date(value, "diff")
   end
 end

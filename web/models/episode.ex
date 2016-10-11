@@ -26,6 +26,7 @@ defmodule Model.Episode do
   end
 
   def show_thumb(obj) do
-    obj.show |> Model.Show.show_thumb
+    obj.show
+    |> Model.Show.show_thumb
   end
 end

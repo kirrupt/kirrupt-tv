@@ -3,9 +3,9 @@ defmodule KirruptTv.PageController do
 
   plug KirruptTv.Plugs.Authenticated
 
-  alias KirruptTv.Show
+  # alias KirruptTv.Show
 
-  def search(conn, _params) do
+  def search(_conn, _params) do
 
   end
 end

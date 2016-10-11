@@ -5,6 +5,6 @@ defmodule KirruptTv.ShowView do
 
   def episode_watched?(episode, watched_episodes) do
     watched_episodes
-    |> Enum.member? episode.id
+    |> Enum.member?(episode.id)
   end
 end

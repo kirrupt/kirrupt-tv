@@ -88,40 +88,22 @@ defmodule Model.Show do
   end
 
   def show(id_or_url, user \\ nil, season \\ nil) do
-    s = find_by_url_or_id(id_or_url)
-    |> Repo.preload([:genres])
-
-    if s do
-      ignored = false
-      show_added = false
-      next_episode = nil
-
-      if user do
-        show_user_connection = UserShow.connection(user, s)
-
-        if show_user_connection do
-          ignored = show_user_connection.ignored
-          show_added = true
-        end
-      end
-
+    if s = find_by_url_or_id(id_or_url) do
+      s = Repo.preload(s, [:genres])
+      show_user_connection = if user, do: UserShow.connection(user, s)
       latest_episodes = show_episodes(s, season)
 
-      if season && Enum.count(latest_episodes) == 0 do
-        nil
-      else
+      unless season && Enum.count(latest_episodes) == 0 do
         %{
           show: s,
           latest_episodes: latest_episodes,
-          ignored: ignored,
-          show_added: show_added,
+          ignored: if show_user_connection do show_user_connection.ignored else false end,
+          show_added: show_user_connection != nil,
           season: season,
           next_episode: next_episode(s),
           watched_episodes: watched_episodes(s, user)
         }
       end
-    else
-      nil
     end
   end
 
