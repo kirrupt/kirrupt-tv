@@ -114,4 +114,44 @@ defmodule Model.User do
       background: random_background(shows)
     }
   end
+
+  def time_wasted(user) do
+    shows = Repo.all(
+      from s in Model.Show,
+      join: us in Model.UserShow, on: us.show_id == s.id and us.user_id == ^user.id,
+      order_by: s.name
+    )
+
+    episodes = Repo.all(
+      from e in Model.Episode,
+      join: we in Model.WatchedEpisode, on: we.episode_id == e.id and we.user_id == ^user.id,
+      group_by: e.show_id,
+      select: [e.show_id, count(e.id)]
+    )
+
+    shows_s = shows |> Enum.map(fn(show) ->
+      num_of_episodes = 0
+      if show_episodes = episodes |> Enum.find(fn([x, _]) -> x == show.id end) do
+        num_of_episodes = show_episodes |> List.last
+      end
+
+      %{
+        id: show.id,
+        name: show.name,
+        runtime: show.runtime,
+        url: show.url,
+        status: show.status,
+        episodes: num_of_episodes,
+        time_wasted: Duration.invert(%Duration{megaseconds: 0, seconds: show.runtime * num_of_episodes * 60, microseconds: 0}) |> Timex.format_duration(:humanized)
+      }
+    end)
+
+    time = shows_s |> Enum.reduce(0, fn(show, acc) -> acc + show.runtime * show.episodes end)
+
+    %{
+      shows: shows_s,
+      time: Duration.invert(%Duration{megaseconds: 0, seconds: time * 60, microseconds: 0}) |> Timex.format_duration(:humanized),
+      background: random_background(shows)
+    }
+  end
 end

@@ -4,7 +4,9 @@ defmodule KirruptTv.TimeWastedController do
   plug KirruptTv.Plugs.Authenticate
   plug KirruptTv.Plugs.Authenticated
 
+  alias Model.User
+
   def index(conn, _params) do
-    render conn, "time_wasted.html", %{title: "Time wasted"}
+    render conn, "time_wasted.html", Dict.merge(User.time_wasted(conn.assigns[:current_user]), %{title: "Time wasted"})
   end
 end
