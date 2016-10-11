@@ -1,7 +1,5 @@
 defmodule KirruptTv.Plugs.Authenticated do
   import Plug.Conn
-  alias KirruptTv.Repo
-  alias Model.User
 
   def init(options) do
     options
@@ -9,13 +7,18 @@ defmodule KirruptTv.Plugs.Authenticated do
 
   def call(conn, _) do
     conn = fetch_session(conn)
-    assign(conn, :current_user, fake_user())
+    not_logged_in_url = "/login"
+    unless is_logged_in(conn.assigns[:current_user]) do
+      conn |> Phoenix.Controller.redirect(to: not_logged_in_url) |> halt
+    else
+      conn
+    end
   end
 
-
-  def fake_user(user_id \\ nil) do
-    if user_id != nil do
-      Repo.get(User, user_id)
+  def is_logged_in(user_session) do
+    case user_session do
+      nil -> false
+      _   -> true
     end
   end
 end

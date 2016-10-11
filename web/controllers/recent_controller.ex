@@ -2,7 +2,7 @@ defmodule KirruptTv.RecentController do
   use KirruptTv.Web, :controller
   use Timex
 
-  plug KirruptTv.Plugs.Authenticated
+  plug KirruptTv.Plugs.Authenticate
 
   alias Model.User
 

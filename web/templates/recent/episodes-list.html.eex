@@ -14,8 +14,8 @@
     Episode: <a href="<%= episode.tvrage_url %>" target="_blank"><%= episode.title %></a> (<%= episode.season %>x<%= episode.episode %>)
 
     <span style="float:right">
-      <%= if @mark_as_watched do %>
-        <a href="javascript:void()" class="mark_watched" id="ep_<%= episode.id %>">Mark as watched</a>
+      <%= if @conn.assigns[:current_user] && @mark_as_watched do %>
+        <a href="javascript:void(0)" data-href="<%= episode_path(@conn, :mark_as_watched, episode.id) %>" class="mark_watched" id="ep_<%= episode.id %>">Mark as watched</a>
       <% end %>
     </span>
     <div class="clear"></div>

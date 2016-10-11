@@ -1,27 +1,30 @@
 <script type="text/javascript">
 (function($) {
-	$('#recommendations').recommendations({'url':'my-recommendations'});
+	//$('#recommendations').recommendations({'url':'my-recommendations'});
 })(jQuery);
 
 $(document).ready(function() {
 	$('#search_q').val('');
 	$('#search_q').focus();
 
-
 	$('.mark_watched').click(function() {
-	    var url = '{{url_for('mark_as_watched',id=0)}}'.split('0');
-		url=url[0];
+		var url = $(this).attr('data-href');
+		console.log('fuck off')
 
-		var id = $(this).attr('id').split('_');
-		var ep_id=id[1];
-		$('#div_ep_'+ep_id).css('background-color','#fdffc2');
-		$.get(url+ep_id, function(data) {
-		  $('#div_ep_'+ep_id).slideUp();
-		});
+		var ep_id = $(this).attr('id').split('_')[1];
+		$('#div_ep_'+ep_id).css('background-color', '#fdffc2');
 
-		//$("#content_ajax").load('/episodes/recent');
+		$.ajax({
+			url: url,
+      type: 'GET', // TODO PATCH
+      success: function(response, textStatus, jqXhr) {
+				if(response.success) {
+			  	$('#div_ep_'+ep_id).slideUp();
+				} else {
+					alert('error!!')
+				}
+      }
+  	});
 	});
-
-	//$('#search_q').focus();
 });
 </script>

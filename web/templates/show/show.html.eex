@@ -62,35 +62,3 @@
 
 <h2 style="margin-top:20px">Similar shows</h2>
 <div id="recommendations"></div>
-
-
-<script type="text/javascript">
-    $(document).ready(function() {
-		$('.watched_icon').click(function() {
-            var url = "";
-
-            var has = $(this).hasClass('watched');
-            var el = $(this);
-
-            if($(this).hasClass('watched')) {
-            	url = '{{url_for('mark_as_unwatched',id=0)}}'.split('0');
-            }else{
-            	url = '{{url_for('mark_as_watched',id=0)}}'.split('0');
-            }
-
-            url=url[0];
-
-		    var id = $(this).attr('id').split('_');
-		    var ep_id=id[1];
-
-		    $.get(url+ep_id, function(data) {
-		    	console.log(has);
-		    	if(has) {
-		    		el.removeClass('watched');
-		    	}else{
-		    		el.addClass('watched');
-		    	}
-		    });
-        });
-    });
-</script>

@@ -58,6 +58,7 @@ defmodule Model.User do
     query
     |> overview_user_shows_query(user)
     |> join(:left, [e], we in Model.WatchedEpisode, we.episode_id == e.id and we.user_id == ^user.id)
+    |> where([e, s, us, we], is_nil(we.added))
   end
 
   def overview(user \\ nil, search \\ "") do

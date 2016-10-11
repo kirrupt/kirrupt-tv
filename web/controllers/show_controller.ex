@@ -1,7 +1,7 @@
 defmodule KirruptTv.ShowController do
   use KirruptTv.Web, :controller
 
-  plug KirruptTv.Plugs.Authenticated
+  plug KirruptTv.Plugs.Authenticate
 
   alias Model.Show
 

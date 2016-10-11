@@ -1,5 +1,112 @@
 <script type="text/javascript">
 (function($) {
-	$('#recommendations').recommendations({'url':'show/<%= assigns[:show].id %>'});
+	// $('#recommendations').recommendations({'url':'show/<%= assigns[:show].id %>'}); // TODO
 })(jQuery);
+
+  $(document).ready(function() {
+		// show.html
+		$('.watched_icon').click(function() {
+      var has = $(this).hasClass('watched');
+      var el = $(this);
+	    var ep_id = $(this).attr('id').split('_')[1];
+
+			$.ajax({
+				url: mark_as_url(ep_id, !$(this).hasClass('watched')),
+				type: 'GET', // TODO PATCH
+				success: function(response, textStatus, jqXhr) {
+					if(response.success) {
+			    	if(has) {
+			    		el.removeClass('watched');
+			    	}else{
+			    		el.addClass('watched');
+			    	}
+					} else {
+						alert('error!!')
+					}
+				}
+			});
+    });
+
+		// show-list.html
+		$("table").each(function(){
+			check_watched(this);
+		});
+
+		$('.ep_w_checkbox').click(function() {
+			var elem = $(this);
+			var ep_id = elem.attr('id').split('_')[1];
+
+			$.ajax({
+				url: mark_as_url(ep_id, elem.attr('checked')),
+				type: 'GET', // TODO PATCH
+				success: function(response, textStatus, jqXhr) {
+					if(!response.success) {
+						elem.prop('checked', !elem.attr('checked'));
+						alert('error!!')
+					}
+				}
+			});
+
+			check_watched($(this).parent().parent().parent());
+		});
+  });
+
+	function mark_as_url(episode_id, mark_as_watched) {
+		var url = '<%= episode_path(@conn, :mark_as_watched, "replace") %>';
+		if(!mark_as_watched) {
+			url = '<%= episode_path(@conn, :mark_as_unwatched, "replace") %>';
+		}
+
+		return url.replace("replace", episode_id)
+	}
+
+  function check_watched(table){
+      var rowCount = $('.ep_w_checkbox', table).length;
+      var marked = 0;
+      $('.ep_w_checkbox', table).each(function(){
+          if ($(this).is(':checked')) {
+              marked++;
+          }
+      });
+
+      if(rowCount == marked) {
+          $('.ep_w_checkbox_mark', table).html("<a style=\"cursor:pointer; padding-right:5px;\" onclick=\"unmark_all(this)\">unmark all</a>")
+      }
+      else {
+          $('.ep_w_checkbox_mark', table).html("<a style=\"cursor:pointer;padding-right:15px;\" onclick=\"mark_all(this)\">mark all</a>")
+      }
+  }
+
+  function mark_all(season) {
+		_mark_all(season, true)
+  }
+  function unmark_all(season) {
+		_mark_all(season, false)
+  }
+
+	function _mark_all(season, mark) {
+  	var table = $(season).parent().parent().parent();
+		$(".ep_w_checkbox", table).each(function(index) {
+      if((mark && !$(this).attr('checked')) != (!mark && $(this).attr('checked'))){
+				var elem = $(this);
+				var ep_id = elem.attr('id').split('_')[1];
+
+				$.ajax({
+					url: mark_as_url(ep_id, mark),
+					type: 'GET', // TODO PATCH
+					success: function(response, textStatus, jqXhr) {
+						if(response.success) {
+							elem.prop('checked', mark);
+						} else {
+							alert('error!!')
+						}
+					},
+					complete: function() {
+            check_watched(table);
+					}
+				});
+      }
+    });
+	}
+
 </script>
