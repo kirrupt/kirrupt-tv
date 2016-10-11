@@ -132,4 +132,19 @@ defmodule Model.Show do
       |> show_episodes_limit_query(season)
     )|> Repo.preload([:show])
   end
+
+  def show_list(id_or_url, user \\ nil) do
+    if s = find_by_url_or_id(id_or_url) do
+      s = Repo.preload(s, [:episodes]) |> Repo.preload([:genres])
+      show_user_connection = if user, do: UserShow.connection(user, s)
+
+      %{
+        show: s,
+        ignored: if show_user_connection do show_user_connection.ignored else false end,
+        show_added: show_user_connection != nil,
+        by_seasons: Enum.group_by(s.episodes, fn(x) -> x.season end),
+        watched_episodes: watched_episodes(s, user)
+      }
+    end
+  end
 end

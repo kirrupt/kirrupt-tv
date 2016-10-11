@@ -1,0 +1,153 @@
+<div id="body_left">
+	<ul>
+		<%= for {season, _} <- @by_seasons do %>
+		  <li><a href="#season<%= season %>">season <%= season %></a></li>
+		<% end %>
+		<li class="line"></li>
+		<%= if !@show_added do %>
+		  <li><a href="{{url_for('add_show',id=show.id)}}">Add show</a></li>
+		<% end %>
+		<%= if assigns[:current_user] && @show_added do %>
+		  <%= if @ignored do %>
+			  <li><a href="{{url_for('ignore', id=show.id)}}">unignore show</a></li>
+			<% else %>
+			   <li><a href="{{url_for('ignore', id=show.id)}}">ignore show</a></li>
+			<% end %>
+		<% end %>
+	</ul>
+</div>
+
+<div id="body_right">
+	<%= for {season, episodes} <- @by_seasons do %>
+  	<a name="season<%= season %>"></a>
+  	<h2>season <%= season %></h2>
+
+  	<table style="width:100%" id="episodes_<%= season %>">
+  		<tr>
+  			<th>Air date</th>
+  			<th>Episode</th>
+  			<th>Title</th>
+  			<%= if assigns[:current_user] && @show_added do %>
+  			   <th>Watched</th>
+  			<% end %>
+  		</tr>
+
+  		<%= for episode <- episodes do %>
+    		<tr>
+    			<td style="text-align:center"><%= if episode.airdate do %><%= episode.airdate |> format_date %><% end %></td>
+    			<td style="width:50px;text-align:center"><%= episode.season |> leading_zero %>x<%= episode.episode |> leading_zero %></td>
+    			<td style="min-width:350px"><a href="<%= episode.tvrage_url %>" target="_blank"><%= episode.title %></a></td>
+    			<td style="text-align:center">
+    				<%= if assigns[:current_user] && @show_added do %>
+    					<input type="checkbox" class="ep_w_checkbox" id="ep_<%= episode.id %>" <%= if episode_watched?(episode, @watched_episodes) do %> checked="checked"<% end %> />
+    				<% end %>
+    			</td>
+    		</tr>
+  		<% end %>
+      <%= if assigns[:current_user] && @show_added do %>
+        <tr>
+    			<td style="text-align:center"></td>
+    			<td style="width:50px;text-align:center"></td>
+    			<td class="ep_w_checkbox_mark" colspan="2" style="min-width:350px; text-align:right;"></td>
+    		</tr>
+      <% end %>
+  	</table>
+  	<div style="margin-bottom:20px"></div>
+	<% end %>
+</div>
+<div class="clear"></div>
+
+<h2 style="margin-top:20px">Similar shows</h2>
+<div id="recommendations"></div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $("table").each(function(){
+            check_watched(this);
+        });
+
+        $('.ep_w_checkbox').click(function() {
+            var url = "";
+            if($(this).attr('checked')?true:false){
+                url = '{{url_for('mark_as_watched',id=0)}}'.split('0');
+            }else{
+                url = '{{url_for('mark_as_unwatched',id=0)}}'.split('0');
+            }
+
+		    url=url[0];
+
+		    var id = $(this).attr('id').split('_');
+		    var ep_id=id[1];
+
+		    $.get(url+ep_id, function(data) {
+
+		    });
+		    check_watched($(this).parent().parent().parent());
+		//check_seasons();
+        });
+    });
+    function check_watched(table){
+        var rowCount = $('.ep_w_checkbox', table).length;
+        var marked = 0;
+        $('.ep_w_checkbox', table).each(function(){
+            if ($(this).is(':checked')) {
+                marked++;
+            }
+        });
+
+        if(rowCount == marked)
+        {
+            $('.ep_w_checkbox_mark', table).html("<a style=\"cursor:pointer; padding-right:5px;\" onclick=\"unmark_all(this)\">unmark all</a>")
+        }
+        else
+        {
+            $('.ep_w_checkbox_mark', table).html("<a style=\"cursor:pointer;padding-right:15px;\" onclick=\"mark_all(this)\">mark all</a>")
+        }
+    }
+
+    function mark_all(season){
+        var table = $(season).parent().parent().parent();
+
+        $(".ep_w_checkbox", table).each(function(index) {
+            var url = "";
+            if(!$(this).attr('checked')?true:false){
+                url = '{{url_for('mark_as_watched',id=0)}}'.split('0');
+
+                url=url[0];
+
+                var id = $(this).attr('id').split('_');
+                var ep_id=id[1];
+
+                $.get(url+ep_id, function(data) {
+
+                });
+                $(this).prop('checked', true);
+
+                check_watched(table);
+            }
+        });
+    }
+
+    function unmark_all(season){
+        var table = $(season).parent().parent().parent();
+
+        $(".ep_w_checkbox", table).each(function(index) {
+            var url = "";
+            if($(this).attr('checked')?true:false){
+                url = '{{url_for('mark_as_unwatched',id=0)}}'.split('0');
+
+                url=url[0];
+
+                var id = $(this).attr('id').split('_');
+                var ep_id=id[1];
+
+                $.get(url+ep_id, function(data) {
+
+                });
+                $(this).prop('checked', false);
+                check_watched(table);
+            }
+        });
+    }
+</script>

@@ -9,7 +9,7 @@ defmodule KirruptTv.Plugs.Authenticated do
 
   def call(conn, _) do
     conn = fetch_session(conn)
-    assign(conn, :current_user, fake_user(7))
+    assign(conn, :current_user, fake_user())
   end
 
 

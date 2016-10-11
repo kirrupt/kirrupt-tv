@@ -50,7 +50,7 @@ defmodule Model.User do
   defp overview_user_shows_query(query, nil), do: query
   defp overview_user_shows_query(query, user) do
     query
-    |> join(:inner, [e], us in Model.UserShow, us.show_id == e.show_id and us.user_id == ^user.id and us.ignored == 0)
+    |> join(:inner, [e], us in Model.UserShow, us.show_id == e.show_id and us.user_id == ^user.id and us.ignored == false)
   end
 
   defp overview_user_query(query, nil), do: query

@@ -3,7 +3,7 @@
 <div id="links">
 	<ul>
     <li><a <%= if assigns[:season] && !assigns[:by_seasons] do %> class="active"<% end %>href="<%= show_path(@conn, :index, @show.url) %>">recent</a></li>
-	  <li><a <%= if assigns[:by_seasons] do %> class="active"<% end %> href="{{url_for('show_list', id=get_show_url(show.id, show.url))}}">list</a></li>
+	  <li><a <%= if assigns[:by_seasons] do %> class="active"<% end %> href="<%= show_path(@conn, :list, @show.url) %>">list</a></li>
 
 	</ul>
 </div>

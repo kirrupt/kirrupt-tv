@@ -4,7 +4,7 @@ defmodule Model.UserShow do
 
   @primary_key false
   schema "users_shows" do
-    field :ignored, :integer
+    field :ignored, :boolean
     field :modified, Timex.Ecto.DateTime
     field :date_added, Timex.Ecto.DateTime
 
