@@ -5,7 +5,7 @@
 		<% end %>
 		<li class="line"></li>
 		<%= if !@show_added do %>
-		  <li><a href="{{url_for('add_show',id=show.id)}}">Add show</a></li>
+		  <li><a href="<%= show_path(@conn, :add_to_my_shows, get_show_url(@show)) %>">Add show</a></li>
 		<% end %>
 		<%= if assigns[:current_user] && @show_added do %>
 		  <%= if @ignored do %>

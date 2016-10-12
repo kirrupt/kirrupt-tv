@@ -1,5 +1,5 @@
 <%= if !@recent && !@soon && @current_user && !@is_xhr do %>
-	<h2>Looks like you haven't added much shows. Wanna add a new one? <a href="{{url_for('add')}}">Add new show</a></h2>
+	<h2>Looks like you haven't added much shows. Wanna add a new one? <a href="<%= show_path(@conn, :add) %>">Add new show</a></h2>
 <% end %>
 
 <div id="body_right" style="width:600px">
