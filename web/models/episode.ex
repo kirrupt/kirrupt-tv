@@ -42,10 +42,10 @@ defmodule Model.Episode do
             added: Timex.now
           }
           case Repo.insert we do
-            {:ok, struct}       ->
+            {:ok, _struct} ->
               mark_as_watched_status(episode, user, true)
               true
-            {:error, changeset} -> false
+            {:error, _changeset} -> false
           end
         else
           true
@@ -59,10 +59,10 @@ defmodule Model.Episode do
       if us = Repo.get_by(Model.UserShow, %{show_id: episode.show_id, user_id: user.id}) do
         if we = Repo.get_by(Model.WatchedEpisode, %{episode_id: episode.id, user_id: user.id}) do
           case Repo.delete we do
-            {:ok, struct}       ->
+            {:ok, _struct} ->
               mark_as_watched_status(episode, user, false)
               true
-            {:error, changeset} -> false
+            {:error, _changeset} -> false
           end
         else
           true
@@ -81,8 +81,8 @@ defmodule Model.Episode do
       |> Repo.insert_or_update
 
     case result do
-      {:ok, struct}       -> true
-      {:error, changeset} -> false
+      {:ok, _struct}       -> true
+      {:error, _changeset} -> false
     end
   end
 end

@@ -8,8 +8,6 @@ defmodule Model.User do
   alias KirruptTv.Repo
   alias Model.Episode
   alias Model.Genre
-  alias Model.UserShow
-  alias Model.WatchedEpisode
 
   schema "users" do
     field :username, :string
@@ -63,8 +61,6 @@ defmodule Model.User do
 
   def overview(user \\ nil, search \\ "") do
     today = Timex.today
-    tomorrow = time_delta(today, 1)
-    yesterday = time_delta(today, -1)
     fourteendays_ago = time_delta(today, -14)
     onemonthfromtoday = time_delta(today, 30)
 
@@ -130,9 +126,9 @@ defmodule Model.User do
     )
 
     shows_s = shows |> Enum.map(fn(show) ->
-      num_of_episodes = 0
-      if show_episodes = episodes |> Enum.find(fn([x, _]) -> x == show.id end) do
-        num_of_episodes = show_episodes |> List.last
+      num_of_episodes = case episodes |> Enum.find(fn([x, _]) -> x == show.id end) do
+        nil           -> 0
+        show_episodes -> show_episodes |> List.last
       end
 
       %{

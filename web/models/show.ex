@@ -5,8 +5,7 @@ defmodule Model.Show do
   alias KirruptTv.Repo
   alias Model.Episode
   alias Model.UserShow
-  alias Model.WatchedEpisode
-
+  
   schema "shows" do
     field :name, :string
     field :tvrage_url, :string
@@ -52,12 +51,11 @@ defmodule Model.Show do
     |> validate_required([:id, :name, :tvrage_url, :runtime, :genre, :status, :added])
   end
 
+  def find_by_id(id) when is_integer(id), do: Repo.get(Model.Show, id)
+  def find_by_id(_), do: nil
+
   def find_by_url_or_id(id_or_url) do
-    obj = Repo.get_by(Model.Show, url: id_or_url)
-    if !obj && is_integer(id_or_url) do
-      obj = Repo.get(Model.Show, id_or_url)
-    end
-    obj
+    Repo.get_by(Model.Show, url: id_or_url) || find_by_id(id_or_url)
   end
 
   def show_thumb(show) do
