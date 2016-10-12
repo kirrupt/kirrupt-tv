@@ -165,4 +165,25 @@ defmodule Model.User do
         end
       end)
   end
+
+  def add_show(_user, nil), do: nil
+  def add_show(user, show) do
+    unless us = Repo.get_by(Model.UserShow, %{show_id: show.id, user_id: user.id}) do
+      result =
+        Model.UserShow.changeset(%Model.UserShow{}, %{
+          user_id: user.id,
+          show_id: show.id,
+          modified: Timex.now,
+          ignored: false,
+          date_added: Timex.now
+        }) |> Repo.insert
+
+      case result do
+        {:ok, _struct}       -> true
+        {:error, _changeset} -> false
+      end
+    else
+      true
+    end
+  end
 end

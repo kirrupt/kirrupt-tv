@@ -18,10 +18,14 @@ defmodule KirruptTv.Router do
 
     get   "/", RecentController, :index
     post  "/search", PageController, :search
+    get   "/search/kirrupt", PageController, :search_kirrupt
+    get   "/search/tvmaze", PageController, :search_tvmaze
     get   "/time-wasted", TimeWastedController, :index
     get   "/my-shows", ShowController, :my_shows
     get   "/my-shows/:category", ShowController, :my_shows_category
+    get   "/show/add", ShowController, :add
     get   "/show/:name", ShowController, :index
+    get   "/show/:name/add", ShowController, :add_to_my_shows
     get   "/show/:name/list", ShowController, :list
     get   "/show/:name/season/:season", ShowController, :season
     get   "/show/:name/ignore", ShowController, :ignore

@@ -158,4 +158,12 @@ defmodule Model.Show do
       end
     end
   end
+
+  def find_shows_on_kirrupt(name) do
+    Repo.all(
+      from s in Model.Show,
+      where: like(s.name, ^"%#{name}%"),
+      order_by: s.name
+    )
+  end
 end

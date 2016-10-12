@@ -1,0 +1,6 @@
+<h2>Find Your Show:</h2>
+
+<div style="text-align:center"><form action="" id="add_search">
+	<input type="text" style="width:400px" id="add_name" name="show_name" /> <input type="submit" value="Search" />
+</form></div>
+<div id="add_results"></div>

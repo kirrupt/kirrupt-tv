@@ -22,7 +22,7 @@
 <% end %>
 
 <%= if !assigns[:show_added] do %>
-	<a class="button" style="float:right" href="{{url_for('add_show',id=show.id)}}" title="Add show to your shows">Add to my shows</a>
+	<a class="button" style="float:right" href="<%= show_path(@conn, :add_to_my_shows, get_show_url(@show)) %>" title="Add show to your shows">Add to my shows</a>
 <% else %>
 	<a class="my_show added" style="float:right" href="#" title="You are following this show">My show</a>
 <% end %>

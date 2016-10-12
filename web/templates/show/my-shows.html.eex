@@ -1,5 +1,5 @@
 <%= if @shows == [] && @category == :my_shows do %>
-	<h2>Looks a bit lonely here. Wanna add new show? <a href="{{url_for('add')}}">Add new show</a></h2><br />
+	<h2>Looks a bit lonely here. Wanna add new show? <a href="<%= show_path(@conn, :add) %>">Add new show</a></h2><br />
 <% else %>
   <h2><%= if @category == :my_shows do "Current shows" else @title end %></h2>
   <%= for show <- @shows do %>

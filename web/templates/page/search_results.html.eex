@@ -1,0 +1,32 @@
+<%= if @shows != [] do %>
+  <div style="text-align: center; width: 100%;">
+  	<div style="width: 500px; text-align:left; margin:auto;">
+  		<%= for show <- @shows do %>
+  				<div class="recent_episode">
+  					<%= if Model.Show.show_thumb(show) do %>
+    					<a href="<%= show_path(@conn, :index, get_show_url(show)) %>">
+    						<img src="<%= show |> Model.Show.show_thumb %>" />
+    					</a>
+  					<% else %>
+  						<img src="<%= static_path(@conn, "/images/logo.png") %>" />
+  					<% end %>
+
+  					<div style="width:410px;float:right">
+
+  						<a style="text-decoration:none" href="<%= show_path(@conn, :index, get_show_url(show)) %>"><b><%= show.name %></b></a>
+  						<div class="clear"></div>
+
+  						Year: <%= show.year %>
+
+  						<span style="float:right">
+  							<a href="<%= show_path(@conn, :index, get_show_url(show)) %>">more info</a>
+  						</span>
+
+  						<div class="clear"></div>
+  					</div>
+  					<div class="clear"></div>
+  				</div>
+  		<% end %>
+  	</div>
+  </div>
+<% end %>

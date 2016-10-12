@@ -28,6 +28,18 @@ defmodule KirruptTv.ShowController do
     redirect conn, to: KirruptTv.Router.Helpers.show_path(conn, :index, name)
   end
 
+  def add(conn, _params) do
+    render conn, "add.html", %{title: "Add show"}
+  end
+
+  def add_to_my_shows(conn, %{"name" => name}) do
+    if Model.User.add_show(conn.assigns[:current_user], Model.Show.find_by_url_or_id(name)) do
+      redirect conn, to: KirruptTv.Router.Helpers.show_path(conn, :index, name)
+    else
+      redirect conn, to: "/"
+    end
+  end
+
   def my_shows(conn, _params), do: my_shows_response(conn, "my_shows")
   def my_shows_category(conn, %{"category" => category}), do: my_shows_response(conn, category)
 
