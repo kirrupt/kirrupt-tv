@@ -1,0 +1,21 @@
+<%= for show <- @shows do %>
+<div class="show_episode">
+		<a style="color:#666" href="<%= show_path(@conn, :index, get_show_url(show)) %>">
+			<div style="float:left;width:220px">&nbsp;
+				<%= if show.fixed_thumb do %>
+					<img src="<%= show |> Model.Show.show_thumb %>" />
+				<% end %>
+			</div>
+
+			<div style="float:left;width:600px">
+				<div style="color:#ed299b"><%= show.name %></div>
+				<%= if show.summary do %>
+                    <%= show.summary |> limit_text %>
+                <% end %>
+
+				<div class="airdate"></div>
+			</div>
+			<div class="clear"></div>
+		</a>
+	</div>
+<% end %>

@@ -27,7 +27,7 @@
 	<h2>genres</h2>
 	<%= for genre <- @genres do %>
 		<%= if genre.url do %>
-			<a href="{{url_for('genre', url=genre.url)}}"><%= genre.name %></a> /
+			<a href="<%= genre_path(@conn, :index, genre.url) %>"><%= genre.name %></a> /
 		<% end %>
 	<% end %>
 </div>
