@@ -22,6 +22,8 @@ defmodule Model.User do
     field :registration_code, :string
     field :password_code, :string
     field :is_editor, :integer
+    field :is_developer, :integer
+    field :is_admin, :integer
     field :skype_handle, :string
     field :google_id, :string
     field :google_session_id, :string

@@ -9,7 +9,14 @@ defmodule KirruptTv.Plugs.Authenticate do
 
   def call(conn, _) do
     conn = fetch_session(conn)
-    assign(conn, :current_user, fake_user(7))
+
+    auto_hash = Map.get(conn.req_cookies, "auto_hash")
+    if auto_hash != nil do
+      user = Repo.get_by(User, auto_hash: auto_hash)
+      if user != nil do
+        assign(conn, :current_user, user)
+      end
+    end
   end
 
   def fake_user(user_id \\ nil) do
