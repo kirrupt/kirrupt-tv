@@ -1,17 +1,26 @@
-<%= render_existing KirruptTv.SharedView, "search.html", Dict.merge(assigns, %{search_query: @show.name}) %>
+<%= render_existing KirruptTv.SharedView, "search.html", Dict.merge(assigns, %{search_query: assigns[:show] && assigns[:show].name || assigns[:title] }) %>
 
 <div id="links">
 	<ul>
-    <li><a <%= if assigns[:season] && !assigns[:by_seasons] do %> class="active"<% end %>href="<%= show_path(@conn, :index, get_show_url(@show)) %>">recent</a></li>
-	  <li><a <%= if assigns[:by_seasons] do %> class="active"<% end %> href="<%= show_path(@conn, :list, get_show_url(@show)) %>">list</a></li>
-
+		<%= if assigns[:show] do %>
+	    <li><a <%= if assigns[:season] && !assigns[:by_seasons] do %> class="active"<% end %>href="<%= show_path(@conn, :index, get_show_url(assigns[:show])) %>">recent</a></li>
+		  <li><a <%= if assigns[:by_seasons] do %> class="active"<% end %> href="<%= show_path(@conn, :list, get_show_url(assigns[:show])) %>">list</a></li>
+		<% else %>
+			<%= if assigns[:count].current > 0 do %><li><a <%= if @category == :my_shows do %> class="active"<% end %> href="<%= show_path(@conn, :my_shows) %>">current</a></li><% end %>
+			<%= if assigns[:count].ignored > 0 do %><li><a <%= if @category == :ignored do %> class="active"<% end %> href="<%= show_path(@conn, :my_shows_category, "ignored") %>">ignored</a></li><% end %>
+			<%= if assigns[:count].canceled > 0 do %><li><a <%= if @category == :canceled do %> class="active"<% end %> href="<%= show_path(@conn, :my_shows_category, "canceled") %>">canceled</a></li><% end %>
+		<% end %>
 	</ul>
 </div>
 
 <div id="genres">
-	<%= for genre <- @show.genres do %>
-		<%= if genre.url do %>
-		<a href="{{url_for('genre', url=genre.url)}}"><%= genre.name %></a>
+	<%= if assigns[:show] do %>
+		<%= for genre <- assigns[:show].genres do %>
+			<%= if genre.url do %>
+			<a href="{{url_for('genre', url=genre.url)}}"><%= genre.name %></a>
+			<% end %>
 		<% end %>
+	<% else %>
+		<a href="{{url_for('add')}}">Add new show</a>
 	<% end %>
 </div>

@@ -47,7 +47,7 @@
 					<ul>
 						<%= if @current_user do %>
   						<li><a href="<%= recent_path(@conn, :index) %>"<%= if @conn.request_path == "/" do %> class="selected"<% end %>>recent</a></li>
-  						<li><a href="{{url_for('my_shows')}}"<%= if @conn.request_path == "/my-shows" || @conn.request_path == "/add" || assigns[:show] do %> class="selected"<% end %>>shows</a></li>
+  						<li><a href="<%= show_path(@conn, :my_shows) %>"<%= if @conn.request_path == "/my-shows" || @conn.request_path == "/add" || assigns[:show] do %> class="selected"<% end %>>shows</a></li>
   						<li><a href="<%= time_wasted_path(@conn, :index) %>"<%= if @conn.request_path == "/time-wasted" do %> class="selected"<% end %>>time wasted</a></li>
 
   						<%= if @current_user.is_editor == 8888 do %>

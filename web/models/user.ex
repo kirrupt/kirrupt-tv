@@ -150,4 +150,19 @@ defmodule Model.User do
       background: random_background(shows)
     }
   end
+
+  def get_user_shows(user) do
+      Repo.all(
+        from s in Model.Show,
+        join: us in Model.UserShow, on: us.show_id == s.id and us.user_id == ^user.id,
+        order_by: s.name,
+        select: {s, us.ignored})
+      |> Enum.reduce(%{my_shows: [], canceled: [], ignored: []}, fn({show, ignored}, acc) ->
+        cond do
+          ignored -> %{my_shows: acc[:my_shows], canceled: acc[:canceled], ignored: acc[:ignored] ++ [show]}
+          ["Canceled/Ended", "Canceled", "Ended"] |> Enum.member?(show.status) -> %{my_shows: acc[:my_shows], canceled: acc[:canceled] ++ [show], ignored: acc[:ignored]}
+          true -> %{my_shows: acc[:my_shows] ++ [show], canceled: acc[:canceled], ignored: acc[:ignored]}
+        end
+      end)
+  end
 end
