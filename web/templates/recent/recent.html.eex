@@ -19,7 +19,7 @@
 	<%= if @countdown do %>
 	 <h2>countdown</h2>
   	<%= for episode <- @countdown do %>
-  		<a href="{{url_for('show', id=get_show_url(show.showid, show.url))}}"><%= episode.show.name %></a><span style="float:right"><%= episode.airdate |> datediff %></span><br />
+  		<a href="<%= show_path(@conn, :index, get_show_url(episode.show)) %>"><%= episode.show.name %></a><span style="float:right"><%= episode.airdate |> datediff %></span><br />
   	<% end %>
 	<% end %>
 	<div class="clear" style="margin-bottom:30px"></div>

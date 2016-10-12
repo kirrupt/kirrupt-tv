@@ -22,6 +22,7 @@ defmodule KirruptTv.Router do
     get   "/show/:name", ShowController, :index
     get   "/show/:name/list", ShowController, :list
     get   "/show/:name/season/:season", ShowController, :season
+    get   "/show/:name/ignore", ShowController, :ignore
     get "/episode/:id/mark_as_watched", EpisodeController, :mark_as_watched # TODO PATCH
     get "/episode/:id/mark_as_unwatched", EpisodeController, :mark_as_unwatched #TODO PATCH
   end

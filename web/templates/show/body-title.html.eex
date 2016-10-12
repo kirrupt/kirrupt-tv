@@ -2,8 +2,8 @@
 
 <div id="links">
 	<ul>
-    <li><a <%= if assigns[:season] && !assigns[:by_seasons] do %> class="active"<% end %>href="<%= show_path(@conn, :index, @show.url) %>">recent</a></li>
-	  <li><a <%= if assigns[:by_seasons] do %> class="active"<% end %> href="<%= show_path(@conn, :list, @show.url) %>">list</a></li>
+    <li><a <%= if assigns[:season] && !assigns[:by_seasons] do %> class="active"<% end %>href="<%= show_path(@conn, :index, get_show_url(@show)) %>">recent</a></li>
+	  <li><a <%= if assigns[:by_seasons] do %> class="active"<% end %> href="<%= show_path(@conn, :list, get_show_url(@show)) %>">list</a></li>
 
 	</ul>
 </div>

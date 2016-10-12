@@ -5,7 +5,7 @@ defmodule Model.Show do
   alias KirruptTv.Repo
   alias Model.Episode
   alias Model.UserShow
-  
+
   schema "shows" do
     field :name, :string
     field :tvrage_url, :string
@@ -143,6 +143,19 @@ defmodule Model.Show do
         by_seasons: Enum.group_by(s.episodes, fn(x) -> x.season end),
         watched_episodes: watched_episodes(s, user)
       }
+    end
+  end
+
+  def ignore_show(show, user) do
+    if us = Repo.get_by(Model.UserShow, %{show_id: show.id, user_id: user.id}) do
+      result = us
+      |> Model.UserShow.changeset(%{modified: Timex.now, ignored: !us.ignored})
+      |> Repo.insert_or_update
+
+      case result do
+        {:ok, _struct}       -> true
+        {:error, _changeset} -> false
+      end
     end
   end
 end

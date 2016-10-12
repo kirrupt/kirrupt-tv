@@ -9,9 +9,9 @@
 		<% end %>
 		<%= if assigns[:current_user] && @show_added do %>
 		  <%= if @ignored do %>
-			  <li><a href="{{url_for('ignore', id=show.id)}}">unignore show</a></li>
+			  <li><a href="<%= show_path(@conn, :ignore, get_show_url(@show)) %>">unignore show</a></li>
 			<% else %>
-			   <li><a href="{{url_for('ignore', id=show.id)}}">ignore show</a></li>
+			   <li><a href="<%= show_path(@conn, :ignore, get_show_url(@show)) %>">ignore show</a></li>
 			<% end %>
 		<% end %>
 	</ul>

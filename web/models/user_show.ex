@@ -17,8 +17,8 @@ defmodule Model.UserShow do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [])
-    |> validate_required([])
+    |> cast(params, [:user_id, :show_id, :modified, :ignored, :date_added])
+    |> validate_required([:user_id, :show_id, :modified, :ignored])
   end
 
   def connection(user, show) do

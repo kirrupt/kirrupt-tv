@@ -9,7 +9,7 @@
 
 	<%= for show <- @shows do %>
   	<tr>
-  		<td><a href="<%= show_path(@conn, :index, show.url) %>"><%= show.name %></a></td>
+  		<td><a href="<%= show_path(@conn, :index, get_show_url(show)) %>"><%= show.name %></a></td>
   		<td style="text-align:center"><%= show.status %></td>
   		<td style="text-align:center"><%= show.runtime %></td>
   		<td style="text-align:center"><%= show.episodes %></td>

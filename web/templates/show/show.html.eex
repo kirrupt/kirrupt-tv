@@ -15,9 +15,9 @@
 <% end %>
 <%= if assigns[:show_added] do %>
   <%= if assigns[:ignored] do %>
-    <a class="my_show" style="float:right;margin-left:10px" href="{{url_for('ignore', id=show.id)}}" title="Unignore this show">Unignore</a>
+    <a class="my_show" style="float:right;margin-left:10px" href="<%= show_path(@conn, :ignore, get_show_url(@show)) %>" title="Unignore this show">Unignore</a>
   <% else %>
-    <a class="my_show" style="float:right;margin-left:10px" href="{{url_for('ignore', id=show.id)}}" title="Ignore this show">Ignore</a>
+    <a class="my_show" style="float:right;margin-left:10px" href="<%= show_path(@conn, :ignore, get_show_url(@show)) %>" title="Ignore this show">Ignore</a>
   <% end %>
 <% end %>
 
@@ -41,7 +41,7 @@
 	<ul>
     <li>Seasons:</li>
 	  <%= for s <- Model.Show.seasons(@show) do %>
-      <li><a <%= if @season == s do %> class="active"<% end %> href="<%= show_path(@conn, :season, @show.url, s) %>#season"><%= s %></a></li>
+      <li><a <%= if @season == s do %> class="active"<% end %> href="<%= show_path(@conn, :season, get_show_url(@show), s) %>#season"><%= s %></a></li>
     <% end %>
 </ul>
 	<div class="clear"></div>

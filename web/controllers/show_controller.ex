@@ -2,6 +2,7 @@ defmodule KirruptTv.ShowController do
   use KirruptTv.Web, :controller
 
   plug KirruptTv.Plugs.Authenticate
+  plug KirruptTv.Plugs.Authenticated when action in [:ignore]
 
   alias Model.Show
 
@@ -20,6 +21,11 @@ defmodule KirruptTv.ShowController do
     else
       redirect conn, to: "/"
     end
+  end
+
+  def ignore(conn, %{"name" => name}) do
+    Model.Show.ignore_show(Model.Show.find_by_url_or_id(name), conn.assigns[:current_user])
+    redirect conn, to: KirruptTv.Router.Helpers.show_path(conn, :index, name)
   end
 
   defp render_show_details(conn, id_or_url, season \\ nil) do
