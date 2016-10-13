@@ -1,0 +1,38 @@
+{% macro render_episode_list(episodes, mark_as_watched, name) %}
+	{% if episodes %}
+		<h3>{{name}}</h3>
+		{% for episode in episodes %}
+			<div class="recent_episode" id="div_ep_{{episode.episodeid}}">
+				{% if episode.screencap %}
+					{% if 'tvrage' in episode.screencap %}
+						<img src="{{episode.screencap}}" />
+
+					{% else %}
+						<img src="{{url_for('static', filename=episode.screencap)}}" />
+					{% endif %}
+				{% else %}
+
+				{% endif %}
+				<div style="width:510px;float:right">
+
+				<a href="{{episode.episodeurl}}" target="_blank">
+					{{episode.title}}</a> ({{episode.season}}x{{episode.episode}})
+				<span style="float:right;color:#666">{% if episode.airdate %}{{episode.airdate|date}}{% endif %}</span>
+				<div class="clear"></div>
+
+
+
+				{% if episode.episode_summary %} {{episode.episode_summary}} {% endif %}
+
+				<span style="float:right">
+					{% if mark_as_watched and not episode.watched %}
+						<a href="javascript:void()" class="mark_watched" id="ep_{{episode.episodeid}}">{% trans %}Mark as watched{% endtrans %}</a>
+					{% endif %}
+				</span>
+				<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		{% endfor %}
+	{% endif %}
+{% endmacro %}

@@ -9,7 +9,6 @@ $(document).ready(function() {
 
 	$('.mark_watched').click(function() {
 		var url = $(this).attr('data-href');
-		console.log('fuck off')
 
 		var ep_id = $(this).attr('id').split('_')[1];
 		$('#div_ep_'+ep_id).css('background-color', '#fdffc2');

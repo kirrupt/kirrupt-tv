@@ -166,4 +166,25 @@ defmodule Model.Show do
       order_by: s.name
     )
   end
+
+  def filter_user_shows(_shows, nil), do: []
+  def filter_user_shows(shows, user) do
+    us = Repo.all(
+      from us in Model.UserShow,
+      where: us.show_id in ^Enum.map(shows, fn(x) -> x.id end) and us.user_id == ^user.id,
+      select: us.show_id)
+    shows |> Enum.reject(fn(x) -> !Enum.member?(us, x.id) end)
+  end
+
+  def search(q, user) do
+    user_id = user && user.id || 0
+
+    Repo.all(
+      from s in Model.Show,
+      left_join: us in Model.UserShow, on: us.show_id == s.id and us.user_id == ^user_id,
+      where: fragment("MATCH(?) AGAINST (? IN BOOLEAN MODE)", s.name, ^"*#{q}*"),
+      order_by: [desc: us.user_id],
+      order_by: [asc: us.ignored],
+      limit: 30)
+  end
 end

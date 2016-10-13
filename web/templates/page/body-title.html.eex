@@ -1,0 +1,1 @@
+<%= render_existing KirruptTv.SharedView, "search.html", Dict.merge(assigns, %{search_query: @query}) %>

@@ -28,7 +28,7 @@ defmodule KirruptTv.Router do
     pipe_through :browser # Use the default browser stack
 
     get   "/", RecentController, :index
-    post  "/search", PageController, :search
+    get   "/search", PageController, :search
     get   "/search/kirrupt", PageController, :search_kirrupt
     get   "/search/tvmaze", PageController, :search_tvmaze
     get   "/time-wasted", TimeWastedController, :index

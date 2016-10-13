@@ -1,0 +1,22 @@
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.mark_watched').click(function() {
+    var elem = $(this);
+    var ep_id = elem.attr('id').split('_')[1];
+
+		$('#div_ep_'+ep_id).css('background-color','#fdffc2');
+
+    $.ajax({
+      url: mark_as_url(ep_id, true),
+      type: 'GET', // TODO PATCH
+      success: function(response, textStatus, jqXhr) {
+        if(response.success) {
+          $('#div_ep_'+ep_id).slideUp();
+        } else {
+          alert('error!!')
+        }
+      }
+    });
+	});
+});
+</script>

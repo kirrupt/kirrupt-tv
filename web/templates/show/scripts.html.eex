@@ -72,15 +72,6 @@
 		});
   });
 
-	function mark_as_url(episode_id, mark_as_watched) {
-		var url = '<%= episode_path(@conn, :mark_as_watched, "replace") %>';
-		if(!mark_as_watched) {
-			url = '<%= episode_path(@conn, :mark_as_unwatched, "replace") %>';
-		}
-
-		return url.replace("replace", episode_id)
-	}
-
   function check_watched(table){
       var rowCount = $('.ep_w_checkbox', table).length;
       var marked = 0;

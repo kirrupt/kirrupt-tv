@@ -1,0 +1,34 @@
+<%= if @shows == [] do %>
+  No results.
+<% else %>
+  <%= for show <- @shows do %>
+  	<div class="show_episode search">
+  		<a style="color:#666" href="<%= show_path(@conn, :index, get_show_url(show)) %>">
+  			<h2><%= show.name %></h2>
+  			<div style="float:left;width:220px">&nbsp;
+  				<%= if show.fixed_thumb do %>
+  					<img src="<%= show |> Model.Show.show_thumb %>" />
+  				<% end %>
+  			</div>
+
+  			<div style="float:left;width:600px">
+  				<%= if show.summary do %> <%= show.summary |> limit_text %> <% end %>
+  				<div class="airdate"></div>
+
+  				<%= if !is_my_show(@my_shows, show) do %>
+  					<a class="button" style="float:right" href="<%= show_path(@conn, :add_to_my_shows, get_show_url(show)) %>" title="Add show to your shows">Add to my shows</a>
+  				<% end %>
+
+  				<%
+          # TODO
+          # {{render_episode_list(show.unwatched, True, 'Unwatched')}}
+  				# {{render_episode_list(show.recent, True, 'Recent')}}
+  				# {{render_episode_list(show.soon, False, 'Coming soon')}}
+          %>
+
+  			</div>
+  			<div class="clear"></div>
+  		</a>
+  	</div>
+  <% end %>
+<% end %>
