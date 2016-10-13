@@ -133,6 +133,11 @@ defmodule Model.User do
         show_episodes -> show_episodes |> List.last
       end
 
+      runtime = case show.runtime do
+        nil -> 0
+        _ -> show.runtime
+      end
+
       %{
         id: show.id,
         name: show.name,
@@ -140,7 +145,7 @@ defmodule Model.User do
         url: show.url,
         status: show.status,
         episodes: num_of_episodes,
-        time_wasted: Duration.invert(%Duration{megaseconds: 0, seconds: show.runtime * num_of_episodes * 60, microseconds: 0}) |> Timex.format_duration(:humanized)
+        time_wasted: Duration.invert(%Duration{megaseconds: 0, seconds: runtime * num_of_episodes * 60, microseconds: 0}) |> Timex.format_duration(:humanized)
       }
     end)
 
