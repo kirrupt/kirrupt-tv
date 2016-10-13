@@ -51,6 +51,13 @@ defmodule Model.Show do
     |> validate_required([:id, :name, :tvrage_url, :runtime, :genre, :status, :added])
   end
 
+  def runtime_num(show) do
+    case show.runtime do
+      nil -> 0
+      _ -> show.runtime
+    end
+  end
+
   def find_by_id(id) when is_integer(id), do: Repo.get(Model.Show, id)
   def find_by_id(_), do: nil
 
