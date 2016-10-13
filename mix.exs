@@ -19,7 +19,7 @@ defmodule KirruptTv.Mixfile do
   def application do
     [mod: {KirruptTv, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :mariaex, :timex, :timex_ecto, :httpotion]]
+                    :phoenix_ecto, :mariaex, :timex, :timex_ecto, :httpotion, :sentry]]
   end
 
   # Specifies which paths to compile per environment.
@@ -41,7 +41,8 @@ defmodule KirruptTv.Mixfile do
      {:timex, "~> 3.0"},
      {:timex_ecto, "~> 3.0"},
      {:httpotion, "~> 3.0.2"},
-     {:html_sanitize_ex, "~> 1.0.0"}]
+     {:html_sanitize_ex, "~> 1.0.0"},
+     {:sentry, "~> 1.0"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

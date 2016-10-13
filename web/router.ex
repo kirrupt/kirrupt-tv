@@ -1,6 +1,11 @@
 defmodule KirruptTv.Router do
   use KirruptTv.Web, :router
 
+  if Application.get_env(:sentry, :dsn) do
+    use Plug.ErrorHandler
+    use Sentry.Plug
+  end
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
