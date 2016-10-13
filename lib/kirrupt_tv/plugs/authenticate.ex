@@ -9,13 +9,12 @@ defmodule KirruptTv.Plugs.Authenticate do
 
   def call(conn, _) do
     conn = fetch_session(conn)
+    assign(conn, :current_user, find_user(conn))
+  end
 
-    auto_hash = Map.get(conn.req_cookies, "auto_hash")
-    if auto_hash != nil do
-      user = Repo.get_by(User, auto_hash: auto_hash)
-      if user != nil do
-        assign(conn, :current_user, user)
-      end
+  defp find_user(conn) do
+    if auto_hash = Map.get(conn.req_cookies, "auto_hash") do
+      Repo.get_by(User, auto_hash: auto_hash)
     end
   end
 
