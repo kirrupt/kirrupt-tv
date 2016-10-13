@@ -149,7 +149,7 @@ defmodule Model.User do
       }
     end)
 
-    time = shows_s |> Enum.reduce(0, fn(show, acc) -> acc + show.runtime * show.episodes end)
+    time = shows_s |> Enum.reduce(0, fn(show, acc) -> acc + runtime * show.episodes end)
 
     %{
       shows: shows_s,
