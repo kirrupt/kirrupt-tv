@@ -19,7 +19,7 @@ config :kirrupt_tv, KirruptTv.Endpoint,
 
 # Configures Elixir's Logger
 config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
+  format: "$time $metadata[$level] $message\n", metadata: [:file, :line],
   metadata: [:request_id]
 
 # Import environment specific config. This must remain at the bottom
