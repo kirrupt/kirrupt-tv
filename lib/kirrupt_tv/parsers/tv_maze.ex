@@ -130,6 +130,8 @@ defmodule KirruptTv.Parser.TVMaze do
           true -> acc
         end
       end)
+    else
+      []
     end
   end
 end

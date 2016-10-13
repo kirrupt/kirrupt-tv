@@ -22,10 +22,12 @@ defmodule KirruptTv.PageController do
   def search_kirrupt(conn, params) do
     conn
     |> put_layout(false)
-    |> render("search_results.html", %{shows: Model.Show.find_shows_on_kirrupt(params["name"])})
+    |> render("search_results.html", %{shows: Model.Show.find_shows_on_kirrupt(params["name"]), tvmaze: false})
   end
 
-  def search_tvmaze(conn, _params) do
-    # TODO
+  def search_tvmaze(conn, params) do
+    conn
+    |> put_layout(false)
+    |> render("search_results.html", %{shows: Model.Show.find_shows_on_tvmaze(params["name"]), tvmaze: true})
   end
 end

@@ -167,6 +167,21 @@ defmodule Model.Show do
     )
   end
 
+  def find_shows_on_tvmaze(name) do
+    tvmaze_shows = KirruptTv.Parser.TVMaze.search(name)
+
+    ids = tvmaze_shows |> Enum.map(fn(x) -> x[:tvmaze_id] end)
+
+    our_show_tvmaze_ids = Repo.all(
+      from s in Model.Show,
+      where: s.tvmaze_id in ^ids,
+      select: s.tvmaze_id
+    )
+
+    tvmaze_shows
+    |> Enum.reject(fn(x) -> Enum.member?(our_show_tvmaze_ids, x[:tvmaze_id]) end)
+  end
+
   def filter_user_shows(_shows, nil), do: []
   def filter_user_shows(shows, user) do
     us = Repo.all(
