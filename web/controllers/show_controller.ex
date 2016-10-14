@@ -5,6 +5,7 @@ defmodule KirruptTv.ShowController do
   plug KirruptTv.Plugs.Authenticated when action in [:ignore, :my_shows]
 
   alias Model.Show
+  import KirruptTv.Helpers.BackgroundHelpers
 
   def index(conn, %{"name" => name}) do
     render_show_details(conn, name)
@@ -64,7 +65,7 @@ defmodule KirruptTv.ShowController do
         :ignored  -> "Ignored shows"
       end
 
-    render conn, "my-shows.html", %{count: count, shows: shows[category], category: category, title: title}
+    render conn, "my-shows.html", %{count: count, shows: shows[category], category: category, title: title, background: random_background(shows[category])}
   end
 
   defp render_show_details(conn, id_or_url, season \\ nil) do

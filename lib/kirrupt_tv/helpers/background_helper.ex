@@ -6,5 +6,6 @@ defmodule KirruptTv.Helpers.BackgroundHelpers do
     |> Enum.reject(fn(bg) -> bg == nil end)
     |> Enum.shuffle
     |> Enum.take(1)
+    |> Enum.at(0)
   end
 end
