@@ -18,6 +18,10 @@ defmodule KirruptTv.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/", KirruptTv do
+    get "/", IndexController, :index
+  end
+
   scope "/account/", KirruptTv do
     pipe_through :browser
 
