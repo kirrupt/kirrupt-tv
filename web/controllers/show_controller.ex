@@ -18,7 +18,7 @@ defmodule KirruptTv.ShowController do
   def list(conn, %{"name" => name}) do
     show_details = Show.show_list(name, conn.assigns[:current_user])
     if show_details do
-      render conn, "show-list.html", Dict.merge(show_details, %{title: show_details[:show].name})
+      render conn, "show-list.html", Map.merge(show_details, %{title: show_details[:show].name})
     else
       redirect conn, to: KirruptTv.Router.Helpers.recent_path(conn, :index)
     end
@@ -41,9 +41,22 @@ defmodule KirruptTv.ShowController do
     end
   end
 
-  def add_tvmaze(conn, %{"tvmaze_id" => _tvmaze_id}) do
-    # TODO
-    redirect conn, to: KirruptTv.Router.Helpers.recent_path(conn, :index)
+  def update(conn, %{"name" => name}) do
+    # TODO admin only
+    if show = Model.Show.find_by_url_or_id(name) do
+      Model.Show.update_show_and_episodes(show)
+      redirect conn, to: KirruptTv.Router.Helpers.show_path(conn, :index, name)
+    else
+      redirect conn, to: KirruptTv.Router.Helpers.recent_path(conn, :index)
+    end
+  end
+
+  def add_tvmaze(conn, %{"tvmaze_id" => tvmaze_id}) do
+    if show = Model.Show.add_tvmaze_show(tvmaze_id) do
+      redirect conn, to: KirruptTv.Router.Helpers.show_path(conn, :index, show.url || show.id)
+    else
+      redirect conn, to: KirruptTv.Router.Helpers.recent_path(conn, :index)
+    end
   end
 
   def my_shows(conn, _params), do: my_shows_response(conn, "my_shows")
@@ -71,7 +84,7 @@ defmodule KirruptTv.ShowController do
   defp render_show_details(conn, id_or_url, season \\ nil) do
     show_details = Show.show(id_or_url, conn.assigns[:current_user], season)
     if show_details do
-      render conn, "show.html", Dict.merge(show_details, %{title: show_details[:show].name})
+      render conn, "show.html", Map.merge(show_details, %{title: show_details[:show].name})
     else
       redirect conn, to: KirruptTv.Router.Helpers.recent_path(conn, :index)
     end

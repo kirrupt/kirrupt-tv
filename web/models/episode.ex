@@ -1,18 +1,20 @@
 defmodule Model.Episode do
+  require Logger
   use KirruptTv.Web, :model
 
   alias KirruptTv.Repo
 
   schema "episodes" do
-    field :title, :string
+    field :title, :string, default: ""
     field :season, :integer
-    field :episode, :string
+    field :episode, :integer
     field :tvrage_url, :string
     field :airdate, Timex.Ecto.DateTime
-    field :added, Timex.Ecto.DateTime
     field :summary, :string
     field :screencap, :string
-    field :last_updated, Timex.Ecto.DateTime
+
+
+    timestamps(inserted_at: :added, updated_at: :last_updated)
 
     belongs_to :show, Model.Show
     many_to_many :users, Model.User, join_through: "watched_episodes"
@@ -23,8 +25,8 @@ defmodule Model.Episode do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [])
-    |> validate_required([])
+    |> cast(params, [:show_id, :title, :season, :episode, :tvrage_url, :airdate, :summary, :screencap])
+    |> validate_required([:show_id, :episode, :season])
   end
 
   def show_thumb(obj) do
@@ -83,6 +85,40 @@ defmodule Model.Episode do
     case result do
       {:ok, _struct}       -> true
       {:error, _changeset} -> false
+    end
+  end
+
+  defp download_and_save_image(url) do
+    KirruptTv.Helpers.FileHelpers.download_and_save_file(url, "#{KirruptTv.Helpers.FileHelpers.root_folder}/static", "shows")
+  end
+
+  def insert_or_update(show, e_data) do
+    episode =
+      case Repo.get_by(Model.Episode, %{season: e_data[:season], episode: e_data[:episode], show_id: show.id}) do
+        nil -> %Model.Episode{season: e_data[:season], episode: e_data[:episode], show_id: show.id}
+        ep  -> ep
+      end
+
+    img_path = case e_data[:screencap] && String.contains?(e_data[:screencap], ["tvrage", "tvmaze"]) do
+      nil -> nil
+      _   -> download_and_save_image(e_data[:screencap])
+    end
+
+    changes = %{
+      title: e_data[:title] || "",
+      tvrage_url: e_data[:url],
+      airdate: Common.Timex.parse(e_data[:airdate], "{YYYY}-{0M}-{0D}"),
+      summary: e_data[:summary],
+      screencap: img_path
+    }
+
+    result = episode
+    |> Model.Episode.changeset(changes)
+    |> Repo.insert_or_update
+
+    case result do
+      {:ok, struct}        -> struct
+      {:error, _changeset} -> Logger.error("Could't insert or update episode '#{e_data[:episode]}' for show id #{show.id}"); nil
     end
   end
 end

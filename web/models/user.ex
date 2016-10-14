@@ -171,7 +171,7 @@ defmodule Model.User do
 
   def add_show(_user, nil), do: nil
   def add_show(user, show) do
-    unless us = Repo.get_by(Model.UserShow, %{show_id: show.id, user_id: user.id}) do
+    unless Repo.get_by(Model.UserShow, %{show_id: show.id, user_id: user.id}) do
       result =
         Model.UserShow.changeset(%Model.UserShow{}, %{
           user_id: user.id,

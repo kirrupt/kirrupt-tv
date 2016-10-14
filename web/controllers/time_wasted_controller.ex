@@ -7,6 +7,6 @@ defmodule KirruptTv.TimeWastedController do
   alias Model.User
 
   def index(conn, _params) do
-    render conn, "time_wasted.html", Dict.merge(User.time_wasted(conn.assigns[:current_user]), %{title: "Time wasted"})
+    render conn, "time_wasted.html", Map.merge(User.time_wasted(conn.assigns[:current_user]), %{title: "Time wasted"})
   end
 end

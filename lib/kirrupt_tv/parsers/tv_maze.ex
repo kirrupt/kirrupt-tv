@@ -46,46 +46,46 @@ defmodule KirruptTv.Parser.TVMaze do
       }
 
       if year = get_year_from_date(data["premiered"]) do
-        result = Dict.merge(result, %{year: year})
+        result = Map.merge(result, %{year: year})
       end
 
       if data["image"] && data["image"]["original"] do
-        result = Dict.merge(result, %{image: data["image"]["original"]})
+        result = Map.merge(result, %{image: data["image"]["original"]})
       end
 
       if data["network"] && data["network"]["country"] do
         if data["network"]["country"]["code"] do
-          result = Dict.merge(result, %{origin_country: data["network"]["country"]["code"]})
+          result = Map.merge(result, %{origin_country: data["network"]["country"]["code"]})
         end
 
         if data["network"]["country"]["timezone"] do
-          result = Dict.merge(result, %{timezone: data["network"]["country"]["timezone"]})
+          result = Map.merge(result, %{timezone: data["network"]["country"]["timezone"]})
         end
       end
 
       if data["schedule"] do
         if data["schedule"]["time"] do
-          result = Dict.merge(result, %{airtime: data["schedule"]["time"]})
+          result = Map.merge(result, %{airtime: data["schedule"]["time"]})
         end
 
         if data["schedule"]["days"] && (day = data["schedule"]["days"] |> List.first) do
-          result = Dict.merge(result, %{airday: day})
+          result = Map.merge(result, %{airday: day})
         end
       end
 
       if data["premiered"] do
-        result = Dict.merge(result, %{started: data["premiered"]})
+        result = Map.merge(result, %{started: data["premiered"]})
       end
 
       # missing fields on TVmaze:
       # - ended
 
       if data["genres"] do
-        result = Dict.merge(result, %{genres: data["genres"]})
+        result = Map.merge(result, %{genres: data["genres"]})
       end
 
       if data["_embedded"] && data["_embedded"]["episodes"] do
-        result = Dict.merge(result, %{
+        result = Map.merge(result, %{
           episodes: data["_embedded"]["episodes"]
             |> Enum.reduce([], fn(ep, acc) ->
               episode = %{
@@ -93,19 +93,18 @@ defmodule KirruptTv.Parser.TVMaze do
                 season: ep["season"],
                 airdate: ep["airdate"],
                 url: ep["url"],
-                title: ep["title"],
+                title: ep["name"],
                 summary: remove_html(ep["summary"])
               }
 
               if ep["image"] && ep["image"]["original"] do
-                episode = Dict.merge(episode, %{screencap: ep["image"]["original"]})
+                episode = Map.merge(episode, %{screencap: ep["image"]["original"]})
               end
 
               acc ++ [episode]
             end)
         })
       end
-
 
       result
     end
@@ -123,7 +122,7 @@ defmodule KirruptTv.Parser.TVMaze do
             }
 
             if year = get_year_from_date(show["show"]["premiered"]) do
-              s = Dict.merge(s, %{year: year})
+              s = Map.merge(s, %{year: year})
             end
 
             acc ++ [s]

@@ -1,4 +1,4 @@
-<%= render_existing KirruptTv.SharedView, "search.html", Dict.merge(assigns, %{search_query: assigns[:show] && assigns[:show].name || assigns[:title] }) %>
+<%= render_existing KirruptTv.SharedView, "search.html", Map.merge(assigns, %{search_query: assigns[:show] && assigns[:show].name || assigns[:title] }) %>
 
 <div id="links">
 	<ul>

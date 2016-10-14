@@ -1,1 +1,1 @@
-<%= render_existing KirruptTv.SharedView, "search.html", Dict.merge(assigns, %{search_query: assigns[:title]}) %>
+<%= render_existing KirruptTv.SharedView, "search.html", Map.merge(assigns, %{search_query: assigns[:title]}) %>

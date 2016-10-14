@@ -45,6 +45,7 @@ defmodule KirruptTv.Router do
     get   "/my-shows/:category", ShowController, :my_shows_category
     get   "/show/add", ShowController, :add
     get   "/show/:name", ShowController, :index
+    get   "/show/:name/update", ShowController, :update
     get   "/show/:name/add", ShowController, :add_to_my_shows
     get   "/show/:name/list", ShowController, :list
     get   "/show/:name/season/:season", ShowController, :season

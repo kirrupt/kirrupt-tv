@@ -1,4 +1,5 @@
 defmodule Model.Show do
+  require Logger
   use KirruptTv.Web, :model
   use Timex
 
@@ -6,19 +7,18 @@ defmodule Model.Show do
   alias Model.Episode
   alias Model.UserShow
 
+
   schema "shows" do
     field :name, :string
     field :tvrage_url, :string
     field :runtime, :integer
     field :genre, :string
     field :status, :string
-    field :added, Timex.Ecto.DateTime
     field :last_checked, Timex.Ecto.DateTime
-    field :last_updated, Timex.Ecto.DateTime
     field :wikipedia_url, :string
     field :picture_url, :string
     field :thumbnail_url, :string
-    field :wikipedia_checked, :integer
+    field :wikipedia_checked, :boolean
     field :tvrage_id, :integer
     field :tvmaze_id, :integer
     field :year, :integer
@@ -35,7 +35,8 @@ defmodule Model.Show do
     field :fixed_banner, :string
     field :url, :string
 
-    # timestamps()
+    timestamps(inserted_at: :added, updated_at: :last_updated)
+
     has_many :episodes, Model.Episode
 
     many_to_many :users, Model.User, join_through: "users_shows"
@@ -47,8 +48,11 @@ defmodule Model.Show do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:id, :name, :tvrage_url, :runtime, :genre, :status, :added])
-    |> validate_required([:id, :name, :tvrage_url, :runtime, :genre, :status, :added])
+    |> cast(params, [:id, :name, :tvrage_url, :runtime, :genre, :status, :last_checked,
+                     :wikipedia_url, :picture_url, :thumbnail_url, :wikipedia_checked,
+                     :tvrage_id, :tvmaze_id, :year, :started, :summary, :thetvdb_id,
+                     :fixed_thumb, :fixed_background, :fixed_banner, :url])
+    |> validate_required([:id, :name, :tvrage_url, :runtime, :status, :added])
   end
 
   def runtime_num(show) do
@@ -58,8 +62,9 @@ defmodule Model.Show do
     end
   end
 
-  def find_by_id(id) when is_integer(id), do: Repo.get(Model.Show, id)
-  def find_by_id(_), do: nil
+  def find_by_id(id) do
+    Repo.get(Model.Show, id)
+  end
 
   def find_by_url_or_id(id_or_url) do
     Repo.get_by(Model.Show, url: id_or_url) || find_by_id(id_or_url)
@@ -189,6 +194,36 @@ defmodule Model.Show do
     |> Enum.reject(fn(x) -> Enum.member?(our_show_tvmaze_ids, x[:tvmaze_id]) end)
   end
 
+  defp download_and_save_image(url) do
+    KirruptTv.Helpers.FileHelpers.download_and_save_file(url, "#{KirruptTv.Helpers.FileHelpers.root_folder}/static", "shows")
+  end
+
+  def add_tvmaze_show(tvmaze_id) do
+    if s_obj = Repo.get_by(Model.Show, tvmaze_id: tvmaze_id) do
+      s_obj
+    else
+      if info = KirruptTv.Parser.TVMaze.show_info(tvmaze_id) do
+        s_obj = %Model.Show {
+          name: info[:name],
+          tvrage_url: info[:url],
+          status: info[:status],
+          tvmaze_id: info[:tvmaze_id],
+          runtime: info[:runtime],
+          genre: "",
+          picture_url: info[:image],
+          wikipedia_checked: false,
+          picture_url: download_and_save_image(info[:image]),
+          last_checked: Timex.now
+        }
+
+        case Repo.insert s_obj do
+          {:ok, s_struct} -> update_show_and_episodes(s_struct); s_struct
+          {:error, _changeset} -> nil
+        end
+      end
+    end
+  end
+
   def filter_user_shows(_shows, nil), do: []
   def filter_user_shows(shows, user) do
     us = Repo.all(
@@ -208,5 +243,65 @@ defmodule Model.Show do
       order_by: [desc: us.user_id],
       order_by: [asc: us.ignored],
       limit: 30)
+  end
+
+  def update_show_and_episodes(s_obj) do
+    if info = KirruptTv.Parser.TVMaze.show_info(s_obj.tvmaze_id) do
+      s_obj = s_obj |> Repo.preload([:genres])
+
+      changes = %{
+        last_checked: Timex.now,
+        summary: info[:summary],
+        status: info[:status],
+        year: info[:year],
+        started: info[:started],
+        origin_country: info[:origin_country],
+        airtime: info[:airtime],
+        airday: info[:airday],
+        timezone: info[:timezone]
+      }
+      |> Common.Map.compact_selective([:summary])
+
+      if s_obj.picture_url && !File.exists?(Path.join(KirruptTv.Helpers.FileHelpers.root_folder, s_obj.picture_url)) do
+        changes = Map.merge(changes, %{picture_url: nil})
+      end
+
+      if !changes[:picture_url] && info[:image] do
+        changes = Map.merge(changes, %{picture_url: download_and_save_image(info[:image])})
+      end
+
+      # TODO
+      # Remove old genres !!???
+      # Add new type of genres !?
+      info[:genres]
+      |> Enum.each(fn(genre) ->
+        if !Enum.find(s_obj.genres, fn(s_genre) -> String.downcase(s_genre.name) == String.downcase(genre) end) do
+          if g_obj = Repo.get_by(Model.Genre, name: String.downcase(genre)) do
+            Model.ShowGenre.insert(s_obj, g_obj)
+          end
+        end
+      end)
+
+      result = s_obj
+      |> Model.Show.changeset(changes)
+      |> Repo.update
+
+      case result do
+        {:ok, struct}        -> struct
+        {:error, _changeset} -> Logger.error("Could't update show '#{s_obj.id}'"); false
+      end
+
+      if info[:episodes] do
+        info[:episodes]
+        |> Enum.each(fn(episode) -> Model.Episode.insert_or_update(s_obj, episode) end)
+      end
+
+      # TODO
+      # - thetvdb id
+      # - fanart_tv
+      # - set_url
+    else
+      Logger.error("Could't update show '#{s_obj.id}'"); nil
+    end
   end
 end
