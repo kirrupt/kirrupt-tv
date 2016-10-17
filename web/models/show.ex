@@ -272,11 +272,10 @@ defmodule Model.Show do
 
       # TODO
       # Remove old genres !!???
-      # Add new type of genres !?
       info[:genres]
       |> Enum.each(fn(genre) ->
         if !Enum.find(s_obj.genres, fn(s_genre) -> String.downcase(s_genre.name) == String.downcase(genre) end) do
-          if g_obj = Repo.get_by(Model.Genre, name: String.downcase(genre)) do
+          if g_obj = Model.Genre.find_or_create(genre) do
             Model.ShowGenre.insert(s_obj, g_obj)
           end
         end
@@ -299,9 +298,32 @@ defmodule Model.Show do
       # TODO
       # - thetvdb id
       # - fanart_tv
-      # - set_url
+      set_url(s_obj)
     else
       Logger.error("Could't update show '#{s_obj.id}'"); nil
+    end
+  end
+
+  def set_url(s_obj) do
+    case s_obj.url do
+      nil ->
+        result = s_obj
+        |> Model.Show.changeset(%{url: init_url(s_obj)})
+        |> Repo.update
+
+        case result do
+          {:ok, struct}        -> struct
+          {:error, _changeset} -> Logger.error("Could't update show url '#{s_obj.id}'"); s_obj
+        end
+      _   -> s_obj
+    end
+  end
+
+  defp init_url(s_obj, counter \\ nil) do
+    url = Common.URI.slugify(s_obj.name, counter)
+    case Repo.get_by(Model.Show, url: url) do
+      nil -> url
+      _   -> init_url(s_obj, counter && counter + 1 || 1)
     end
   end
 end

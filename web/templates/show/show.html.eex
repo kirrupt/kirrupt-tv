@@ -9,7 +9,7 @@
 
 <%= if @current_user && @current_user.is_editor do %>
   <div style="text-align:right;font-size:10px">
-    Last updated: <%= @show.last_updated %>, last checked: <%= @show.last_checked %>, TVMaze ID: <%= @show.tvmaze_id %>, 
+    Last updated: <%= @show.last_updated %>, last checked: <%= @show.last_checked %>, ID: <%= @show.id %>, TVMaze ID: <%= @show.tvmaze_id %>, 
 		<a href="<%= show_path(@conn, :update, get_show_url(@show)) %>">force update</a>
     <br />
   </div>
