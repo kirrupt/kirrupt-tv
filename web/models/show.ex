@@ -287,7 +287,7 @@ defmodule Model.Show do
       |> Repo.update
 
       case result do
-        {:ok, struct}        -> struct
+        {:ok, struct}        -> s_obj = struct
         {:error, _changeset} -> Logger.error("Could't update show '#{s_obj.id}'"); false
       end
 
@@ -296,11 +296,39 @@ defmodule Model.Show do
         |> Enum.each(fn(episode) -> Model.Episode.insert_or_update(s_obj, episode) end)
       end
 
-      # TODO
-      # - fanart_tv
+      set_frant_tv_image(s_obj)
       set_url(s_obj)
     else
       Logger.error("Could't update show '#{s_obj.id}'"); nil
+    end
+  end
+
+  def set_frant_tv_image(s_obj) do
+    cond do
+      images = KirruptTv.Parser.FanartTV.get_image_list(s_obj.thetvdb_id) ->
+        changes = %{}
+
+        if !s_obj.fixed_thumb && images[:tvthumb] && (url = download_and_save_image(images[:tvthumb] |> List.first)) do
+          changes = Map.merge(changes, %{fixed_thumb: url})
+        end
+
+        if !s_obj.fixed_background && images[:showbackground] && (url = download_and_save_image(images[:showbackground] |> List.first)) do
+          changes = Map.merge(changes, %{fixed_background: url})
+        end
+
+        if !s_obj.fixed_banner && images[:tvbanner] && (url = download_and_save_image(images[:tvbanner] |> List.first)) do
+          changes = Map.merge(changes, %{fixed_banner: url})
+        end
+
+        result = s_obj
+        |> Model.Show.changeset(changes)
+        |> Repo.update
+
+        case result do
+          {:ok, struct}        -> struct
+          {:error, _changeset} -> Logger.error("Could't update show images '#{s_obj.id}'"); s_obj
+        end
+      true -> s_obj
     end
   end
 
