@@ -3,6 +3,7 @@ defmodule KirruptTv.ShowController do
 
   plug KirruptTv.Plugs.Authenticate
   plug KirruptTv.Plugs.Authenticated when action in [:ignore, :my_shows]
+  plug KirruptTv.Plugs.Authenticated.Admin when action in [:update]
 
   alias Model.Show
   import KirruptTv.Helpers.BackgroundHelpers
