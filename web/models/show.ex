@@ -258,7 +258,8 @@ defmodule Model.Show do
         origin_country: info[:origin_country],
         airtime: info[:airtime],
         airday: info[:airday],
-        timezone: info[:timezone]
+        timezone: info[:timezone],
+        thetvdb_id: get_the_tv_db_id(s_obj)
       }
       |> Common.Map.compact_selective([:summary])
 
@@ -296,7 +297,6 @@ defmodule Model.Show do
       end
 
       # TODO
-      # - thetvdb id
       # - fanart_tv
       set_url(s_obj)
     else
@@ -324,6 +324,13 @@ defmodule Model.Show do
     case Repo.get_by(Model.Show, url: url) do
       nil -> url
       _   -> init_url(s_obj, counter && counter + 1 || 1)
+    end
+  end
+
+  defp get_the_tv_db_id(show) do
+    cond do
+      show.thetvdb_id -> show.thetvdb_id
+      true -> KirruptTv.Parser.TheTVDB.get_show_id(show.name)
     end
   end
 end

@@ -42,7 +42,8 @@ defmodule KirruptTv.Mixfile do
      {:timex_ecto, "~> 3.0"},
      {:httpotion, "~> 3.0.2"},
      {:html_sanitize_ex, "~> 1.0.0"},
-     {:sentry, "~> 1.0"}]
+     {:sentry, "~> 1.0"},
+     {:sweet_xml, "~> 0.6.2"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
