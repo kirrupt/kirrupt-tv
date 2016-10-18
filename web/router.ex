@@ -25,12 +25,12 @@ defmodule KirruptTv.Router do
   scope "/account/", KirruptTv do
     pipe_through :browser
 
-    get  "/login", AccountController, :login # TODO: implement
-    post "/login", AccountController, :login # TODO: implement
+    get  "/login", AccountController, :login
+    post "/login", AccountController, :login
     get  "/my-account", AccountController, :account # TODO: implement
     get  "/register", AccountController, :register # TODO: implement
     post "/register", AccountController, :register # TODO: implement
-    get  "/logout", AccountController, :logout # TODO: implement
+    get  "/logout", AccountController, :logout
   end
 
   scope "/tv/", KirruptTv do

@@ -54,7 +54,7 @@
   							<li><a href="{{url_for('admin')}}">admin</a></li>
   						<% end %>
 						<% else %>
-						  <li><a href="{{url_for('hello')}}" class="selected">recent</a></li>
+						  <li><a href="<%= recent_path(@conn, :index) %>" class="selected">recent</a></li>
 						<% end %>
 					</ul>
 					<div class="clear"></div>

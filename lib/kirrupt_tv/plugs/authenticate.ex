@@ -15,8 +15,12 @@ defmodule KirruptTv.Plugs.Authenticate do
   end
 
   defp find_user(conn) do
-    if auto_hash = Map.get(conn.req_cookies, "auto_hash") do
-      Repo.get_by(User, auto_hash: auto_hash)
+    cond do
+      user_id = conn.private[:plug_session]["current_user"] ->
+        Repo.get(User, user_id)
+      auto_hash = Map.get(conn.req_cookies, "auto_hash") ->
+        Repo.get_by(User, auto_hash: auto_hash)
+      true -> nil
     end
   end
 

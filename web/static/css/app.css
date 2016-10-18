@@ -528,3 +528,6 @@ body.christmas #body:after {
 	width:31px;
 	height:31px;
 }
+
+#account #title { height: auto; text-align: left;
+}

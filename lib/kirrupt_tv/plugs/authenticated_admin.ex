@@ -7,9 +7,8 @@ defmodule KirruptTv.Plugs.Authenticated.Admin do
 
   def call(conn, _) do
     conn = fetch_session(conn)
-    not_logged_in_url = "/login"
     unless is_admin(conn.assigns[:current_user]) do
-      conn |> Phoenix.Controller.redirect(to: not_logged_in_url) |> halt
+      conn |> Phoenix.Controller.redirect(to: KirruptTv.Router.Helpers.account_path(conn, :login)) |> halt
     else
       conn
     end

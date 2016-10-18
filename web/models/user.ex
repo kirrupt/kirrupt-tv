@@ -230,4 +230,24 @@ defmodule Model.User do
       %{last_login: user.date_joined}
     end
   end
+
+  def authenticate(nil, _password), do: nil
+  def authenticate(_username, nil), do: nil
+  def authenticate(username, password) do
+    if user = Repo.get_by(Model.User, username: username) do
+      # TODO add new password
+      # Comeonin.Bcrypt.checkpw(password, user.crypted_password)
+
+      # validation for old passwords (SHA1)
+      if (s = user.password |> String.split("$")) && Enum.count(s) == 3 do
+        [_algorithm, salt, pass] = s
+        calc_pass = :crypto.hash(:sha, "#{salt}#{password}") |> Base.encode16 |> String.downcase
+
+        case String.equivalent?(pass, calc_pass) do
+          true  -> user
+          false -> nil
+        end
+      end
+    end
+  end
 end
