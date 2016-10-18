@@ -1,4 +1,5 @@
 defmodule Model.User do
+  require Logger
   use KirruptTv.Web, :model
   use Timex
 
@@ -187,6 +188,46 @@ defmodule Model.User do
       end
     else
       true
+    end
+  end
+
+  def get_user_device(user, device_type, device_code) do
+    case Enum.member?(["browser", "api"], device_type) do
+      # TODO do we want to take random device for specific device_type
+      true -> Repo.one(from ud in Model.UserDevices, where: ud.user_id == ^user.id and ud.device_type == ^device_type, limit: 1)
+      _    -> Repo.get_by(Model.UserDevices, %{user_id: user.id, device_code: device_code})
+    end
+  end
+
+  def has_device(user, device_type, device_code) do
+    get_user_device(user, device_type, device_code) != nil
+  end
+
+  def add_device(user, device_type) do
+    if user_device = Model.UserDevices.create_device(user, device_type) do
+      %{device_code: user_device.device_code}
+    end
+  end
+
+  def add_device_visit(user, device_type, device_code) do
+    if user_device = get_user_device(user, device_type, device_code) do
+      udv = Model.UserDeviceVisit.last_device_visit(user_device)
+      if !udv || Timex.diff(Timex.now, udv.date, :seconds) > 3600 do
+        Model.UserDeviceVisit.add_user_visit(user_device)
+      end
+    else
+      Logger.error("add_device_visit: user_device shouldn\'t be null for user '#{user.id}' with device(type: '#{device_type}', code: '#{device_code}')"); nil
+    end
+  end
+
+  def get_last_login(user, device_type, device_code) do
+    if user_device = get_user_device(user, device_type, device_code) do
+      last_login = user_device.last_login
+      Model.UserDevices.update_last_login(user_device)
+
+      %{last_login: last_login}
+    else
+      %{last_login: user.date_joined}
     end
   end
 end

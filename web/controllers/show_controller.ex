@@ -43,7 +43,6 @@ defmodule KirruptTv.ShowController do
   end
 
   def update(conn, %{"name" => name}) do
-    # TODO admin only
     if show = Model.Show.find_by_url_or_id(name) do
       Model.Show.update_show_and_episodes(show)
       redirect conn, to: KirruptTv.Router.Helpers.show_path(conn, :index, name)
