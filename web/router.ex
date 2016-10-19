@@ -28,8 +28,8 @@ defmodule KirruptTv.Router do
     get  "/login", AccountController, :login
     post "/login", AccountController, :login
     get  "/my-account", AccountController, :account # TODO: implement
-    get  "/register", AccountController, :register # TODO: implement
-    post "/register", AccountController, :register # TODO: implement
+    get  "/register", AccountController, :register_new
+    post "/register", AccountController, :register_create
     get  "/logout", AccountController, :logout
   end
 

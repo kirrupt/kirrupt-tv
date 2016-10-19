@@ -30,7 +30,7 @@
 						<li style="margin-top:3px;margin-right:5px"><img src="<%= static_path(@conn, "/images/admin_tag.png") %>"</li>
 					<% end %>
 				<%= else %>
-					<li><a href="<%= account_path(@conn, :register) %>">register</a></li>
+					<li><a href="<%= account_path(@conn, :register_create) %>">register</a></li>
 					<li style="margin-right:10px;padding-right:10px;border-right:1px #eee solid;"><a href="<%= account_path(@conn, :login) %>">login</a></li>
 				<% end %>
 			</ul>

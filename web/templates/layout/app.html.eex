@@ -32,7 +32,7 @@
 					<li style="margin-right:10px;padding-right:10px;border-right:1px #eee solid;">
 						<a href="<%= account_path(@conn, :account) %>"><%= @current_user.username %></a></li>
 					<% else %>
-					<li><a href="<%= account_path(@conn, :register) %>">register</a></li>
+					<li><a href="<%= account_path(@conn, :register_new) %>">register</a></li>
 					<li style="margin-right:10px;padding-right:10px;border-right:1px #eee solid;"><a href="<%= account_path(@conn, :login) %>">login</a></li>
 					<% end %>
 				</ul>

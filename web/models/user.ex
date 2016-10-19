@@ -18,14 +18,14 @@ defmodule Model.User do
     field :email, :string
     field :password, :string
     field :is_active, :boolean
-    field :last_login, Timex.Ecto.DateTime
-    field :date_joined, Timex.Ecto.DateTime
+    field :last_login, Timex.Ecto.DateTime, default: Timex.now
+    field :date_joined, Timex.Ecto.DateTime, default: Timex.now
     field :auto_hash, :string
     field :registration_code, :string
     field :password_code, :string
-    field :is_editor, :integer
-    field :is_developer, :integer
-    field :is_admin, :integer
+    field :is_editor, :boolean, default: false
+    field :is_developer, :boolean, default: false
+    field :is_admin, :boolean, default: false
     field :skype_handle, :string
     field :google_id, :string
     field :google_session_id, :string
@@ -41,6 +41,36 @@ defmodule Model.User do
     struct
     |> cast(params, [:auto_hash])
     |> validate_required([])
+  end
+
+  def registration_changeset(model, params \\ %{}) do
+    model
+    |> cast(params, ~w(password first_name last_name username email), [])
+    |> validate_format(:email, ~r/@/)
+    |> validate_length(:password, min: 6, message: "should be at least 6 characters")
+    |> validate_confirmation(:password, message: "does not match password")
+    |> unique_constraint(:email, name: :email_index) # TODO add index to email!!!
+    |> unique_constraint(:username, name: :username)
+    # |> put_password_hash
+  end
+
+  def register_user(params) do
+    changeset = Model.User.registration_changeset(%Model.User{}, params)
+
+    # TODO
+    # case Repo.insert(changeset) do
+    #   {:ok, model} -> model
+    #   {:error, changeset} -> changeset
+    # end
+  end
+
+  defp put_password_hash(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
+        put_change(changeset, :password_hash, Comeonin.Bcrypt.hashpwsalt(pass))
+      _ ->
+        changeset
+    end
   end
 
   defp overview_limit_query(query, nil) do

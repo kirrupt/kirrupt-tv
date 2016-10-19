@@ -35,6 +35,27 @@ defmodule KirruptTv.AccountController do
     end
   end
 
+  def register_new(conn, _params) do
+    changeset = Model.User.registration_changeset(%Model.User{})
+
+    conn
+    |> render("register.html", %{title: "Register", changeset: changeset})
+  end
+
+  def register_create(conn, params) do
+    changeset = Model.User.register_user(params["user"])
+
+    if changeset.valid? && false do
+
+      conn
+      |> put_flash(:info, "Successfully registered and logged in")
+      |> redirect(to: recent_path(conn, :index))
+    else
+      changeset = %{changeset | action: :insert, errors: changeset.errors}
+      render conn, "register.html", %{title: "Register", changeset: changeset}
+    end
+  end
+
   def logout(conn, _) do
     conn
     |> delete_resp_cookie("auto_hash")

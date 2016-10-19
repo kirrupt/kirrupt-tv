@@ -29,7 +29,7 @@ defmodule Model.Show do
     field :airday, :string
     field :timezone, :string
     field :summary, :string
-    field :thetvdb_id, :integer
+    field :thetvdb_id, :string
     field :fixed_thumb, :string
     field :fixed_background, :string
     field :fixed_banner, :string
