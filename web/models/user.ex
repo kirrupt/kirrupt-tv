@@ -39,7 +39,7 @@ defmodule Model.User do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [])
+    |> cast(params, [:auto_hash])
     |> validate_required([])
   end
 
@@ -248,6 +248,21 @@ defmodule Model.User do
           false -> nil
         end
       end
+    end
+  end
+
+  def get_auth_hash(user) do
+    cond do
+      user.auto_hash -> IO.puts("fuck"); user.auto_hash
+      true ->
+        result =
+          Model.User.changeset(user, %{auto_hash: UUID.uuid4()})
+          |> Repo.update
+
+        case result do
+          {:ok, struct}        -> struct.auto_hash
+          {:error, _changeset} -> Logger.error("Could't create auth_hash for user '#{user.id}'"); nil
+        end
     end
   end
 end

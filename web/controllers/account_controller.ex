@@ -12,8 +12,13 @@ defmodule KirruptTv.AccountController do
 
   def login(conn, params) do
     if params["login"] && (user = Model.User.authenticate(params["login"]["username"], params["login"]["password"])) do
+      opts = case params["login"]["auto_login"] == "true" do
+        true  -> [max_age: 60 * 60 * 24 * 365]
+        false -> []
+      end
+
       conn
-      |> put_session(:current_user, user.id)
+      |> put_resp_cookie("auto_hash", Model.User.get_auth_hash(user), opts)
       |> put_flash(:info, "Logged in")
       |> redirect(to: KirruptTv.Router.Helpers.recent_path(conn, :index))
     else
@@ -32,7 +37,7 @@ defmodule KirruptTv.AccountController do
 
   def logout(conn, _) do
     conn
-    |> delete_session(:current_user)
+    |> delete_resp_cookie("auto_hash")
     |> put_flash(:info, "Logged out")
     |> redirect(to: "/")
   end
