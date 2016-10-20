@@ -43,11 +43,11 @@ defmodule KirruptTv.AccountController do
   end
 
   def register_create(conn, params) do
-    changeset = Model.User.register_user(params["user"])
+    changeset = Model.User.registration_changeset(%Model.User{}, params["user"])
 
-    if changeset.valid? && false do
-
+    if changeset.valid? && (user = Model.User.register_user(changeset)) do
       conn
+      |> put_resp_cookie("auto_hash", Model.User.get_auth_hash(user))
       |> put_flash(:info, "Successfully registered and logged in")
       |> redirect(to: recent_path(conn, :index))
     else

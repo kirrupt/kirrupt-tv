@@ -45,7 +45,8 @@ defmodule KirruptTv.Mixfile do
      {:html_sanitize_ex, "~> 1.0.0"},
      {:sentry, "~> 1.0"},
      {:sweet_xml, "~> 0.6.2"},
-     {:comeonin, "~> 2.5"}]
+     {:comeonin, "~> 2.5"},
+     {:addict, "~> 0.3"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

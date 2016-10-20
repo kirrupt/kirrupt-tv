@@ -17,6 +17,7 @@ defmodule Model.User do
     field :last_name, :string
     field :email, :string
     field :password, :string
+    field :password_new_hash, :string
     field :is_active, :boolean
     field :last_login, Timex.Ecto.DateTime, default: Timex.now
     field :date_joined, Timex.Ecto.DateTime, default: Timex.now
@@ -49,25 +50,32 @@ defmodule Model.User do
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 6, message: "should be at least 6 characters")
     |> validate_confirmation(:password, message: "does not match password")
-    |> unique_constraint(:email, name: :email_index) # TODO add index to email!!!
     |> unique_constraint(:username, name: :username)
-    # |> put_password_hash
+    |> unique_constraint(:email, name: :email_index)
+    |> put_password_hash
   end
 
-  def register_user(params) do
-    changeset = Model.User.registration_changeset(%Model.User{}, params)
+  def register_user(changeset) do
+    case Repo.insert(changeset) do
+      {:ok, model} -> model
+      {:error, _changeset} -> nil
+    end
+  end
 
-    # TODO
-    # case Repo.insert(changeset) do
-    #   {:ok, model} -> model
-    #   {:error, changeset} -> changeset
-    # end
+  defp gen_sha1_password(password) do
+    # TODO deprecate it
+    salt = UUID.uuid4(:hex) |> String.slice(0, 10)
+    new_pass = :crypto.hash(:sha, "#{salt}#{password}") |> Base.encode16 |> String.downcase
+    "sha1$#{salt}$#{new_pass}"
   end
 
   defp put_password_hash(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
-        put_change(changeset, :password_hash, Comeonin.Bcrypt.hashpwsalt(pass))
+
+        changeset
+        |> put_change(:password_new_hash, Comeonin.Bcrypt.hashpwsalt(pass))
+        |> put_change(:password, gen_sha1_password(pass))
       _ ->
         changeset
     end
@@ -265,25 +273,25 @@ defmodule Model.User do
   def authenticate(_username, nil), do: nil
   def authenticate(username, password) do
     if user = Repo.get_by(Model.User, username: username) do
-      # TODO add new password
-      # Comeonin.Bcrypt.checkpw(password, user.crypted_password)
+      cond do
+        user.password_new_hash && Comeonin.Bcrypt.checkpw(password, user.password_new_hash) -> user
+        (s = user.password |> String.split("$")) && Enum.count(s) == 3 ->
+          # validation for old passwords (SHA1)
+          [_algorithm, salt, pass] = s
+          calc_pass = :crypto.hash(:sha, "#{salt}#{password}") |> Base.encode16 |> String.downcase
 
-      # validation for old passwords (SHA1)
-      if (s = user.password |> String.split("$")) && Enum.count(s) == 3 do
-        [_algorithm, salt, pass] = s
-        calc_pass = :crypto.hash(:sha, "#{salt}#{password}") |> Base.encode16 |> String.downcase
-
-        case String.equivalent?(pass, calc_pass) do
-          true  -> user
-          false -> nil
-        end
+          case String.equivalent?(pass, calc_pass) do
+            true  -> user
+            false -> nil
+          end
+        true -> nil
       end
     end
   end
 
   def get_auth_hash(user) do
     cond do
-      user.auto_hash -> IO.puts("fuck"); user.auto_hash
+      user.auto_hash -> user.auto_hash
       true ->
         result =
           Model.User.changeset(user, %{auto_hash: UUID.uuid4()})

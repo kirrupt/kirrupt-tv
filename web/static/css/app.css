@@ -529,5 +529,8 @@ body.christmas #body:after {
 	height:31px;
 }
 
-#account #title { height: auto; text-align: left;
-}
+#account #title { height: auto; text-align: left;}
+
+#alert-box { position: absolute; left: 0; right: 0; width: 920px; top: 100px; margin: auto; z-index: 10;}
+#alert-box .alert-info { background: #dff0d8;}
+#alert-box .alert-danger { background: #f2dede;}

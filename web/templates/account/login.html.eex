@@ -1,5 +1,5 @@
 <div class="login_form" style="float:left;">
-  Don't have an account? <a href="<%= account_path(@conn, :register) %>">Register</a>
+  Don't have an account? <a href="<%= account_path(@conn, :register_new) %>">Register</a>
   <%= form_for @conn, account_path(@conn, :login), [as: :login], fn f -> %>
     <dl>
       <dt><label for="username">Username</label></dt>

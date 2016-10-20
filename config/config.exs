@@ -31,3 +31,13 @@ config :sentry,
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
+
+config :addict,
+  secret_key: "2432622431322446555067626b6375664152643659323048626265752e",
+  extra_validation: fn ({valid, errors}, user_params) -> {valid, errors} end, # define extra validation here
+  user_schema: Model.User,
+  repo: KirruptTv.Repo,
+  from_email: "no-reply@example.com", # CHANGE THIS
+  mailgun_domain: "",
+  mailgun_key: "",
+  mail_service: :mailgun
