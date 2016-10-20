@@ -21,9 +21,9 @@ defmodule KirruptTv.Router do
 
   scope "/" do
     addict :routes,
-      register: nil,#[path: "/account/register", controller: KirruptTv.AccountController, action: :register],
-      login: nil,
-      logout: nil
+      register: [path: "/account/register", controller: KirruptTv.AccountController, action: :register],
+      login: [path: "/account/login", controller: KirruptTv.AccountController, action: :login],
+      logout: [path: "/account/logout", controller: KirruptTv.AccountController, action: :logout]
   end
 
   scope "/", KirruptTv do
