@@ -64,6 +64,13 @@ defmodule KirruptTv.Router do
     get "/episode/:id/mark_as_unwatched", EpisodeController, :mark_as_unwatched #TODO PATCH
   end
 
+  scope "/api/v2/", KirruptTv do
+    pipe_through :api
+
+    post "/login", Api.V2.AccountController, :login
+    get  "/user/info", Api.V2.AccountController, :user_info
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", KirruptTv do
   #   pipe_through :api

@@ -15,7 +15,15 @@ defmodule KirruptTv.Plugs.Authenticate do
   end
 
   defp find_user(conn) do
-    if auto_hash = Map.get(conn.req_cookies, "auto_hash") do
+    auto_hash = cond do
+      ah = Map.get(conn.req_cookies, "auto_hash") -> ah
+      ah = conn.req_headers |> Enum.find(fn({header, _}) -> header == "authorization" end) ->
+        {_header, token} = ah
+        token |> String.split(" ") |> List.last
+      true -> nil
+    end
+
+    if auto_hash do
       Repo.get_by(User, auto_hash: auto_hash)
     end
   end
@@ -34,6 +42,7 @@ defmodule KirruptTv.Plugs.Authenticate do
   defp device_type(conn) do
     cond do
       Enum.member?(conn.private[:phoenix_pipelines], :browser) -> %{device_type: "browser", device_code: "/"}
+      Enum.member?(conn.private[:phoenix_pipelines], :api) -> %{device_type: "api", device_code: "/"}
       true -> nil
     end
   end
