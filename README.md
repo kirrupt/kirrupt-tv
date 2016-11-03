@@ -21,32 +21,36 @@ Headers:
 
 Request:
 
+```json
   {
     "username": "user",
     "password": "pass"
   }
+```
 
 Response:
 
+```json
   {
     "token": "f5fe4750-5a95-4044-9639-a243b6c5d733"
   }
 
-  or HTTP 400
+    or HTTP 400
 
   {
     "error": "INVALID_USERNAME_OR_PASSWORD"
   }
-
+  
   errors:
-    - MISSING_USERNAME_OR_PASSWORD
-    - INVALID_USERNAME_OR_PASSWORD
-
+   - MISSING_USERNAME_OR_PASSWORD
+   - INVALID_USERNAME_OR_PASSWORD
+```
 
 ### GET /user/info
 
 Response:
 
+```json
   {
     "username": "denc",
     "last_name": "T",
@@ -55,11 +59,13 @@ Response:
     "email": "d.t@gmail.com",
     "date_joined": "2012-05-10T13:32:40Z"
   }
+```
 
 ### GET/POST /shows
 
 Request:
 
+```json
   both params are optional
   if Auth token is present and no param is given then will return all your shows
 
@@ -67,9 +73,11 @@ Request:
     "show_ids": [1, 2, 3],
     "except_show_ids":[159, 74, 77, 170]
   }
+```
 
 Response:
 
+```json
   [
     {
       "year": 2004,
@@ -97,17 +105,21 @@ Response:
       "added": "2012-04-21T17:15:10Z"
     }
   ]
+```
 
 ### POST /shows/updated-dates
 
 Request:
 
+```json
   {
     "show_ids": [159, 74, 77, 170],
   }
+```
 
 Response:
 
+```json
   [
     {
       "updated_at": "2016-09-08T23:05:02Z",
@@ -120,17 +132,22 @@ Response:
       ]
     }
   ]
+```
 
 ### POST /shows/episodes
 
 Request:
 
+```json
   {
     "show_ids": [159, 74, 77, 170],
   }
+```
 
 Response:
 
+
+```json
   [
     {
       "updated_at": "2015-10-18T21:12:15Z",
@@ -145,17 +162,21 @@ Response:
       "added": "2012-04-21T17:14:14Z"
     }
   ]
+```
 
 ### POST /shows/episodes
 
 Request:
 
+```json
   {
     "show_ids": [159, 74, 77, 170],
   }
+```
 
 Response:
 
+```json
   [
     {
       "updated_at": "2015-10-18T21:12:15Z",
@@ -168,17 +189,21 @@ Response:
       "airdate": "2008-01-20T00:00:00Z"
     }
   ]
+```
 
 ### POST /shows/episodes/full
 
 Request:
 
+```json
   {
     "show_ids": [159, 74, 77, 170],
   }
+```
 
 Response:
 
+```json
   [
     {
       "updated_at": "2015-10-18T21:12:15Z",
@@ -193,3 +218,4 @@ Response:
       "airdate": "2008-01-20T00:00:00Z"
     }
   ]
+```
