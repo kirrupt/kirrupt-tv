@@ -69,6 +69,11 @@ defmodule KirruptTv.Router do
 
     post "/login", Api.V2.AccountController, :login
     get  "/user/info", Api.V2.AccountController, :user_info
+    get  "/shows", Api.V2.ShowController, :index
+    post "/shows", Api.V2.ShowController, :index
+    post "/shows/updated-dates", Api.V2.ShowController, :updated_dates
+    post "/shows/episodes", Api.V2.ShowController, :episodes
+    post "/shows/episodes/full", Api.V2.ShowController, :episodes_full
   end
 
   # Other scopes may use custom stacks.

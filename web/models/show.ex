@@ -158,6 +158,33 @@ defmodule Model.Show do
     end
   end
 
+  def get_shows(ids) do
+    Repo.all(
+      from s in Model.Show,
+      where: s.id in ^ids)
+    |> Repo.preload([:genres])
+  end
+
+  def get_show_episodes(ids) do
+    Repo.all(
+      from e in Model.Episode,
+      where: e.show_id in ^ids)
+  end
+
+  def get_show_updated_dates(ids) do
+    Repo.all(
+      from s in Model.Show,
+      where: s.id in ^ids,
+      select: [s.id, s.last_updated])
+  end
+
+  def get_show_episodes_updated_dates(ids) do
+    Repo.all(
+      from e in Model.Episode,
+      where: e.show_id in ^ids,
+      select: [e.id, e.show_id, e.last_updated])
+  end
+
   def ignore_show(show, user) do
     if us = Repo.get_by(Model.UserShow, %{show_id: show.id, user_id: user.id}) do
       result = us

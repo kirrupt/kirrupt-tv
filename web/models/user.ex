@@ -208,6 +208,20 @@ defmodule Model.User do
       end)
   end
 
+  def get_user_show_ids(user) do
+    Repo.all(
+      from s in Model.UserShow,
+      where: s.user_id == ^user.id,
+      select: s.show_id)
+  end
+
+  def get_user_ignored_show_ids(user) do
+    Repo.all(
+      from s in Model.UserShow,
+      where: s.user_id == ^user.id and s.ignored == true,
+      select: s.show_id)
+  end
+
   def add_show(_user, nil), do: nil
   def add_show(user, show) do
     unless Repo.get_by(Model.UserShow, %{show_id: show.id, user_id: user.id}) do
