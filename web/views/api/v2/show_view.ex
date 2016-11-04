@@ -53,7 +53,7 @@ defmodule KirruptTv.Api.V2.ShowView do
     |> Enum.map(fn(episode) ->
       %{
         id: episode.id,
-        show: episode.show_id,
+        show_id: episode.show_id,
         airdate: episode.airdate |> DateTime.to_iso8601,
         episode: episode.episode,
         season: episode.season,
@@ -69,7 +69,7 @@ defmodule KirruptTv.Api.V2.ShowView do
     |> Enum.map(fn(episode) ->
       %{
         id: episode.id,
-        show: episode.show_id,
+        show_id: episode.show_id,
         airdate: episode.airdate |> DateTime.to_iso8601,
         episode: episode.episode,
         season: episode.season,

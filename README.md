@@ -40,7 +40,7 @@ Response:
   {
     "error": "INVALID_USERNAME_OR_PASSWORD"
   }
-  
+
   errors:
    - MISSING_USERNAME_OR_PASSWORD
    - INVALID_USERNAME_OR_PASSWORD
@@ -153,7 +153,7 @@ Response:
       "updated_at": "2015-10-18T21:12:15Z",
       "tvrage_url": "http://www.tvmaze.com/episodes/12192/breaking-bad-1x01-pilot",
       "title": "Pilot",
-      "show": 74,
+      "show_id": 74,
       "season": 1,
       "screencap": "shows/RL8I3FU43J.jpg",
       "id": 4369,
@@ -182,7 +182,7 @@ Response:
       "updated_at": "2015-10-18T21:12:15Z",
       "tvrage_url": "http://www.tvmaze.com/episodes/12192/breaking-bad-1x01-pilot",
       "title": "Pilot",
-      "show": 74,
+      "show_id": 74,
       "season": 1,
       "id": 4369,
       "episode": 1,
