@@ -89,6 +89,10 @@
 
     <%= render_existing @view_module, "scripts.html", assigns %>
 
+	<%= if @current_user && @current_user.is_premium && Application.get_env(:kirrupt_tv, KirruptTv.Endpoint)[:premium_script_url] do %>
+		<script src="<%= Application.get_env(:kirrupt_tv, KirruptTv.Endpoint)[:premium_script_url] %>"></script>
+	<% end %>
+
     <script>
 			function mark_as_url(episode_id, mark_as_watched) {
 				var url = '<%= episode_path(@conn, :mark_as_watched, "replace") %>';

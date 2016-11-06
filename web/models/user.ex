@@ -27,6 +27,7 @@ defmodule Model.User do
     field :is_editor, :boolean, default: false
     field :is_developer, :boolean, default: false
     field :is_admin, :boolean, default: false
+    field :is_premium, :boolean, default: false
     field :skype_handle, :string
     field :google_id, :string
     field :google_session_id, :string
