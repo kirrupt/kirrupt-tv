@@ -1,6 +1,10 @@
 defmodule KirruptTv.Api.V2.ShowView do
   use KirruptTv.Web, :view
 
+  defp img_prefix(nil), do: nil
+  defp img_prefix(url) do
+    "http://kirrupt.com/tv/static/#{url}"
+  end
 
   def render("index.json", %{data: %{shows: shows, ignored_show_ids: ignored_show_ids}}) do
     shows
@@ -12,11 +16,11 @@ defmodule KirruptTv.Api.V2.ShowView do
         airtime: show.airtime,
         started: if show.started do Date.to_iso8601(show.started) end,
         ended: if show.ended do Date.to_iso8601(show.ended) end,
-        fixed_background: show.fixed_background,
-        fixed_banner: show.fixed_banner,
-        fixed_thumb: show.fixed_thumb,
-        picture_url: show.picture_url,
-        thumbnail_url: show.thumbnail_url,
+        fixed_background: show.fixed_background |> img_prefix,
+        fixed_banner: show.fixed_banner |> img_prefix,
+        fixed_thumb: show.fixed_thumb |> img_prefix,
+        picture_url: show.picture_url |> img_prefix,
+        thumbnail_url: show.thumbnail_url |> img_prefix,
         genres: show.genres |> Enum.map(fn(genre) -> genre.name end),
         name: show.name,
         runtime: show.runtime,
@@ -73,7 +77,7 @@ defmodule KirruptTv.Api.V2.ShowView do
         airdate: episode.airdate |> DateTime.to_iso8601,
         episode: episode.episode,
         season: episode.season,
-        screencap: episode.screencap,
+        screencap: episode.screencap |> img_prefix,
         title: episode.title,
         tvrage_url: episode.tvrage_url,
         summary: episode.summary,
