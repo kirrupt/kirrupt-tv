@@ -75,6 +75,8 @@ defmodule KirruptTv.Router do
     post "/shows/updated-dates", Api.V2.ShowController, :updated_dates
     post "/shows/episodes", Api.V2.ShowController, :episodes
     post "/shows/episodes/full", Api.V2.ShowController, :episodes_full
+    post "/search/kirrupt", Api.V2.SearchController, :search_kirrupt
+    post "/search/external", Api.V2.SearchController, :search_external
   end
 
   # Other scopes may use custom stacks.

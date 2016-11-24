@@ -1,10 +1,7 @@
 defmodule KirruptTv.Api.V2.ShowView do
   use KirruptTv.Web, :view
 
-  defp img_prefix(nil), do: nil
-  defp img_prefix(url) do
-    "http://kirrupt.com/tv/static/#{url}"
-  end
+  import KirruptTv.GlobalHelpers
 
   def render("index.json", %{data: %{shows: shows, ignored_show_ids: ignored_show_ids}}) do
     shows

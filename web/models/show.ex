@@ -203,7 +203,7 @@ defmodule Model.Show do
       from s in Model.Show,
       where: like(s.name, ^"%#{name}%"),
       order_by: s.name
-    )
+    ) |> Repo.preload([:genres])
   end
 
   def find_shows_on_tvmaze(name) do

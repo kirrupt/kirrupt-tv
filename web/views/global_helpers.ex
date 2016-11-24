@@ -1,6 +1,15 @@
 defmodule KirruptTv.GlobalHelpers do
   use Phoenix.HTML
 
+  def img_prefix(nil), do: nil
+  def img_prefix(url) do
+    cond do
+      File.exists?("#{KirruptTv.Helpers.FileHelpers.root_folder}/static/#{url}") ->
+        "#{KirruptTv.Endpoint.url}#{KirruptTv.Endpoint.static_path("/#{url}")}"
+      true -> "http://kirrupt.com/tv/static/#{url}"
+    end
+  end
+
   def leading_zero(num) do
     cond do
       num < 10 -> "0#{num}"
