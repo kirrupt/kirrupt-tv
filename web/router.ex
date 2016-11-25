@@ -77,6 +77,8 @@ defmodule KirruptTv.Router do
     post "/shows/episodes/full", Api.V2.ShowController, :episodes_full
     post "/search/kirrupt", Api.V2.SearchController, :search_kirrupt
     post "/search/external", Api.V2.SearchController, :search_external
+    get  "/add/show/:id", Api.V2.ShowController, :add_shows
+    get  "/add/show/:external_id/external", Api.V2.ShowController, :add_external_show
   end
 
   # Other scopes may use custom stacks.

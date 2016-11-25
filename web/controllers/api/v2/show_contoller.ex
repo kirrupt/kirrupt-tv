@@ -33,4 +33,24 @@ defmodule KirruptTv.Api.V2.ShowController do
   def episodes_full(conn, %{"show_ids" => show_ids}) do
     render conn, "episodes_full.json", data: %{episodes: Model.Show.get_show_episodes(show_ids)}
   end
+
+  def add_external_show(conn, %{"external_id" => external_id}) do
+    if show = Model.Show.add_tvmaze_show(external_id) do
+      render conn, "add_external_show.json", data: %{show: show |> Repo.preload([:genres])}
+    else
+      conn
+      |> put_status(400)
+      |> render "add_external_show.json", data: %{error: "COULD_NOT_ADD_EXTERNAL_SHOW"}
+    end
+  end
+
+  def add_shows(conn, %{"id" => id}) do
+    if Model.User.add_show(conn.assigns[:current_user], Model.Show.find_by_url_or_id(id)) do
+      render conn, "add_show.json", data: %{success: true}
+    else
+      conn
+      |> put_status(400)
+      |> render "add_show.json", data: %{error: "COULD_NOT_ADD_SHOW"}
+    end
+  end
 end

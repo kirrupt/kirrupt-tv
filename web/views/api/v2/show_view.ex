@@ -6,28 +6,7 @@ defmodule KirruptTv.Api.V2.ShowView do
   def render("index.json", %{data: %{shows: shows, ignored_show_ids: ignored_show_ids}}) do
     shows
     |> Enum.map(fn(show) ->
-      %{
-        id: show.id,
-        added: show.added |> DateTime.to_iso8601,
-        airday: show.airday,
-        airtime: show.airtime,
-        started: if show.started do Date.to_iso8601(show.started) end,
-        ended: if show.ended do Date.to_iso8601(show.ended) end,
-        fixed_background: show.fixed_background |> img_prefix,
-        fixed_banner: show.fixed_banner |> img_prefix,
-        fixed_thumb: show.fixed_thumb |> img_prefix,
-        picture_url: show.picture_url |> img_prefix,
-        thumbnail_url: show.thumbnail_url |> img_prefix,
-        genres: show.genres |> Enum.map(fn(genre) -> genre.name end),
-        name: show.name,
-        runtime: show.runtime,
-        status: show.status,
-        summary: show.summary,
-        tvrage_url: show.tvrage_url,
-        year: show.year,
-        ignored: Enum.member?(ignored_show_ids, show.id),
-        updated_at: show.last_updated |> DateTime.to_iso8601
-      }
+      map_show(show, ignored_show_ids)
     end)
   end
 
@@ -81,5 +60,41 @@ defmodule KirruptTv.Api.V2.ShowView do
         updated_at: episode.last_updated |> DateTime.to_iso8601
       }
     end)
+  end
+
+  def render("add_external_show.json", %{data: data}) do
+    cond do
+      data[:error] -> data
+      true -> map_show(data[:show], [])
+    end
+  end
+
+  def render("add_show.json", %{data: data}) do
+    data
+  end
+
+  defp map_show(show, ignored_show_ids) do
+    %{
+      id: show.id,
+      added: show.added |> DateTime.to_iso8601,
+      airday: show.airday,
+      airtime: show.airtime,
+      started: if show.started do Date.to_iso8601(show.started) end,
+      ended: if show.ended do Date.to_iso8601(show.ended) end,
+      fixed_background: show.fixed_background |> img_prefix,
+      fixed_banner: show.fixed_banner |> img_prefix,
+      fixed_thumb: show.fixed_thumb |> img_prefix,
+      picture_url: show.picture_url |> img_prefix,
+      thumbnail_url: show.thumbnail_url |> img_prefix,
+      genres: show.genres |> Enum.map(fn(genre) -> genre.name end),
+      name: show.name,
+      runtime: show.runtime,
+      status: show.status,
+      summary: show.summary,
+      tvrage_url: show.tvrage_url,
+      year: show.year,
+      ignored: Enum.member?(ignored_show_ids, show.id),
+      updated_at: show.last_updated |> DateTime.to_iso8601
+    }
   end
 end
