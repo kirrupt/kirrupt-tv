@@ -305,6 +305,7 @@ defmodule Model.User do
   end
 
   def get_auth_hash(user) do
+    # TODO auto_hash should expire
     cond do
       user.auto_hash -> user.auto_hash
       true ->

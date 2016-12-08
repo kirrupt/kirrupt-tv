@@ -17,6 +17,7 @@ defmodule KirruptTv.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug KirruptTv.Plugs.ServerTime
   end
 
   scope "/" do
