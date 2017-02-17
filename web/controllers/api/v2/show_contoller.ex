@@ -26,6 +26,10 @@ defmodule KirruptTv.Api.V2.ShowController do
     render conn, "updated_dates.json", data: %{shows: Model.Show.get_show_updated_dates(show_ids), episodes: Model.Show.get_show_episodes_updated_dates(show_ids)}
   end
 
+  def sync_ignored(conn, %{"shows" => shows}) do
+    render conn, "sync_ignored.json", data: %{user_shows: Model.User.sync_ignored(conn.assigns[:current_user], shows)}
+  end
+
   def episodes(conn, %{"show_ids" => show_ids}) do
     render conn, "episodes.json", data: %{episodes: Model.Show.get_show_episodes(show_ids)}
   end

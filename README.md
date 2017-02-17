@@ -134,6 +134,50 @@ Response:
   ]
 ```
 
+
+### POST /shows/sync-ignored
+
+Request:
+
+```json
+  {
+    "shows": [
+      {
+        "show_id": 71,
+        "ignored": false,
+        "updated_at": "2017-02-17T11:30:02Z"
+      },
+      {
+        "show_id": 10495,
+        "ignored": false,
+        "updated_at": "2017-02-17T13:29:02Z"
+      }
+    ]
+  }
+```
+
+Response:
+
+```json
+  [
+    {
+      "updated_at": "2017-02-17T12:42:12Z",
+      "show_id": 71,
+      "ignored": true
+    },
+    {
+      "updated_at": "2014-07-03T22:33:36Z",
+      "show_id": 74,
+      "ignored": false
+    },
+    {
+      "updated_at": "2014-01-07T14:20:41Z",
+      "show_id": 10495,
+      "ignored": false
+    }
+  ]
+```
+
 ### POST /shows/episodes
 
 Request:

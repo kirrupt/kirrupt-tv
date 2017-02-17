@@ -28,6 +28,17 @@ defmodule KirruptTv.Api.V2.ShowView do
     end)
   end
 
+  def render("sync_ignored.json", %{data: %{user_shows: user_shows}}) do
+    user_shows
+    |> Enum.map(fn(us) ->
+      %{
+        show_id: us.show_id,
+        ignored: us.ignored,
+        updated_at: us.modified |> DateTime.to_iso8601
+      }
+    end)
+  end
+
   def render("episodes.json", %{data: %{episodes: episodes}}) do
     episodes
     |> Enum.map(fn(episode) ->

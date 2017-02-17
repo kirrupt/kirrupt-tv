@@ -319,4 +319,26 @@ defmodule Model.User do
         end
     end
   end
+
+  def sync_ignored(user, shows) do
+    user_shows = Repo.all(
+      from s in Model.UserShow,
+      where: s.user_id == ^user.id)
+
+    shows
+    |> Enum.each(fn(show) ->
+      user_show = Enum.find(user_shows, fn(us) -> us.show_id == show["show_id"] end)
+
+      if user_show do
+        if user_show.ignored != show["ignored"] && DateTime.to_iso8601(user_show.modified) < show["updated_at"] do
+          Show.find_by_id(user_show.show_id)
+          |> Show.ignore_show(user)
+        end
+      end
+    end)
+
+    Repo.all(
+      from s in Model.UserShow,
+      where: s.user_id == ^user.id)
+  end
 end

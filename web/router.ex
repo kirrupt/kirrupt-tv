@@ -74,6 +74,7 @@ defmodule KirruptTv.Router do
     get  "/shows", Api.V2.ShowController, :index
     post "/shows", Api.V2.ShowController, :index
     post "/shows/updated-dates", Api.V2.ShowController, :updated_dates
+    post "/shows/sync-ignored", Api.V2.ShowController, :sync_ignored
     post "/shows/episodes", Api.V2.ShowController, :episodes
     post "/shows/episodes/full", Api.V2.ShowController, :episodes_full
     post "/search/kirrupt", Api.V2.SearchController, :search_kirrupt
