@@ -315,7 +315,7 @@ defmodule Model.Show do
 
       case result do
         {:ok, struct}        -> s_obj = struct
-        {:error, _changeset} -> Logger.error("Could't update show '#{s_obj.id}'"); false
+        {:error, changeset} -> Logger.error("Could't update show '#{s_obj.id}' - #{inspect(changeset.errors)}"); false
       end
 
       if info[:episodes] do
@@ -385,7 +385,12 @@ defmodule Model.Show do
   defp get_the_tv_db_id(show) do
     cond do
       show.thetvdb_id -> show.thetvdb_id
-      true -> KirruptTv.Parser.TheTVDB.get_show_id(show.name)
+      true ->
+        id = KirruptTv.Parser.TheTVDB.get_show_id(show.name)
+        case id != nil do
+          true -> Integer.to_string(id)
+          false -> id
+        end
     end
   end
 end

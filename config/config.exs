@@ -41,3 +41,6 @@ config :addict,
   mailgun_domain: "",
   mailgun_key: "",
   mail_service: :mailgun
+
+config :arc,
+  storage: Arc.Storage.Local

@@ -30,6 +30,7 @@ defmodule KirruptTv.Router do
 
   scope "/", KirruptTv do
     get "/", IndexController, :index
+    get "/thumbs/:thumb_type/*image_path", ThumbController, :index
   end
 
   scope "/account/", KirruptTv do
