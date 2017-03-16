@@ -45,7 +45,7 @@ defmodule KirruptTv.Api.V2.ShowView do
       %{
         id: episode.id,
         show_id: episode.show_id,
-        airdate: episode.airdate |> DateTime.to_iso8601,
+        airdate: if episode.airdate do DateTime.to_iso8601(episode.airdate) end,
         episode: episode.episode,
         season: episode.season,
         title: episode.title,
@@ -61,7 +61,7 @@ defmodule KirruptTv.Api.V2.ShowView do
       %{
         id: episode.id,
         show_id: episode.show_id,
-        airdate: episode.airdate |> DateTime.to_iso8601,
+        airdate: if episode.airdate do DateTime.to_iso8601(episode.airdate) end,
         episode: episode.episode,
         season: episode.season,
         screencap: episode.screencap |> img_prefix,
