@@ -1,8 +1,8 @@
-<%= if @recent == [] && @soon == [] && @current_user do %>
-	<h2>Looks like you haven't added much shows. Wanna add a new one? <a href="<%= show_path(@conn, :add) %>">Add new show</a></h2>
-<% end %>
-
 <div id="body_right" style="width:600px">
+	<%= if @recent == [] && @soon == [] && @current_user do %>
+		<h2>Looks like you haven't added much shows. Wanna add a new one? <a href="<%= show_path(@conn, :add) %>">Add new show</a></h2>
+	<% end %>
+
 	<%= if @recent != [] do %>
   	<h2>recent episodes</h2>
     <%= render_existing @view_module, "episodes-list.html", %{conn: @conn, episodes: @recent, mark_as_watched: true} %>
