@@ -298,7 +298,7 @@ Response:
       "summary": "\"Bag of Bones\" is a ghost story of grief and lost love's enduring bonds, about an innocent child caught in a terrible crossfire and a new love haunted by past secrets.",
       "status": "Ended",
       "started": "2011-12-11",
-      "picture_url": "http://kirrupt.com/tv/static/shows/5XRQ2IM7OS.jpg",
+      "picture_url": "https://kirrupt.com/tv/static/shows/5XRQ2IM7OS.jpg",
       "name": "Bag of Bones",
       "id": 9869,
       "genres":[

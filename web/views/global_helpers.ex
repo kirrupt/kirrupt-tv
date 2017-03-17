@@ -45,7 +45,7 @@ defmodule KirruptTv.GlobalHelpers do
   end
 
   defp old_server_url(url) do
-    "http://kirrupt.com/tv/static/#{url}"
+    "https://kirrupt.com/tv/static/#{url}"
   end
 
   defp validate_thumb_type(type) do

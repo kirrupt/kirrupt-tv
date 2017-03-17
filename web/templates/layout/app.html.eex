@@ -7,7 +7,7 @@
 		<%= if assigns[:background] do %>
 			<style>
 			body{
-				background:#f4f4f4 url('http://kirrupt.com/tv/static/<%= static_path(@conn, "/#{assigns[:background]}") %>') fixed;
+				background:#f4f4f4 url('https://kirrupt.com/tv/static/<%= static_path(@conn, "/#{assigns[:background]}") %>') fixed;
 				background-position:center 97px;
 			}
 			</style>
@@ -15,7 +15,7 @@
 		<%= if assigns[:show] && assigns[:show].fixed_background do %>
 			<style>
 			body{
-				background:#f4f4f4 url('http://kirrupt.com/tv/static/<%= static_path(@conn, "/#{assigns[:show].fixed_background}") %>') fixed;
+				background:#f4f4f4 url('https://kirrupt.com/tv/static/<%= static_path(@conn, "/#{assigns[:show].fixed_background}") %>') fixed;
 				background-position:center 97px;
 			}
 			</style>

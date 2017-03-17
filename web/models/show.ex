@@ -72,8 +72,8 @@ defmodule Model.Show do
 
   def show_thumb(show) do
     cond do
-      show.fixed_thumb -> "http://kirrupt.com/tv/static/#{show.fixed_thumb}"
-      show.picture_url -> "http://kirrupt.com/tv/static/#{show.picture_url}"
+      show.fixed_thumb -> "https://kirrupt.com/tv/static/#{show.fixed_thumb}"
+      show.picture_url -> "https://kirrupt.com/tv/static/#{show.picture_url}"
       true -> nil
     end
   end
