@@ -11,4 +11,4 @@ deploy:
       - ssh $SERVER $DEPLOY_SCRIPT
       - pip install git+https://github.com/deanrock/server-manager-cli
       - echo -e "$SMCLI_CONFIG" > ~/.smcli
-      - smcli --account=kirrupt redeploy-app --name=phoenix-preview
+      - smcli --account=kirrupt redeploy-app --name=phoenix-preview2
