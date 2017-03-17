@@ -1,12 +1,26 @@
 # KirruptTv
 
-To start your Phoenix app:
+## Development
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  * Install Node.js dependencies with `npm install`
-  * Start Phoenix endpoint with `mix phoenix.server`
-  * !!! Install ImageMagick !!!
+### Requirements
+
+* Elixir
+* MySQL-compatible server (MariaDB recommended)
+* Node.js
+
+### Installation
+
+* Create database and database user:
+```sql
+CREATE DATABASE kirrupt CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+GRANT ALL PRIVILEGES ON kirrupt . * TO 'kirrupt'@'localhost' IDENTIFIED BY 'Password1!';
+```
+* Import production database dump
+* Install dependencies with `mix deps.get`
+* Create and migrate your database with `mix ecto.create && mix ecto.migrate`
+* Install Node.js dependencies with `npm install`
+* Start Phoenix endpoint with `mix phoenix.server`
+* !!! Install ImageMagick !!!
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
