@@ -165,7 +165,7 @@ $(document).ready(function() {
 
 
 
-	    var url = site_url+'search?q='+escape(search_form_loading_q);
+	    var url = '/search?q='+escape(search_form_loading_q);
 
 
 

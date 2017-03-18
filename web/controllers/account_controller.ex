@@ -6,8 +6,6 @@ defmodule KirruptTv.AccountController do
   plug KirruptTv.Plugs.Authenticated when action in [:logout]
   plug KirruptTv.Plugs.Authenticated.Redirect when action in [:login]
 
-  plug :put_layout, "account.html"
-
   alias Model.User
 
   def login(conn, params) do

@@ -1,1 +1,1 @@
-<span><%= @title %> <span>/ users</span></span>
+<%= render_existing KirruptTv.SharedView, "search.html", Map.merge(assigns, %{search_query: "login"}) %>
