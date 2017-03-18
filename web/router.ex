@@ -29,7 +29,6 @@ defmodule KirruptTv.Router do
   end
 
   scope "/", KirruptTv do
-    get "/", IndexController, :index
     get "/thumbs/:thumb_type/*image_path", ThumbController, :index
   end
 
@@ -44,7 +43,7 @@ defmodule KirruptTv.Router do
     get  "/logout", AccountController, :logout
   end
 
-  scope "/tv/", KirruptTv do
+  scope "/", KirruptTv do
     pipe_through :browser # Use the default browser stack
 
     get   "/", RecentController, :index
