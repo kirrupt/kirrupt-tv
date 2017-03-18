@@ -22,14 +22,14 @@
 			that.addClass('recommendations');
 			that.html('<div class="loader"><div></div></div>');
 
-			$.get(site_url+'recommendations/'+settings.url, function(data) {
+			$.get('/api/v2/recommendations/'+settings.url, function(data) {
 				console.log(data);
 				var html = '<ul>';
 
-				for(i in data.recommendations) {
-					show = data.recommendations[i];
+				for(var i in data) {
+					var show = data[i];
 					if(show.img && show.img.length > 0) {
-						html += '<li><a href="'+site_url+'show/'+show.url+'"><img src="'+site_url+'static/'+show.img+'" /></a></li>';
+						html += '<li><a href="/show/'+show.url+'"><img src="'+show.img+'" /></a></li>';
 					}
 				}
 

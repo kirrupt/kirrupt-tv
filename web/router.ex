@@ -81,10 +81,7 @@ defmodule KirruptTv.Router do
     post "/search/external", Api.V2.SearchController, :search_external
     get  "/add/show/:id", Api.V2.ShowController, :add_shows
     get  "/add/show/:external_id/external", Api.V2.ShowController, :add_external_show
+    get  "/recommendations/my", Api.V2.RecommendationsController, :my
+    get  "/recommendations/show/:id", Api.V2.RecommendationsController, :show
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", KirruptTv do
-  #   pipe_through :api
-  # end
 end

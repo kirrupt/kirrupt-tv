@@ -1,6 +1,6 @@
 <script type="text/javascript">
 (function($) {
-	//$('#recommendations').recommendations({'url':'my-recommendations'});
+	$('#recommendations').recommendations({'url':'my'});
 })(jQuery);
 
 $(document).ready(function() {
