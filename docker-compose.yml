@@ -1,0 +1,20 @@
+version: '3.1'
+services:
+  app:
+    build: .
+    ports:
+      - "172.17.0.1:10600:8080"
+    restart: always
+    volumes:
+      - ../../shows/:/app/shows
+    networks:
+      - mariadb_default
+      - default
+    command:
+      - /bin/sh
+      - -c
+      - |
+          PORT=8080 MIX_ENV=prod  mix phoenix.server
+networks:
+  mariadb_default:
+    external: true
