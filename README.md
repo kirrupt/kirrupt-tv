@@ -1,30 +1,36 @@
-# KirruptTv
+# Kirrupt TV
 
 ## Development
 
 ### Requirements
 
-* Elixir
-* MySQL-compatible server (MariaDB recommended)
-* Node.js
+* Docker
+* `docker-compose`
 
-### Installation
+### Getting started
 
+Clone repository and run:
+```bash
+docker-compose up
+```
+
+After application is started, you can visit [`localhost:8080`](http://localhost:8080) from your browser.
+
+### Helpful commands
+* Import of existing database:
+  ```bash
+  docker exec -i kirrupttvelixir_mariadb_1 mysql -u root -ptest kirrupt < kirrupt.sql
+  ```
+
+### Old instructions
 * Create database and database user:
 ```sql
 CREATE DATABASE kirrupt CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 GRANT ALL PRIVILEGES ON kirrupt . * TO 'kirrupt'@'localhost' IDENTIFIED BY 'Password1!';
 ```
 * Import production database dump
-* Install dependencies with `mix deps.get`
 * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-* Install Node.js dependencies with `npm install`
-* Start Phoenix endpoint with `mix phoenix.server`
 * !!! Install ImageMagick !!!
-
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
 
 # API docs
 

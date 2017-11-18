@@ -7,7 +7,7 @@ use Mix.Config
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
 config :kirrupt_tv, KirruptTv.Endpoint,
-  http: [port: 4000],
+  http: [port: 8080],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
@@ -32,12 +32,3 @@ config :logger, :console, format: "[$level] $message\n"
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
-
-# Configure your database
-config :kirrupt_tv, KirruptTv.Repo,
-  adapter: Ecto.Adapters.MySQL,
-  username: "kirrupt",
-  password: "Password1!",
-  database: "kirrupt",
-  hostname: "localhost",
-  pool_size: 10

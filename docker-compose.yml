@@ -1,20 +1,32 @@
 version: '3.1'
 services:
+  mariadb:
+    image: mariadb:10.2
+    restart: always
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=test
+      - MYSQL_DATABASE=kirrupt
   app:
     build: .
     ports:
-      - "172.17.0.1:10600:8080"
+      - "127.0.0.1:8080:8080"
     restart: always
     volumes:
-      - ../../shows/:/app/shows
+      - /app/deps
+      - /app/_build
+      - /app/node_modules
+      - /app/priv/static
+      - ./:/app
+      - ./data/shows/:/app/shows
     networks:
-      - mariadb_default
       - default
-    command:
-      - /bin/sh
-      - -c
-      - |
-          PORT=8080 MIX_ENV=prod  mix phoenix.server
-networks:
-  mariadb_default:
-    external: true
+    environment:
+      - PORT=8080
+      - MIX_ENV=dev
+      - MYSQL_HOST=mariadb
+      - MYSQL_USER=root
+      - MYSQL_PASS=test
+      - MYSQL_DB=kirrupt
+    command: mix phoenix.server
