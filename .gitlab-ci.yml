@@ -1,14 +1,11 @@
-image: deanrock/ansible:2.2
-stages:
-  - deploy
-deploy:
-    stage: deploy
-    script:
-      - mkdir ~/.ssh/
-      - echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-      - chmod 600 ~/.ssh/id_rsa
-      - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-      - ssh $SERVER $DEPLOY_SCRIPT
-      - pip install git+https://github.com/deanrock/server-manager-cli
-      - echo -e "$SMCLI_CONFIG" > ~/.smcli
-      - smcli --account=kirrupt redeploy-app --name=phoenix-preview2
+build:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker build -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir:$CI_COMMIT_SHA .
+    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir:$CI_COMMIT_SHA
+    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir:latest
+    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir:latest
