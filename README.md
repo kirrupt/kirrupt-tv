@@ -18,19 +18,13 @@ After application is started, you can visit [`localhost:8080`](http://localhost:
 
 ### Helpful commands
 * Import of existing database:
-  ```bash
-  docker exec -i kirrupttvelixir_mariadb_1 mysql -u root -ptest kirrupt < kirrupt.sql
-  ```
-
-### Old instructions
-* Create database and database user:
-```sql
-CREATE DATABASE kirrupt CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-GRANT ALL PRIVILEGES ON kirrupt . * TO 'kirrupt'@'localhost' IDENTIFIED BY 'Password1!';
+```bash
+docker exec -i kirrupttvelixir_mariadb_1 mysql -u root -ptest kirrupt < kirrupt.sql
 ```
-* Import production database dump
-* Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-* !!! Install ImageMagick !!!
+* Migrate database:
+```bash
+docker-compose exec app mix ecto.migrate
+```
 
 # API docs
 
