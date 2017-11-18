@@ -17,11 +17,11 @@ docker-compose up
 After application is started, you can visit [`localhost:8080`](http://localhost:8080) from your browser.
 
 ### Helpful commands
-* Import of existing database:
+#### Import of existing database
 ```bash
 docker exec -i kirrupttvelixir_mariadb_1 mysql -u root -ptest kirrupt < kirrupt.sql
 ```
-* Migrate database:
+#### Database migration
 ```bash
 docker-compose exec app mix ecto.migrate
 ```
