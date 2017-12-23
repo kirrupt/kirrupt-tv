@@ -524,7 +524,7 @@ body.christmas #body:after {
 }
 
 .recommendations .loader div {
-	background: url('ajax-loader.gif') no-repeat;
+	background: url('/images/ajax-loader.gif') no-repeat;
 	width:31px;
 	height:31px;
 }
