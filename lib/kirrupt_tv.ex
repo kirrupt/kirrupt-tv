@@ -12,6 +12,8 @@ defmodule KirruptTv do
       supervisor(KirruptTv.Repo, []),
       # Start the endpoint when the application starts
       supervisor(KirruptTv.Endpoint, []),
+      # Start the scheduler
+      worker(KirruptTv.Scheduler, []),
       # Start your own worker by calling: KirruptTv.Worker.start_link(arg1, arg2, arg3)
       # worker(KirruptTv.Worker, [arg1, arg2, arg3]),
     ]

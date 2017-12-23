@@ -84,6 +84,10 @@ defmodule KirruptTv.Api.V2.ShowView do
     data
   end
 
+  def render("update_any_show.json", %{data: data}) do
+    map_show(data[:show], [])
+  end
+
   defp map_show(show, ignored_show_ids) do
     %{
       id: show.id,

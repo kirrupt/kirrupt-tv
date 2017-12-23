@@ -394,6 +394,20 @@ defmodule Model.Show do
     end
   end
 
+  def update_any_show do
+    case Repo.one(
+      from s in Model.Show,
+      where: not is_nil(s.tvmaze_id),
+      order_by: [asc: s.last_checked],
+      limit: 1) do
+        nil -> nil
+        show ->
+          IO.puts "Updating show #{show.id} (last checked: #{show.last_checked})..."
+          Model.Show.update_show_and_episodes(show)
+          show.id
+      end
+  end
+
   defp init_url(s_obj, counter \\ nil) do
     url = Common.URI.slugify(s_obj.name, counter)
     case Repo.get_by(Model.Show, url: url) do

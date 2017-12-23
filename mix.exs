@@ -48,7 +48,8 @@ defmodule KirruptTv.Mixfile do
      {:comeonin, "~> 2.5"},
      {:addict, "~> 0.3"},
      {:mailgun, github: "chrismccord/mailgun", branch: "master", override: true},
-     {:arc, "~> 0.7.0"}]
+     {:arc, "~> 0.7.0"},
+     {:quantum, ">= 2.2.0"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

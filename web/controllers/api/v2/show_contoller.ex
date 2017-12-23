@@ -57,4 +57,14 @@ defmodule KirruptTv.Api.V2.ShowController do
       |> render "add_show.json", data: %{error: "COULD_NOT_ADD_SHOW"}
     end
   end
+
+  def update_any_show(conn, _params) do
+    case Model.Show.update_any_show do
+      nil ->
+        conn
+        |> send_resp(200, "OK")
+      id ->
+        render conn, "update_any_show.json", data: %{show: Repo.get(Model.Show, id) |> Repo.preload([:genres])}
+    end
+  end
 end
