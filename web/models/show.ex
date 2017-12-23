@@ -272,6 +272,23 @@ defmodule Model.Show do
       limit: 30)
   end
 
+  defp get_picture_url_changes(s_obj, info, changes) do
+    cond do
+      # if picture is specified, check if the file actually exists
+      s_obj.picture_url && KirruptTv.Helpers.FileHelpers.file_exists(s_obj.picture_url) ->
+        changes
+      # picture is not specified or doesn't exists, check if tvmaze has url to it
+      info[:image] ->
+        Map.merge(changes, %{picture_url: download_and_save_image(info[:image])})
+      # picture is specified but it doesn't exists, tvmaze doesn't have it
+      s_obj.picture_url ->
+        Map.merge(changes, %{picture_url: nil})
+      # picture is not specified and tvmaze doesn't have it
+      true ->
+        changes
+    end
+  end
+
   def update_show_and_episodes(s_obj) do
     if info = KirruptTv.Parser.TVMaze.show_info(s_obj.tvmaze_id) do
       s_obj = s_obj |> Repo.preload([:genres])
@@ -290,13 +307,7 @@ defmodule Model.Show do
       }
       |> Common.Map.compact_selective([:summary])
 
-      if s_obj.picture_url && !File.exists?(Path.join(KirruptTv.Helpers.FileHelpers.root_folder, s_obj.picture_url)) do
-        changes = Map.merge(changes, %{picture_url: nil})
-      end
-
-      if !changes[:picture_url] && info[:image] do
-        changes = Map.merge(changes, %{picture_url: download_and_save_image(info[:image])})
-      end
+      changes = get_picture_url_changes(s_obj, info, changes)
 
       # TODO
       # Remove old genres !!???

@@ -14,6 +14,15 @@ defmodule KirruptTv.Helpers.FileHelpers do
     end
   end
 
+  def file_exists(name, base_folder \\ "#{KirruptTv.Helpers.FileHelpers.root_folder}/static", dest_folder \\ nil) do
+    image_path = case dest_folder do
+      nil -> name
+      _ -> Path.join(dest_folder, name)
+    end
+
+    File.exists?(Path.join(base_folder, image_path))
+  end
+
   def mkdirs(folder_path) do
     if File.exists?(folder_path) do
       folder_path

@@ -92,6 +92,23 @@ defmodule Model.Episode do
     KirruptTv.Helpers.FileHelpers.download_and_save_file(url, "#{KirruptTv.Helpers.FileHelpers.root_folder}/static", "shows")
   end
 
+  defp get_picture_url_changes(episode, e_data, changes) do
+    cond do
+      # if picture is specified, check if the file actually exists
+      episode.screencap && KirruptTv.Helpers.FileHelpers.file_exists(episode.screencap) ->
+        changes
+      # picture is not specified or doesn't exists, check if tvmaze has url to it
+      e_data[:screencap] && String.contains?(e_data[:screencap], ["tvrage", "tvmaze"]) ->
+        Map.merge(changes, %{screencap: download_and_save_image(e_data[:screencap])})
+      # picture is specified but it doesn't exists, tvmaze doesn't have it
+      episode.screencap ->
+        Map.merge(changes, %{picture_url: nil})
+      # picture is not specified and tvmaze doesn't have it
+      true ->
+        changes
+    end
+  end
+
   def insert_or_update(show, e_data) do
     episode =
       case Repo.get_by(Model.Episode, %{season: e_data[:season], episode: e_data[:episode], show_id: show.id}) do
@@ -99,18 +116,14 @@ defmodule Model.Episode do
         ep  -> ep
       end
 
-    img_path = case e_data[:screencap] && String.contains?(e_data[:screencap], ["tvrage", "tvmaze"]) do
-      nil -> nil
-      _   -> download_and_save_image(e_data[:screencap])
-    end
-
     changes = %{
       title: e_data[:title] || "",
       tvrage_url: e_data[:url],
       airdate: Common.Timex.parse(e_data[:airdate], "{YYYY}-{0M}-{0D}"),
-      summary: e_data[:summary],
-      screencap: img_path
+      summary: e_data[:summary]
     }
+
+    changes = get_picture_url_changes(episode, e_data, changes)
 
     result = episode
     |> Model.Episode.changeset(changes)
