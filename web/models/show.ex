@@ -341,22 +341,31 @@ defmodule Model.Show do
     end
   end
 
+  defp get_fanart_image_changes(changes, s_obj, images, attr, fanart_attr) do
+    cond do
+      # if picture is specified, check if the file actually exists
+      Map.get(s_obj, attr) && KirruptTv.Helpers.FileHelpers.file_exists(s_obj.fixed_thumb) ->
+        changes
+      # picture is not specified or doesn't exists, check if fanart has url to it
+      Map.get(images, fanart_attr) ->
+        Map.put(changes, attr, (url = download_and_save_image(Map.get(images, fanart_attr) |> List.first)))
+      # picture is specified but it doesn't exists, fanart doesn't have it
+      Map.get(s_obj, attr) ->
+        Map.put(changes, attr, nil)
+      # picture is not specified and fanart doesn't have it
+      true ->
+        changes
+    end
+  end
+
   def set_frant_tv_image(s_obj) do
     cond do
       images = KirruptTv.Parser.FanartTV.get_image_list(s_obj.thetvdb_id) ->
         changes = %{}
 
-        if !s_obj.fixed_thumb && images[:tvthumb] && (url = download_and_save_image(images[:tvthumb] |> List.first)) do
-          changes = Map.merge(changes, %{fixed_thumb: url})
-        end
-
-        if !s_obj.fixed_background && images[:showbackground] && (url = download_and_save_image(images[:showbackground] |> List.first)) do
-          changes = Map.merge(changes, %{fixed_background: url})
-        end
-
-        if !s_obj.fixed_banner && images[:tvbanner] && (url = download_and_save_image(images[:tvbanner] |> List.first)) do
-          changes = Map.merge(changes, %{fixed_banner: url})
-        end
+        changes = get_fanart_image_changes(changes, s_obj, images, :fixed_thumb, :tvthumb)
+        changes = get_fanart_image_changes(changes, s_obj, images, :fixed_background, :showbackground)
+        changes = get_fanart_image_changes(changes, s_obj, images, :fixed_banner, :tvbanner)
 
         result = s_obj
         |> Model.Show.changeset(changes)
