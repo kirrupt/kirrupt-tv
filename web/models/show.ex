@@ -299,6 +299,7 @@ defmodule Model.Show do
         status: info[:status],
         year: info[:year],
         started: info[:started],
+        runtime: info[:runtime],
         origin_country: info[:origin_country],
         airtime: info[:airtime],
         airday: info[:airday],
@@ -326,7 +327,7 @@ defmodule Model.Show do
 
       case result do
         {:ok, struct}        -> s_obj = struct
-        {:error, changeset} -> Logger.error("Could't update show '#{s_obj.id}' - #{inspect(changeset.errors)}"); false
+        {:error, changeset} -> Logger.error("Could't update show '#{s_obj.id}' - #{inspect(changeset.errors)}"); fake_update(s_obj); false
       end
 
       if info[:episodes] do
@@ -337,7 +338,23 @@ defmodule Model.Show do
       set_frant_tv_image(s_obj)
       set_url(s_obj)
     else
-      Logger.error("Could't update show '#{s_obj.id}'"); nil
+      Logger.error("Could't update show '#{s_obj.id}'"); fake_update(s_obj); nil
+    end
+  end
+
+  defp fake_update(show) do
+    Logger.warn("Fake updating #{show.id} due to failed updated.")
+
+    show
+    # update last_checked field
+    |> Model.Show.changeset(%{last_checked: Timex.now})
+    # force valid? flag, since validation might when updating
+    |> Map.put(:valid?, true)
+    # update show including last_updated field (=mimics behaviour of Python codebase)
+    |> Repo.update
+    |> case do
+      {:ok, struct}        -> true
+      {:error, changeset} -> Logger.error("Couldn't fake update show '#{show.id}' - #{inspect(changeset.errors)}"); false
     end
   end
 
