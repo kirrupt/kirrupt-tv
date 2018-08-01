@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   app:
-    build: .
+    build: ./tv/
     ports:
       - "172.17.0.1:10600:8080"
     restart: always

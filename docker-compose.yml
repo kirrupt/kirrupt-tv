@@ -9,7 +9,7 @@ services:
       - MYSQL_ROOT_PASSWORD=test
       - MYSQL_DATABASE=kirrupt
   app:
-    build: .
+    build: ./tv/
     ports:
       - "127.0.0.1:8080:8080"
     restart: always
@@ -18,7 +18,7 @@ services:
       - /app/_build
       - /app/node_modules
       - /app/priv/static
-      - ./:/app
+      - ./tv/:/app
       - ./data/shows/:/app/shows
     networks:
       - default

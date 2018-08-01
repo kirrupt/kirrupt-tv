@@ -5,7 +5,7 @@ build:
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker build -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir:$CI_COMMIT_SHA .
-    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir:$CI_COMMIT_SHA
-    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir:latest
-    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir:latest
+    - docker build -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA ./tv/
+    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA
+    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:latest
+    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:latest
