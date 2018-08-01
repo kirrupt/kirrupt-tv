@@ -1,4 +1,4 @@
-package kirrupt.tvrecommendation.findSimilarities.utilities;
+package recommendation.utilities;
 
 import java.io.Serializable;
 

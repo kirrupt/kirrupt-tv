@@ -1,17 +1,17 @@
-package kirrupt.tvrecommendation.findSimilarities.reader;
+package recommendation.reader;
 
 import java.util.ArrayList;
 
 import java.util.HashMap;
 
-import kirrupt.tvrecommendation.findSimilarities.DatabaseImpl;
+import recommendation.DatabaseImpl;
 
-import kirrupt.tvrecommendation.findSimilarities.utilities.Key;
-import kirrupt.tvrecommendation.findSimilarities.utilities.DoublePair;
-import kirrupt.tvrecommendation.findSimilarities.utilities.Pair;
-import kirrupt.tvrecommendation.findSimilarities.utilities.Triple;
-import kirrupt.tvrecommendation.findSimilarities.utilities.Pair;
-import kirrupt.tvrecommendation.findSimilarities.utilities.Triple;
+import recommendation.utilities.Key;
+import recommendation.utilities.DoublePair;
+import recommendation.utilities.Pair;
+import recommendation.utilities.Triple;
+import recommendation.utilities.Pair;
+import recommendation.utilities.Triple;
 
 /**
  * An interface to describe a data reader to read in movie data

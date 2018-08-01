@@ -1,4 +1,4 @@
-package kirrupt.tvrecommendation.findSimilarities;
+package recommendation;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,13 +6,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import kirrupt.tvrecommendation.findSimilarities.db.Database;
+import recommendation.db.Database;
 
-import kirrupt.tvrecommendation.findSimilarities.utilities.Key;
-import kirrupt.tvrecommendation.findSimilarities.utilities.IntDoublePair;
-import kirrupt.tvrecommendation.findSimilarities.utilities.Pair;
-import kirrupt.tvrecommendation.findSimilarities.utilities.DoublePair;
-import kirrupt.tvrecommendation.findSimilarities.utilities.Triple;
+import recommendation.utilities.Key;
+import recommendation.utilities.IntDoublePair;
+import recommendation.utilities.Pair;
+import recommendation.utilities.DoublePair;
+import recommendation.utilities.Triple;
 
 public class DatabaseImpl extends Database {
 

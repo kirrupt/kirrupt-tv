@@ -1,4 +1,4 @@
-package kirrupt.tvrecommendation.findSimilarities.utilities;
+package recommendation.utilities;
 
 /**
  * The Timer227 class provides the means to measure the execution 

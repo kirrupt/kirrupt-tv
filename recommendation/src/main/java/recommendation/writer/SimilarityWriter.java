@@ -1,10 +1,10 @@
-package kirrupt.tvrecommendation.findSimilarities.writer;
+package recommendation.writer;
 
 import java.util.TreeSet;
 import java.util.ArrayList;
 
-import kirrupt.tvrecommendation.findSimilarities.utilities.IntDoublePair;
-import kirrupt.tvrecommendation.findSimilarities.utilities.IntDoubleIntTriple;
+import recommendation.utilities.IntDoublePair;
+import recommendation.utilities.IntDoubleIntTriple;
 /**
  * An interface to describe a way of writing similarity tables
  * @author Amrit Tuladhar

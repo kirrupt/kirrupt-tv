@@ -1,13 +1,13 @@
-package kirrupt.tvrecommendation.findSimilarities;
+package recommendation;
 
 import java.util.HashMap;
 import java.util.ArrayList;
 
-import kirrupt.tvrecommendation.findSimilarities.reader.DataReader;
-import kirrupt.tvrecommendation.findSimilarities.utilities.Pair;
-import kirrupt.tvrecommendation.findSimilarities.utilities.Key;
-import kirrupt.tvrecommendation.findSimilarities.utilities.Triple;
-import kirrupt.tvrecommendation.findSimilarities.utilities.DoublePair;
+import recommendation.reader.DataReader;
+import recommendation.utilities.Pair;
+import recommendation.utilities.Key;
+import recommendation.utilities.Triple;
+import recommendation.utilities.DoublePair;
 
 /**
  * Describes the similarity measure to be used by a ModelBuilder to build an item-based model

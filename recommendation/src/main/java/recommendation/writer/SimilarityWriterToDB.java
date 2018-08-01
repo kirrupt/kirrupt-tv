@@ -1,4 +1,4 @@
-package kirrupt.tvrecommendation.findSimilarities.writer;
+package recommendation.writer;
 
 import java.util.TreeSet;
 import java.util.ArrayList;
@@ -9,10 +9,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 
-import  kirrupt.tvrecommendation.findSimilarities.writer.SimilarityWriter;
-import  kirrupt.tvrecommendation.findSimilarities.DatabaseImpl;
-import kirrupt.tvrecommendation.findSimilarities.utilities.IntDoubleIntTriple;
-import kirrupt.tvrecommendation.findSimilarities.utilities.IntDoublePair;
+import  recommendation.writer.SimilarityWriter;
+import  recommendation.DatabaseImpl;
+import recommendation.utilities.IntDoubleIntTriple;
+import recommendation.utilities.IntDoublePair;
 
 /**
  * A SimilarityWriter that writes to a database

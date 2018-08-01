@@ -1,9 +1,9 @@
-package kirrupt.tvrecommendation.findSimilarities;
+package recommendation;
 
-import kirrupt.tvrecommendation.findSimilarities.PearsonSimilarityMethod;
-import kirrupt.tvrecommendation.findSimilarities.reader.DataReaderFromDB;
-import kirrupt.tvrecommendation.findSimilarities.ItemBasedModelBuilder;
-import kirrupt.tvrecommendation.findSimilarities.writer.SimilarityWriterToDB;
+import recommendation.PearsonSimilarityMethod;
+import recommendation.reader.DataReaderFromDB;
+import recommendation.ItemBasedModelBuilder;
+import recommendation.writer.SimilarityWriterToDB;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;

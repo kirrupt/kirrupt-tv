@@ -1,4 +1,4 @@
-package kirrupt.tvrecommendation.findSimilarities.utilities;
+package recommendation.utilities;
 
 /**
  * A triple consisting of a pair of integers and a double.  

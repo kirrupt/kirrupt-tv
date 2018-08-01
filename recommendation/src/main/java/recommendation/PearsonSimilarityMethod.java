@@ -1,12 +1,12 @@
-package kirrupt.tvrecommendation.findSimilarities;
+package recommendation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import kirrupt.tvrecommendation.findSimilarities.reader.DataReader;
-import kirrupt.tvrecommendation.findSimilarities.utilities.Pair;
-import kirrupt.tvrecommendation.findSimilarities.utilities.Key;
-import kirrupt.tvrecommendation.findSimilarities.utilities.Triple;
-import kirrupt.tvrecommendation.findSimilarities.utilities.DoublePair;
+import recommendation.reader.DataReader;
+import recommendation.utilities.Pair;
+import recommendation.utilities.Key;
+import recommendation.utilities.Triple;
+import recommendation.utilities.DoublePair;
 
 //TODO: combine methods better so less copied code - steinbel
 public class PearsonSimilarityMethod implements SimilarityMethod {

@@ -1,4 +1,4 @@
-package kirrupt.tvrecommendation.findSimilarities.db;
+package recommendation.db;
 
 /**
  * This class provides basic db connection and access.

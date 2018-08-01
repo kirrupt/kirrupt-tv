@@ -1,22 +1,22 @@
-package kirrupt.tvrecommendation.findSimilarities;
+package recommendation;
 
 import java.util.Comparator;
 import java.util.TreeSet;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-import kirrupt.tvrecommendation.findSimilarities.SimilarityMethod;
-import kirrupt.tvrecommendation.findSimilarities.reader.DataReader;
+import recommendation.SimilarityMethod;
+import recommendation.reader.DataReader;
 
-import kirrupt.tvrecommendation.findSimilarities.writer.SimilarityWriter;
+import recommendation.writer.SimilarityWriter;
 //import netflix.algorithms.modelbased.writer.UserSimKeeper;
 
-import kirrupt.tvrecommendation.findSimilarities.utilities.Key;
-import kirrupt.tvrecommendation.findSimilarities.utilities.DoublePair;
-import kirrupt.tvrecommendation.findSimilarities.utilities.Pair;
-import kirrupt.tvrecommendation.findSimilarities.utilities.IntDoubleIntTriple;
-import kirrupt.tvrecommendation.findSimilarities.utilities.IntDoublePair;
-import kirrupt.tvrecommendation.findSimilarities.utilities.Timer227;
+import recommendation.utilities.Key;
+import recommendation.utilities.DoublePair;
+import recommendation.utilities.Pair;
+import recommendation.utilities.IntDoubleIntTriple;
+import recommendation.utilities.IntDoublePair;
+import recommendation.utilities.Timer227;
 
 /**
  * General class for writing an item-based model builder.
