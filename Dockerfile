@@ -4,13 +4,13 @@ ENV ELIXIR_VERSION="v1.5.2" \
 	LANG=C.UTF-8
 
 RUN apt-get update && \
-    apt-get install -y wget curl gnupg unzip git build-essential imagemagick
+    apt-get install -y wget curl gnupg unzip git build-essential imagemagick gdebi-core
 
 # install erlang
-RUN wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && \
-    dpkg -i erlang-solutions_1.0_all.deb && \
-    apt-get update && \
-    apt-get install -y esl-erlang
+RUN curl -fSL -o erlang.deb https://packages.erlang-solutions.com/erlang/esl-erlang/FLAVOUR_1_general/esl-erlang_20.0-1~debian~stretch_amd64.deb \
+	&& echo "775444891760345a1ed1431ef9c0e10c08a31d691c35b6675eff72db9e524c64  erlang.deb" | sha256sum -c - \
+	&& gdebi --non-interactive ./erlang.deb \
+	&& rm erlang.deb
 
 # install elixir
 RUN set -xe \
