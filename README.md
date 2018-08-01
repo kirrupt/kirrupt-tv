@@ -4,22 +4,25 @@
 
 ### Requirements
 
-* Docker
-* `docker-compose`
+* local k8s cluster (e.g. minikube)
+* skaffold
 
 ### Getting started
 
 Clone repository and run:
 ```bash
-docker-compose up
+skaffold dev
 ```
+to build images and start them in development mode on k8s.
 
 After application is started, you can visit [`localhost:8080`](http://localhost:8080) from your browser.
 
 ### Helpful commands
 #### Import of existing database
 ```bash
-docker exec -i kirrupttvelixir_mariadb_1 mysql -u root -ptest kirrupt < kirrupt.sql
+kubectl cp database.sql mariadb-<id>:./
+kubectl exec -it mariadb-<id> bash
+container$ mysql -u root -ptest kirrupt < dejan_kirrupt.sql
 ```
 #### Database migration
 ```bash

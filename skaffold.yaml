@@ -1,0 +1,16 @@
+apiVersion: skaffold/v1alpha2
+kind: Config
+build:
+  artifacts:
+  - imageName: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv
+    workspace: ./tv/
+  - imageName: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation
+    workspace: ./recommendation/
+  - imageName: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/mariadb
+    workspace: ./mariadb/
+deploy:
+  kubectl:
+    manifests:
+    - ./tv/kubernetes/*
+    - ./recommendation/kubernetes/*
+    - ./mariadb/*

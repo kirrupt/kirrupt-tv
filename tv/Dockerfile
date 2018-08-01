@@ -28,7 +28,8 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
 RUN apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
-ADD . /app
+ADD mix.exs /app/mix.exs
+ADD mix.lock /app/mix.lock
 
 WORKDIR /app
 
@@ -37,9 +38,14 @@ RUN mix local.rebar --force
 
 RUN mix deps.get
 
+ADD package.json /app/package.json
+
 RUN npm install
 
-ENV MIX_ENV prod
+ENV MIX_ENV dev
 RUN mix compile
+
+ADD . /app
+
 RUN ./node_modules/brunch/bin/brunch build --production
 RUN mix phoenix.digest

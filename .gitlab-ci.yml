@@ -1,4 +1,4 @@
-build:
+build-tv:
   image: docker:latest
   services:
     - docker:dind
@@ -9,3 +9,15 @@ build:
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA
     - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:latest
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:latest
+
+build-recommendation:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker build -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHA ./recommendation/
+    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHA
+    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:latest
+    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:latest
