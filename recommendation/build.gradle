@@ -31,3 +31,9 @@ dependencies {
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     testCompile("junit:junit")
 }
+
+task download (type: Exec) {
+    configurations.compile.files
+    configurations.testCompile.files
+    commandLine 'echo', 'Downloaded all dependencies'
+}

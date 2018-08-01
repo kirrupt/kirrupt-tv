@@ -29,6 +29,9 @@ container$ mysql -u root -ptest kirrupt < dejan_kirrupt.sql
 docker-compose exec app mix ecto.migrate
 ```
 
+#### Ambassador Dashboard
+Open [`http://localhost/ambassador/v0/diag/?loglevel=debug`](http://localhost/ambassador/v0/diag/?loglevel=debug) in your web browser.
+
 # API docs
 
 Api prefix: /api/v2

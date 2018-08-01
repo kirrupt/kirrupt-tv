@@ -4,6 +4,14 @@ metadata:
   name: tv
   labels:
     app: tv
+  annotations:
+    getambassador.io/config: |
+      ---
+      apiVersion: ambassador/v0
+      kind:  Mapping
+      name:  tv-mapping
+      prefix: /
+      service: tv:8080
 spec:
   type: NodePort
   ports:

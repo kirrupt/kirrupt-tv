@@ -4,10 +4,18 @@ metadata:
   name: recommendation
   labels:
     app: recommendation
+  annotations:
+    getambassador.io/config: |
+      ---
+      apiVersion: ambassador/v0
+      kind:  Mapping
+      name:  recommendation-mapping
+      prefix: /api/v1/recommendation/
+      service: recommendation:8080
 spec:
   type: NodePort
   ports:
-    - port: 8081
+    - port: 8080
       targetPort: 8080
       protocol: TCP
       name: recommendation

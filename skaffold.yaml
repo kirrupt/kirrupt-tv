@@ -14,3 +14,4 @@ deploy:
     - ./tv/kubernetes/*
     - ./recommendation/kubernetes/*
     - ./mariadb/*
+    - ./ambassador/*
