@@ -1,0 +1,13 @@
+package kirrupt.tvrecommendation.findSimilarities;
+
+import kirrupt.tvrecommendation.findSimilarities.PearsonSimilarityMethod;
+
+public class FindSimilarities {
+
+    public static void main(String[] args) {
+        System.out.println("Hello, World");
+
+	
+    }
+
+}
