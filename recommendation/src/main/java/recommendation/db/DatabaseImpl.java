@@ -1,12 +1,10 @@
-package recommendation;
+package recommendation.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import recommendation.db.Database;
 
 import recommendation.utilities.Key;
 import recommendation.utilities.IntDoublePair;
@@ -15,24 +13,33 @@ import recommendation.utilities.DoublePair;
 import recommendation.utilities.Triple;
 
 public class DatabaseImpl extends Database {
-
     protected String usersName;
     private String similarityTableName;
 
-    public DatabaseImpl() {
-        super();
+    private static DatabaseImpl instance;
+    public static DatabaseImpl getInstance() {
+        if(instance == null){
+            synchronized (DatabaseImpl.class) {
+                if(instance == null){
+                    instance = new DatabaseImpl(
+                            System.getenv("MYSQL_DB"),
+                            "recommendation_top_users_ratings",
+                            "recommendation_movie",
+                            "recommendation_top_users");
+
+                    instance.host = System.getenv("MYSQL_HOST");
+                    instance.user = System.getenv("MYSQL_USER");
+                    instance.password = System.getenv("MYSQL_PASS");
+                    instance.similarityTableName = "recommendation_item_similarity";
+                }
+            }
+        }
+        return instance;
     }
 
     public DatabaseImpl(String dbName, String ratingsName, String moviesName, String usersName) {
         super(dbName, ratingsName, moviesName);
         this.usersName = usersName;
-    }
-    
-    public DatabaseImpl(String dbName, String ratingsName, String moviesName, String usersName,
-    					String similarityName){
-    	super(dbName, ratingsName, moviesName);
-    	this.usersName = usersName;
-    	this.similarityTableName = similarityName;
     }
 
     public ArrayList<Integer> getMovieIDs() {

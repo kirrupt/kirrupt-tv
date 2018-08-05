@@ -1,11 +1,9 @@
-package recommendation;
+package recommendation.similarities;
 
 import java.util.Comparator;
-import java.util.TreeSet;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-import recommendation.SimilarityMethod;
 import recommendation.reader.DataReader;
 
 import recommendation.writer.SimilarityWriter;
@@ -13,7 +11,6 @@ import recommendation.writer.SimilarityWriter;
 
 import recommendation.utilities.Key;
 import recommendation.utilities.DoublePair;
-import recommendation.utilities.Pair;
 import recommendation.utilities.IntDoubleIntTriple;
 import recommendation.utilities.IntDoublePair;
 import recommendation.utilities.Timer227;

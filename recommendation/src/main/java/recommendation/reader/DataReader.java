@@ -4,12 +4,8 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 
-import recommendation.DatabaseImpl;
-
 import recommendation.utilities.Key;
 import recommendation.utilities.DoublePair;
-import recommendation.utilities.Pair;
-import recommendation.utilities.Triple;
 import recommendation.utilities.Pair;
 import recommendation.utilities.Triple;
 

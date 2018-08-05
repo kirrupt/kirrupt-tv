@@ -10,7 +10,7 @@ metadata:
       apiVersion: ambassador/v0
       kind:  Mapping
       name:  recommendation-mapping
-      prefix: /api/v1/recommendation/
+      prefix: /api/v3/recommendation/
       service: recommendation:8080
 spec:
   type: NodePort
@@ -43,3 +43,12 @@ spec:
         image: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation
         ports:
         - containerPort: 8081
+        env:
+        - name: MYSQL_HOST
+          value: "mariadb"
+        - name: MYSQL_USER
+          value: "root"
+        - name: MYSQL_PASS
+          value: "test"
+        - name: MYSQL_DB
+          value: "kirrupt"

@@ -1,18 +1,11 @@
 package recommendation.writer;
 
-import java.util.TreeSet;
 import java.util.ArrayList;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.PreparedStatement;
 
-import  recommendation.writer.SimilarityWriter;
-import  recommendation.DatabaseImpl;
+import recommendation.db.DatabaseImpl;
 import recommendation.utilities.IntDoubleIntTriple;
-import recommendation.utilities.IntDoublePair;
 
 /**
  * A SimilarityWriter that writes to a database

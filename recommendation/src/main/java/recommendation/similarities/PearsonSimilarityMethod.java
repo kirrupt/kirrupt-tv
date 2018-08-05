@@ -1,11 +1,10 @@
-package recommendation;
+package recommendation.similarities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import recommendation.reader.DataReader;
 import recommendation.utilities.Pair;
 import recommendation.utilities.Key;
-import recommendation.utilities.Triple;
 import recommendation.utilities.DoublePair;
 
 //TODO: combine methods better so less copied code - steinbel

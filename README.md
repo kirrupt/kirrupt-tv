@@ -20,10 +20,9 @@ After application is started, you can visit [`localhost:8080`](http://localhost:
 ### Helpful commands
 #### Import of existing database
 ```bash
-kubectl cp database.sql mariadb-<id>:./
-kubectl exec -it mariadb-<id> bash
-container$ mysql -u root -ptest kirrupt < dejan_kirrupt.sql
+kubectl exec -i $(kubectl get pods | grep "mariadb-" | awk '{print $1}') -- mysql -u root -ptest kirrupt < database.sql
 ```
+
 #### Database migration
 ```bash
 docker-compose exec app mix ecto.migrate

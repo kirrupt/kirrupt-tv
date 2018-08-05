@@ -3,7 +3,7 @@ package recommendation.reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import recommendation.DatabaseImpl;
+import recommendation.db.DatabaseImpl;
 
 import recommendation.utilities.DoublePair;
 import recommendation.utilities.Pair;
