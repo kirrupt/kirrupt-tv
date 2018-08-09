@@ -12,6 +12,14 @@ metadata:
       name:  auth-mapping
       prefix: /api/v3/auth/
       service: auth:8080
+      ---
+      apiVersion: ambassador/v0
+      kind:  AuthService
+      name:  authentication
+      auth_service: "auth:8080"
+      path_prefix: "/extauth"
+      allowed_headers:
+      - "x-user"
 spec:
   type: NodePort
   ports:

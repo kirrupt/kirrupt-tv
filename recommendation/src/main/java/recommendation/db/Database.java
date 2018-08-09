@@ -11,7 +11,7 @@ import java.sql.Statement;
 public class Database {
 
 	//class variables
-	protected Connection con;
+	public Connection con;
 	protected String dbName;
 	protected String ratingsName;
 	protected String moviesName;

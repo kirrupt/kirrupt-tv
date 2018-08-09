@@ -18,4 +18,5 @@ RUN echo "package main" >> /go/src/app/main.go && \
     go build -i
 ADD . .
 RUN go build
-CMD ./auth
+
+CMD ./app

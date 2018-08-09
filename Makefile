@@ -12,4 +12,8 @@ import:
 sql:
 	kubectl exec -it $(MARIADB_POD) -- mysql -u root -ptest kirrupt
 
+.PHONY: zipkin
+zipkin:
+	kubectl port-forward $(shell kubectl get pods | grep zipkin | tail -n 1 | awk '{print $$1}') 9411
+
 all: skaffold
