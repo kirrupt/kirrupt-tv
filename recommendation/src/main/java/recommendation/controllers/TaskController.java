@@ -8,12 +8,24 @@ import recommendation.similarities.ItemBasedModelBuilder;
 import recommendation.similarities.PearsonSimilarityMethod;
 import recommendation.writer.SimilarityWriterToDB;
 
+import java.sql.SQLException;
+
 @RestController
 public class TaskController {
     @RequestMapping("/tasks/find-similarities")
-    public String findSimilarities() {
+    public String findSimilarities() throws SQLException {
         DatabaseImpl dbi = DatabaseImpl.getInstance();
+
         DataReaderFromDB db = new DataReaderFromDB(dbi);
+
+        dbi.createTables();
+
+        dbi.calculateUserRatings();
+        dbi.calculateMovieRating();
+        dbi.calculateTopUsers();
+
+        // We truncate here, but the table should be removed and recreated in `createTables()` anyways.
+        dbi.truncateSimilarityTable();
 
         PearsonSimilarityMethod sim = new PearsonSimilarityMethod();
 

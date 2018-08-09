@@ -9,7 +9,17 @@ build-tv:
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA
     - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:latest
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:latest
-
+build-auth:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker build -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:$CI_COMMIT_SHA ./auth/
+    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:$CI_COMMIT_SHA
+    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:latest
+    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:latest
 build-recommendation:
   image: docker:latest
   services:
@@ -21,3 +31,14 @@ build-recommendation:
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHA
     - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:latest
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:latest
+build-images:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker build -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:$CI_COMMIT_SHA ./images/
+    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:$CI_COMMIT_SHA
+    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:latest
+    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:latest

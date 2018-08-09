@@ -67,7 +67,111 @@ public class DatabaseImpl extends Database {
         return ids;
     }
 
+    public void createTables() throws SQLException {
+        Statement stmt = con.createStatement();
+        stmt.executeUpdate("DROP TABLE IF EXISTS `recommendation_item_similarity`");
+        stmt.executeUpdate("DROP TABLE IF EXISTS `recommendation_movie`");
+        stmt.executeUpdate("DROP TABLE IF EXISTS `recommendation_top_users`");
+        stmt.executeUpdate("DROP TABLE IF EXISTS `recommendation_top_users_ratings`");
 
+        stmt.executeUpdate(" CREATE TABLE IF NOT EXISTS `recommendation_item_similarity` (" +
+            "                `mid1` int(11) NOT NULL," +
+            "        `mid2` int(11) NOT NULL," +
+            "        `similarity` double NOT NULL," +
+            "                `weight` int(255) NOT NULL DEFAULT '0'," +
+            "                PRIMARY KEY (`mid1`,`mid2`)" +
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8");
+
+        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS `recommendation_movie` (" +
+            "        `mid` int(11) NOT NULL," +
+            "        `release_date` year(4) NOT NULL," +
+            "        `title` varchar(255) CHARACTER SET utf8 NOT NULL," +
+            "                `avgrating` decimal(19,4) DEFAULT '0.0000'" +
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8");
+
+        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS `recommendation_top_users` (" +
+            "        `uid` int(11) NOT NULL," +
+            "        `movie_count` int(11) NOT NULL," +
+            "        `avgrating` decimal(19,4) NOT NULL" +
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8");
+
+        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS `recommendation_top_users_ratings` (" +
+            "        `uid` int(11) NOT NULL," +
+            "        `mid` int(11) NOT NULL," +
+            "        `rating` int(11) NOT NULL," +
+            "        `rating_date` date NOT NULL," +
+            "                KEY `uid` (`uid`)," +
+            "                KEY `mid` (`mid`)" +
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8");
+
+        stmt.close();
+    }
+
+    public void calculateUserRatings() throws SQLException {
+        Statement stmt = con.createStatement();
+        stmt.executeUpdate("TRUNCATE TABLE recommendation_top_users_ratings");
+
+        // user_id, show_id, user_count, show_count
+        ResultSet rs = stmt.executeQuery("select u.id as user_id, us.show_id as show_id, COUNT(*) as user_count, (SELECT COUNT( * )" +
+                "        FROM shows s" +
+                "        LEFT JOIN episodes e ON e.show_id = s.id WHERE s.id = us.show_id AND e.airdate <= CURDATE()" +
+                "        GROUP BY s.id) as show_count from users u join users_shows us on us.user_id = u.id join episodes e on e.show_id = us.show_id join watched_episodes we on we.episode_id = e.id and we.user_id = u.id group by user_id, show_id");
+
+        while (rs.next()) {
+            double userId = rs.getDouble(1);
+            double showId = rs.getDouble(2);
+            double userCount = rs.getDouble(3);
+            double showCount = rs.getDouble(4);
+
+            int rating = Double.valueOf(userCount * (double)10 / showCount).intValue();
+            if (rating > 10) {
+                rating = 10;
+            }
+
+            stmt.executeUpdate("INSERT INTO recommendation_top_users_ratings (uid, mid, rating, rating_date) VALUES (" + userId + ", " + showId + ", " + rating + ", CURDATE())");
+        }
+
+        stmt.close();
+    }
+
+    public void calculateMovieRating() throws SQLException {
+        Statement stmt = con.createStatement();
+        stmt.executeUpdate("TRUNCATE TABLE recommendation_movie");
+
+        ResultSet rs = stmt.executeQuery("select id, year, name from shows");
+
+        while (rs.next()) {
+            // TODO: remove sql injection :D
+            stmt.executeUpdate("INSERT INTO recommendation_movie (mid, release_date, title) VALUES (" + rs.getDouble(1) + ", " + rs.getInt(2)  + ", " + rs.getString(3) + ")");
+        }
+
+        ResultSet rs2 = stmt.executeQuery("SELECT mid, avg(rating) as avg FROM recommendation_top_users_ratings group by mid");
+
+        while (rs2.next()) {
+            stmt.executeUpdate("UPDATE recommendation_movie SET avgrating=" + rs2.getInt(2) + " WHERE mid=" + rs2.getDouble(1));
+        }
+
+        stmt.close();
+    }
+
+    public void calculateTopUsers() throws SQLException {
+        Statement stmt = con.createStatement();
+        stmt.executeUpdate("TRUNCATE TABLE recommendation_top_users");
+
+        ResultSet rs = stmt.executeQuery("select uid, count(mid) as count, avg(rating) as avg from recommendation_top_users_ratings group by uid");
+
+        while (rs.next()) {
+            stmt.executeUpdate("INSERT INTO recommendation_top_users (uid, movie_count, avgrating) VALUES (" + rs.getDouble(1) + ", " + rs.getInt(2) + ", " + rs.getInt(3) + ")");
+        }
+
+        stmt.close();
+    }
+
+    public void truncateSimilarityTable() throws SQLException {
+        Statement stmt = con.createStatement();
+        stmt.executeUpdate("TRUNCATE TABLE recommendation_item_similarity");
+        stmt.close();
+    }
 
     /**
      * @author steinbel

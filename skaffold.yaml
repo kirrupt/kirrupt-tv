@@ -4,14 +4,22 @@ build:
   artifacts:
   - imageName: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv
     workspace: ./tv/
+
+  - imageName: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth
+    workspace: ./auth/
+
   - imageName: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation
     workspace: ./recommendation/
-  - imageName: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/mariadb
-    workspace: ./mariadb/
+
+  - imageName: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images
+    workspace: ./images/
+
 deploy:
   kubectl:
     manifests:
     - ./tv/kubernetes/*
+    - ./auth/kubernetes/*
     - ./recommendation/kubernetes/*
-    - ./mariadb/*
-    - ./ambassador/*
+    - ./images/kubernetes/*
+    - ./mariadb/kubernetes/*
+    - ./ambassador/kubernetes/*

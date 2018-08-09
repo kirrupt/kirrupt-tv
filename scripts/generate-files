@@ -1,0 +1,52 @@
+#!/usr/bin/python3
+
+services = [
+  'tv',
+  'auth',
+  'recommendation',
+  'images',
+]
+
+dev_services = [
+  'mariadb',
+  'ambassador'
+]
+
+with open('skaffold.yaml', 'w') as f:
+  f.write("""apiVersion: skaffold/v1alpha2
+kind: Config
+build:
+  artifacts:""")
+
+  for s in services:
+    f.write("""
+  - imageName: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}
+    workspace: ./{name}/
+""".format(name=s))
+  
+  f.write("""
+deploy:
+  kubectl:
+    manifests:
+""")
+
+  for s in services + dev_services:
+      f.write("""    - ./{name}/kubernetes/*
+""".format(name=s))
+
+with open('.gitlab-ci.yml', 'w') as f:
+  for s in services:
+    f.write("""build-{name}:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker build -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHA ./{name}/
+    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHA
+    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:latest
+    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:latest
+""".format(
+      name=s
+    ))
