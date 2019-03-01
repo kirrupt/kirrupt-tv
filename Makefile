@@ -16,4 +16,8 @@ sql:
 zipkin:
 	kubectl port-forward $(shell kubectl get pods | grep zipkin | tail -n 1 | awk '{print $$1}') 9411
 
+.PHONY: browser
+browser:
+	minikube service ambassador
+
 all: skaffold

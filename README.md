@@ -7,34 +7,33 @@
 * local k8s cluster (e.g. minikube)
 * skaffold
 
+macOS:
+```bash
+brew cask install minikube
+brew install skaffold
+
+# start minikube
+minikube --memory 4096 --cpus 2 start
+```
+
 ### Getting started
-Start minikube:
-```bash
-minikube --memory 4095 --cpus 2 start
-```
-
-Start HTTP tunnel to k8s load balancers (will be created with `skaffold`):
-```bash
-minikube tunnel
-```
-
 Clone repository and run:
 ```bash
-skaffold dev
+make
 ```
 to build images and start them in development mode on k8s.
 
-Get IP of load balancer:
+After application is started, you can use:
 ```bash
-kubectl get services | grep 'ambassador' | grep 'LoadBalancer' | awk '{print $4}'
+make browser
 ```
-
-After application is started, you can visit [`<ip>:8080`](http://<ip>:8080) from your browser.
+to open website in your default browser.
 
 ### Helpful commands
 #### Import of existing database
+You need to have DB export `database.sql` present in project's directory.
 ```bash
-kubectl exec -i $(kubectl get pods | grep "mariadb-" | awk '{print $1}') -- mysql -u root -ptest kirrupt < database.sql
+make import
 ```
 
 #### Database migration
