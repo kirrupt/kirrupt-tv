@@ -8,6 +8,15 @@
 * skaffold
 
 ### Getting started
+Start minikube:
+```bash
+minikube --memory 4095 --cpus 2 start
+```
+
+Start HTTP tunnel to k8s load balancers (will be created with `skaffold`):
+```bash
+minikube tunnel
+```
 
 Clone repository and run:
 ```bash
@@ -15,7 +24,12 @@ skaffold dev
 ```
 to build images and start them in development mode on k8s.
 
-After application is started, you can visit [`localhost:8080`](http://localhost:8080) from your browser.
+Get IP of load balancer:
+```bash
+kubectl get services | grep 'ambassador' | grep 'LoadBalancer' | awk '{print $4}'
+```
+
+After application is started, you can visit [`<ip>:8080`](http://<ip>:8080) from your browser.
 
 ### Helpful commands
 #### Import of existing database
