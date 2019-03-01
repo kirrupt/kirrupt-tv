@@ -33,7 +33,9 @@ type User struct {
 	GoogleSessionId  string
 }
 
-func main() {
+func getDB() *gorm.DB {
+	retries := 0
+
 	connection := fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?charset=utf8&parseTime=True&loc=UTC",
 		os.Getenv("MYSQL_USER"),
 		os.Getenv("MYSQL_PASS"),
@@ -41,11 +43,29 @@ func main() {
 		os.Getenv("MYSQL_DB"),
 	)
 
-	db, err := gorm.Open("mysql", connection)
-	if err != nil {
-		fmt.Println(err)
+	for {
+		db, err := gorm.Open("mysql", connection)
+		if err != nil {
+			if retries > 3 {
+				return nil
+			}
+
+			fmt.Println(err)
+
+			retries++
+			time.Sleep(time.Second * 10)
+		}else{
+			return db
+		}
+	}
+}
+
+func main() {
+	db := getDB()
+	if db == nil {
 		panic("failed to connect database")
 	}
+
 	defer db.Close()
 
 	r := gin.Default()

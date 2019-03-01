@@ -10,6 +10,9 @@ import recommendation.writer.SimilarityWriterToDB;
 
 import java.sql.SQLException;
 
+
+
+
 @RestController
 public class TaskController {
     @RequestMapping("/tasks/find-similarities")
