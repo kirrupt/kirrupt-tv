@@ -1,0 +1,24 @@
+version: '3.1'
+services:
+  app:
+    build: ./tv/
+    ports:
+      - "172.17.0.1:10600:8080"
+    restart: always
+    volumes:
+      - ./data/shows/:/app/shows
+    networks:
+      - mariadb_default
+      - default
+    environment:
+      - PORT=8080
+      - MIX_ENV=prod
+      - MYSQL_HOST
+      - MYSQL_USER
+      - MYSQL_PASS
+      - MYSQL_DB
+      - SENTRY_DSN
+    command: mix phoenix.server
+networks:
+  mariadb_default:
+    external: true
