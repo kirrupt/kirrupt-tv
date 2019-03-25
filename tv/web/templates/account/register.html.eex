@@ -49,21 +49,4 @@
   <% end %>
 </div>
 
-<div style="float:left;margin-top:100px;font-size:20px">
-  or
-</div>
-
-<div style="float:right;margin:0px auto;width:300px;margin-top:100px">
-  <div style="text-align:center;width:112px">
-    <button class="g-signin"
-    	data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"
-    	data-requestvisibleactions="http://schemas.google.com/AddActivity"
-    	data-clientId="842840966368-khjhm9op21jin6h9l6hvok8t81o4tnbf.apps.googleusercontent.com"
-    	data-accesstype="offline"
-    	data-callback="onSignInCallback"
-    	data-theme="dark"
-    	data-cookiepolicy="single_host_origin">
-    </button>
-  </div>
-</div>
 <div class="clear"></div>

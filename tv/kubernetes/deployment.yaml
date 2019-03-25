@@ -12,6 +12,7 @@ metadata:
       name:  tv-mapping
       prefix: /
       service: tv:8080
+      timeout_ms: 120000
 spec:
   type: NodePort
   ports:

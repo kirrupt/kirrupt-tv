@@ -48,4 +48,6 @@ RUN mix compile
 ADD . /app
 
 RUN ./node_modules/brunch/bin/brunch build --production
-RUN mix phoenix.digest
+RUN mix phx.digest
+
+RUN mix compile

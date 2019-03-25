@@ -79,8 +79,7 @@
 
 
 			<div id="footer" style="text-align:right;margin-top:20px">
-				<a href="{{url_for('about_contactus')}}">contact us</a> <span style="color:#ddd">|</span>
-				&copy; Kirrupt 2017
+				&copy; Kirrupt 2019
 			</div>
 			</div>
 
@@ -90,15 +89,6 @@
 
 
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-		<script type="text/javascript">
-		(function() {
-			var po = document.createElement('script');
-			po.type = 'text/javascript'; po.async = true;
-			po.src = 'https://plus.google.com/js/client:plusone.js';
-			var s = document.getElementsByTagName('script')[0];
-			s.parentNode.insertBefore(po, s);
-		})();
-		</script>
 		<script type="text/javascript">var site_url='<%= recent_path(@conn, :index) %>/';</script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
 

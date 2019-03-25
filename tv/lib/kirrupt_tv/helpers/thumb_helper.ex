@@ -5,7 +5,7 @@ defmodule KirruptTv.Helpers.ThumbHelper do
     Application.app_dir(:kirrupt_tv, "priv/static")
   end
 
-  def thumbs_folder, do: Path.join(static_folder, "thumbs")
+  def thumbs_folder, do: Path.join(static_folder(), "thumbs")
   def thumbs_folder(thumb_type, image_path), do: Path.dirname(thumb_image_path(thumb_type, image_path))
 
   def relative_thumb_folder(thumb_type, image_path) do
@@ -18,11 +18,11 @@ defmodule KirruptTv.Helpers.ThumbHelper do
   end
 
   def original_image_path(image_path) do
-    Path.join(static_folder, image_path)
+    Path.join(static_folder(), image_path)
   end
 
   def thumb_image_path(thumb_type, image_path) do
-    Path.join([thumbs_folder, thumb_type, image_path])
+    Path.join([thumbs_folder(), thumb_type, image_path])
   end
 
   def get_thumb(_, nil), do: nil
