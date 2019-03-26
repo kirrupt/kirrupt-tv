@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 services = [
   'tv',
@@ -35,6 +35,11 @@ deploy:
 """.format(name=s))
 
 with open('.gitlab-ci.yml', 'w') as f:
+  f.write("""stages:
+  - build
+  - test
+""")
+
   for s in services:
     f.write("""build-{name}:
   image: docker:latest
@@ -43,6 +48,7 @@ with open('.gitlab-ci.yml', 'w') as f:
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:latest || true
     - docker build -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHA ./{name}/
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHA
     - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:latest
@@ -50,3 +56,28 @@ with open('.gitlab-ci.yml', 'w') as f:
 """.format(
       name=s
     ))
+
+  f.write("""test:
+  image: quay.io/aspenmesh/minikube-dind
+  stage: test
+  script:
+    - /start.sh &
+    - sleep 30
+    - kubectl get nodes || true
+    - docker ps
+    - docker info
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+""")
+
+  for s in services:
+    f.write("""    - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHA
+    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHORT_SHA
+""".format(
+      name=s
+    ))
+
+  f.write("""    - curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v0.25.0/skaffold-linux-amd64 && chmod +x skaffold && sudo mv skaffold /usr/local/bin
+    - skaffold run
+    - sudo kubectl port-forward service/ambassador 80 &
+    - make cypress-ci
+""")

@@ -22,6 +22,11 @@ cypress:
 	make seed
 	cd tests/integration/ && CYPRESS_baseUrl=$(URL) ./node_modules/.bin/cypress run
 
+.PHONY: cypress-ci
+cypress-ci
+	make seed
+	cd tests/integration/ && CYPRESS_baseUrl=http://localhost:80/ ./node_modules/.bin/cypress run
+
 .PHONY: cypress-dev
 cypress-dev:
 	make seed

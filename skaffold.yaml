@@ -1,15 +1,19 @@
-apiVersion: skaffold/v1alpha3
+apiVersion: skaffold/v1alpha2
 kind: Config
 build:
   artifacts:
   - imageName: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv
     workspace: ./tv/
+
   - imageName: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth
     workspace: ./auth/
+
   - imageName: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation
     workspace: ./recommendation/
+
   - imageName: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images
     workspace: ./images/
+
 deploy:
   kubectl:
     manifests:
