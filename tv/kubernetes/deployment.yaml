@@ -58,3 +58,5 @@ spec:
           value: "test"
         - name: MYSQL_DB
           value: "kirrupt"
+      imagePullSecrets:
+        - name: gitlab-auth

@@ -47,8 +47,6 @@ spec:
           value: "test"
         - name: MYSQL_DATABASE
           value: "kirrupt"
-        - name: LOL
-          value: "4"
 ---
 kind: PersistentVolume
 apiVersion: v1
