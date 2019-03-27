@@ -49,7 +49,7 @@ with open('.gitlab-ci.yml', 'w') as f:
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:latest || true
-    - docker build -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHA ./{name}/
+    - docker build --cache-from registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:latest -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHA ./{name}/
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHA
     - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:latest
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:latest
@@ -57,27 +57,38 @@ with open('.gitlab-ci.yml', 'w') as f:
       name=s
     ))
 
-  f.write("""test:
-  image: quay.io/aspenmesh/minikube-dind
+  f.write("""build-e2e:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:latest || true
+    - docker build --cache-from registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:latest -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:$CI_COMMIT_SHA ./ci/cypress/
+    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:$CI_COMMIT_SHA
+    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:latest
+    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:latest
+
+test-e2e:
+  image: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:$CI_COMMIT_SHA
   stage: test
   script:
-    - /start.sh &
-    - sleep 30
-    - kubectl get nodes || true
+    - scripts/ci-k3s.sh
+    - k3s kubectl get nodes
     - docker ps
     - docker info
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
 """)
 
-  for s in services:
-    f.write("""    - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHA
-    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHORT_SHA
+  f.write("""    - KUBECONFIG=/etc/rancher/k3s/k3s.yaml skaffold deploy --images {list}
+    - k3s kubectl wait deployment/ambassador --for condition=available --timeout=120s
+    - k3s kubectl get service ambassador -o go-template='{{{{(index .spec.ports 0).nodePort}}}}'
+    - retry --verbose -i 5s -c 200 scripts/ci-check-pod.sh tv
+    - retry --verbose -i 5s -c 200 scripts/ci-check-pod.sh mariadb
+    - KUBECONFIG=/etc/rancher/k3s/k3s.yaml retry --verbose -i 5s -c 200 make check-db
+    - PORT=$(k3s kubectl get service ambassador -o go-template='{{{{(index .spec.ports 0).nodePort}}}}') retry --verbose -i 5s -c 200 curl --fail --show-error http://localhost:$PORT/account/login
+    - KUBECONFIG=/etc/rancher/k3s/k3s.yaml make cypress-ci
 """.format(
-      name=s
-    ))
-
-  f.write("""    - curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v0.25.0/skaffold-linux-amd64 && chmod +x skaffold && sudo mv skaffold /usr/local/bin
-    - skaffold run
-    - sudo kubectl port-forward service/ambassador 80 &
-    - make cypress-ci
-""")
+    list=','.join(['registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHA'.format(name=s) for s in services])
+  ))
