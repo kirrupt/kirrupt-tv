@@ -87,7 +87,7 @@ test-e2e:
     - retry --verbose -i 5s -c 200 scripts/ci-check-pod.sh tv
     - retry --verbose -i 5s -c 200 scripts/ci-check-pod.sh mariadb
     - KUBECONFIG=/etc/rancher/k3s/k3s.yaml retry --verbose -i 5s -c 200 make check-db
-    - retry --verbose -i 5s -c 200 curl http://localhost:31012/account/login
+    - PORT=$(k3s kubectl get service ambassador -o go-template='{{{{(index .spec.ports 0).nodePort}}}}') retry --verbose -i 5s -c 200 curl http://localhost:$PORT/account/login
     - KUBECONFIG=/etc/rancher/k3s/k3s.yaml make cypress-ci
 """.format(
     list=','.join(['registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}:$CI_COMMIT_SHA'.format(name=s) for s in services])
