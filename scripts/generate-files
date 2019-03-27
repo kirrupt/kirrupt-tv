@@ -48,6 +48,7 @@ with open('.gitlab-ci.yml', 'w') as f:
   f.write("""stages:
   - build
   - test
+  - deploy
 """)
 
   for s in services:
@@ -106,11 +107,12 @@ test-e2e:
   f.write("""
 deploy-staging:
   image: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:$CI_COMMIT_SHA
-  stage: test
+  stage: deploy
+  only:
+    - staging
   script:
     - mkdir -p ~/.kube
-    - echo $KUBE_STAGING_KUBECONFIG > ~/.kube/config
-    - sleep 10000000
+    - echo "$KUBE_STAGING_KUBECONFIG" > ~/.kube/config
     - kubectl delete secret gitlab-auth || true
     - kubectl create secret docker-registry gitlab-auth --docker-server=registry.gitlab.com --docker-password=$CI_JOB_TOKEN --docker-username=gitlab-ci-token
     - skaffold deploy --images {list} -p staging
