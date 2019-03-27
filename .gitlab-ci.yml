@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - deploy
 build-tv:
   image: docker:latest
   services:
@@ -13,42 +14,6 @@ build-tv:
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA
     - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:latest
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:latest
-build-auth:
-  image: docker:latest
-  services:
-    - docker:dind
-  stage: build
-  script:
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:latest || true
-    - docker build --cache-from registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:latest -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:$CI_COMMIT_SHA ./auth/
-    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:$CI_COMMIT_SHA
-    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:latest
-    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:latest
-build-recommendation:
-  image: docker:latest
-  services:
-    - docker:dind
-  stage: build
-  script:
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:latest || true
-    - docker build --cache-from registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:latest -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHA ./recommendation/
-    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHA
-    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:latest
-    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:latest
-build-images:
-  image: docker:latest
-  services:
-    - docker:dind
-  stage: build
-  script:
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:latest || true
-    - docker build --cache-from registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:latest -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:$CI_COMMIT_SHA ./images/
-    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:$CI_COMMIT_SHA
-    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:latest
-    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:latest
 build-e2e:
   image: docker:latest
   services:
@@ -71,7 +36,7 @@ test-e2e:
     - docker ps
     - docker info
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - KUBECONFIG=/etc/rancher/k3s/k3s.yaml skaffold deploy --images registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA,registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:$CI_COMMIT_SHA,registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHA,registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:$CI_COMMIT_SHA
+    - KUBECONFIG=/etc/rancher/k3s/k3s.yaml skaffold deploy --images registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA
     - k3s kubectl wait deployment/ambassador --for condition=available --timeout=120s
     - k3s kubectl get service ambassador -o go-template='{{(index .spec.ports 0).nodePort}}'
     - retry --verbose -i 5s -c 200 scripts/ci-check-pod.sh tv
@@ -79,3 +44,15 @@ test-e2e:
     - KUBECONFIG=/etc/rancher/k3s/k3s.yaml retry --verbose -i 5s -c 200 make check-db
     - PORT=$(k3s kubectl get service ambassador -o go-template='{{(index .spec.ports 0).nodePort}}') retry --verbose -i 5s -c 200 curl --fail --show-error http://localhost:$PORT/account/login
     - KUBECONFIG=/etc/rancher/k3s/k3s.yaml make cypress-ci
+
+deploy-staging:
+  image: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:$CI_COMMIT_SHA
+  stage: deploy
+  only:
+    - staging
+  script:
+    - mkdir -p ~/.kube
+    - echo "$KUBE_STAGING_KUBECONFIG" > ~/.kube/config
+    - kubectl delete secret gitlab-auth || true
+    - kubectl create secret docker-registry gitlab-auth --docker-server=registry.gitlab.com --docker-password=$CI_JOB_TOKEN --docker-username=gitlab-ci-token
+    - skaffold deploy --images registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA -p staging
