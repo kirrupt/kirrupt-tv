@@ -23,7 +23,6 @@ defmodule KirruptTv.Router do
   scope "/" do
     pipe_through :browser
     addict :routes,
-      register: [path: "/account/register", controller: KirruptTv.AccountController, action: :register],
       login: [path: "/account/login", controller: KirruptTv.AccountController, action: :login],
       logout: [path: "/account/logout", controller: KirruptTv.AccountController, action: :logout]
   end
