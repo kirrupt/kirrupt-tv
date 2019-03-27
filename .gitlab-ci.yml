@@ -76,5 +76,5 @@ test-e2e:
     - k3s kubectl get service ambassador -o go-template='{{(index .spec.ports 0).nodePort}}'
     - retry --verbose -i 5s -c 200 scripts/ci-check-pod.sh tv
     - retry --verbose -i 5s -c 200 scripts/ci-check-pod.sh mariadb
-    - sleep 1000000
+    - KUBECONFIG=/etc/rancher/k3s/k3s.yaml retry --verbose -i 5s -c 200 make check-db
     - KUBECONFIG=/etc/rancher/k3s/k3s.yaml make cypress-ci
