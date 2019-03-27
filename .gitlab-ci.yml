@@ -9,7 +9,7 @@ build-tv:
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:latest || true
-    - docker build -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA ./tv/
+    - docker build --cache-from registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:latest -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA ./tv/
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA
     - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:latest
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:latest
@@ -21,7 +21,7 @@ build-auth:
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:latest || true
-    - docker build -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:$CI_COMMIT_SHA ./auth/
+    - docker build --cache-from registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:latest -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:$CI_COMMIT_SHA ./auth/
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:$CI_COMMIT_SHA
     - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:latest
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:latest
@@ -33,7 +33,7 @@ build-recommendation:
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:latest || true
-    - docker build -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHA ./recommendation/
+    - docker build --cache-from registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:latest -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHA ./recommendation/
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHA
     - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:latest
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:latest
@@ -45,29 +45,36 @@ build-images:
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:latest || true
-    - docker build -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:$CI_COMMIT_SHA ./images/
+    - docker build --cache-from registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:latest -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:$CI_COMMIT_SHA ./images/
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:$CI_COMMIT_SHA
     - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:latest
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:latest
-test:
-  image: quay.io/aspenmesh/minikube-dind
+build-e2e:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:latest || true
+    - docker build --cache-from registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:latest -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:$CI_COMMIT_SHA ./ci/cypress/
+    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:$CI_COMMIT_SHA
+    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:latest
+    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:latest
+
+test-e2e:
+  image: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:$CI_COMMIT_SHA
   stage: test
   script:
-    - /start.sh &
-    - sleep 30
-    - kubectl get nodes || true
+    - scripts/ci-k3s.sh
+    - k3s kubectl get nodes
     - docker ps
     - docker info
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA
-    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHORT_SHA
-    - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:$CI_COMMIT_SHA
-    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:$CI_COMMIT_SHORT_SHA
-    - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHA
-    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHORT_SHA
-    - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:$CI_COMMIT_SHA
-    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:$CI_COMMIT_SHORT_SHA
-    - curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v0.25.0/skaffold-linux-amd64 && chmod +x skaffold && sudo mv skaffold /usr/local/bin
-    - skaffold run
-    - sudo kubectl port-forward service/ambassador 80 &
-    - make cypress-ci
+    - KUBECONFIG=/etc/rancher/k3s/k3s.yaml skaffold deploy --images registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA,registry.gitlab.com/kirrupt/kirrupt-tv-elixir/auth:$CI_COMMIT_SHA,registry.gitlab.com/kirrupt/kirrupt-tv-elixir/recommendation:$CI_COMMIT_SHA,registry.gitlab.com/kirrupt/kirrupt-tv-elixir/images:$CI_COMMIT_SHA
+    - k3s kubectl wait deployment/ambassador --for condition=available --timeout=120s
+    - k3s kubectl get service ambassador -o go-template='{{(index .spec.ports 0).nodePort}}'
+    - retry --verbose -i 5s -c 200 scripts/ci-check-pod.sh tv
+    - retry --verbose -i 5s -c 200 scripts/ci-check-pod.sh mariadb
+    - sleep 1000000
+    - KUBECONFIG=/etc/rancher/k3s/k3s.yaml make cypress-ci
