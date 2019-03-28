@@ -13,15 +13,15 @@ dev_services = [
 ]
 
 with open('skaffold.yaml', 'w') as f:
-  f.write("""apiVersion: skaffold/v1alpha2
+  f.write("""apiVersion: skaffold/v1beta7
 kind: Config
 build:
   artifacts:""")
 
   for s in services:
     f.write("""
-  - imageName: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}
-    workspace: ./{name}/
+  - image: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/{name}
+    context: ./{name}/
 """.format(name=s))
   
   f.write("""

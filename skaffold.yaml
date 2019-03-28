@@ -1,9 +1,9 @@
-apiVersion: skaffold/v1alpha2
+apiVersion: skaffold/v1beta7
 kind: Config
 build:
   artifacts:
-  - imageName: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv
-    workspace: ./tv/
+  - image: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv
+    context: ./tv/
 
 deploy:
   kubectl:

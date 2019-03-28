@@ -30,7 +30,7 @@ Cypress.Commands.add("login", () => {
                 cy.get('#login_username')
                     .type('jdoe').then(() => {
                         cy.get('#login_password')
-                            .type('test').then(() => {
+                            .type('test1234').then(() => {
                                 cy.get('button[type=submit]').click().then(() => {
                                     cy.location().should((location) => {
                                         expect(location.pathname).to.eq('/')
