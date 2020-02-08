@@ -1,0 +1,18 @@
+version: '3.1'
+services:
+  app:
+    build: ./tv/
+    ports:
+      - "0.0.0.0:8080:8080"
+    restart: always
+    volumes:
+      - ./data/shows/:/app/shows
+    environment:
+      - PORT=8080
+      - MIX_ENV=prod
+      - MYSQL_HOST=172.17.0.1
+      - MYSQL_USER=root
+      - MYSQL_PASS=password
+      - MYSQL_DB=kirrupt
+      - SENTRY_DSN=
+    command: mix phoenix.server

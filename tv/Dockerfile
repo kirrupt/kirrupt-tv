@@ -1,16 +1,26 @@
-FROM debian:stretch
+FROM debian:buster
 
 ENV ELIXIR_VERSION="v1.5.2" \
 	LANG=C.UTF-8
 
-RUN apt-get update && \
-    apt-get install -y wget curl gnupg unzip git build-essential imagemagick gdebi-core
+# nodejs prereq
+RUN apt-get update \
+	&& apt-get install -y curl \
+	&& apt-get clean
+
+RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
+
+# install nodejs, imagemagick, build-essentials
+RUN apt-get install -y wget curl gnupg unzip git build-essential imagemagick \
+					   gdebi-core nodejs procps \
+	&& apt-get clean
 
 # install erlang
-RUN curl -fSL -o erlang.deb https://packages.erlang-solutions.com/erlang/esl-erlang/FLAVOUR_1_general/esl-erlang_20.0-1~debian~stretch_amd64.deb \
-	&& echo "775444891760345a1ed1431ef9c0e10c08a31d691c35b6675eff72db9e524c64  erlang.deb" | sha256sum -c - \
+RUN curl -fSL -o erlang.deb https://packages.erlang-solutions.com/erlang/debian/pool/esl-erlang_20.3.8.25-1~debian~buster_amd64.deb \
+	&& echo "6dd4efc6ccc7bed6fa9d154de0f17a6f69ed40472292a3ca246c1b6ebf91f630  erlang.deb" | sha256sum -c - \
 	&& gdebi --non-interactive ./erlang.deb \
-	&& rm erlang.deb
+	&& rm erlang.deb \
+	&& apt-get clean
 
 # install elixir
 RUN set -xe \
@@ -20,13 +30,6 @@ RUN set -xe \
 	&& echo "$ELIXIR_DOWNLOAD_SHA256  elixir-precompiled.zip" | sha256sum -c - \
 	&& unzip -d /usr/local elixir-precompiled.zip \
 	&& rm elixir-precompiled.zip
-
-# install nodejs
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
-	apt-get install -y nodejs
-
-RUN apt-get clean \
-	&& rm -rf /var/lib/apt/lists/*
 
 ADD mix.exs /app/mix.exs
 ADD mix.lock /app/mix.lock
