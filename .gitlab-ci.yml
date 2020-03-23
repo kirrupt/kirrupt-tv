@@ -29,21 +29,15 @@ build-e2e:
 
 test-e2e:
   image: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:$CI_COMMIT_SHA
+  services:
+    - docker:dind
   stage: test
   script:
-    - scripts/ci-k3s.sh
-    - k3s kubectl get nodes
-    - docker ps
-    - docker info
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - KUBECONFIG=/etc/rancher/k3s/k3s.yaml skaffold deploy --images registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA
-    - k3s kubectl wait deployment/ambassador --for condition=available --timeout=120s
-    - k3s kubectl get service ambassador -o go-template='{{(index .spec.ports 0).nodePort}}'
-    - retry --verbose -i 5s -c 200 scripts/ci-check-pod.sh tv
-    - retry --verbose -i 5s -c 200 scripts/ci-check-pod.sh mariadb
-    - KUBECONFIG=/etc/rancher/k3s/k3s.yaml retry --verbose -i 5s -c 200 make check-db
-    - PORT=$(k3s kubectl get service ambassador -o go-template='{{(index .spec.ports 0).nodePort}}') retry --verbose -i 5s -c 200 curl --fail --show-error http://localhost:$PORT/account/login
-    - KUBECONFIG=/etc/rancher/k3s/k3s.yaml make cypress-ci
+    - docker-compose up -d
+    - retry --verbose -i 5s -c 200 make check-db
+    - retry --verbose -i 5s -c 200 curl --fail --show-error http://localhost:8080/account/login
+    - make cypress-ci
 
 deploy-staging:
   image: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:$CI_COMMIT_SHA

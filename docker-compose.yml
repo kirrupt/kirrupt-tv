@@ -1,5 +1,10 @@
 version: '3.1'
 services:
+  mariadb:
+    image: mariadb
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
   app:
     build: ./tv/
     ports:
@@ -9,10 +14,12 @@ services:
       - ./data/shows/:/app/shows
     environment:
       - PORT=8080
-      - MIX_ENV=prod
-      - MYSQL_HOST=172.17.0.1
+      - MIX_ENV=dev
+      - MYSQL_HOST=mariadb
       - MYSQL_USER=root
       - MYSQL_PASS=password
       - MYSQL_DB=kirrupt
       - SENTRY_DSN=
     command: mix phoenix.server
+  cypress:
+    build: ./ci/cypress
