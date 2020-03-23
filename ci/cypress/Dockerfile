@@ -8,4 +8,4 @@ RUN cd /tmp \
     && tar xvfz docker-19.03.8.tgz \
     && mv docker/docker /usr/local/bin \
     && rm -rf /tmp/*
-RUN npm install -g cypress
+RUN npm install cypress

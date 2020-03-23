@@ -22,4 +22,6 @@ services:
       - SENTRY_DSN=
     command: mix phoenix.server
   cypress:
-    build: ./ci/cypress
+    image: cypress/included:4.2.0
+    volumes:
+      - ./tests/integration/:/tests

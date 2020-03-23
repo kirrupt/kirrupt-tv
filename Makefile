@@ -18,7 +18,7 @@ cypress:
 .PHONY: cypress-ci
 cypress-ci:
 	make seed
-	cd tests/integration/ && CYPRESS_baseUrl=http://localhost:$(CI_PORT)/ /node_modules/cypress/bin/cypress run
+	docker-compose run -e CYPRESS_baseUrl=http://app:8080/ cypress -P /tests
 
 .PHONY: cypress-dev
 cypress-dev:
