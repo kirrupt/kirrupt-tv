@@ -34,6 +34,7 @@ test-e2e:
   stage: test
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - sed -i "s/build: .\/tv\//image: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA/g" docker-compose.yml
     - docker-compose up -d
     - retry --verbose -i 5s -c 200 make check-db
     - retry --verbose -i 5s -c 200 curl --fail --show-error http://localhost:8080/account/login
