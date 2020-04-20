@@ -21,12 +21,14 @@ jobs:
         run: 'sed -i -e "s+build: ./tv/+image: $IMAGE_SHA_NAME+g" docker-compose.yml'
         env:
           IMAGE_SHA_NAME: ${{ steps.docker.outputs.IMAGE_SHA_NAME }}
-      - name: Run
-        run: docker-compose up -d
+      - name: Run DB
+        run: docker-compose up -d mariadb
       - name: Wait for DB
         run: retry --verbose -i 5s -c 20 make check-db
+       name: Run web server
+        run: docker-compose up -d tv
       - name: Wait for web server
-        run: retry --verbose -i 5s -c 20 curl --fail --show-error http://localhost:8080/
+        run: retry --verbose -i 5s -c 30 curl --fail --show-error http://localhost:8080/
       - name: Test
         run: make cypress-ci
       - name: Debug logs
