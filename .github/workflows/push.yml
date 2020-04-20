@@ -29,3 +29,6 @@ jobs:
         run: retry --verbose -i 5s -c 20 curl --fail --show-error http://localhost:8080/account/login
       - name: Test
         run: make cypress-ci
+      - name: Debug logs
+        if: always()
+        run: docker-compose logs
