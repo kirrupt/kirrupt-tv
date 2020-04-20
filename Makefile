@@ -31,7 +31,7 @@ sql:
 
 .PHONY: check-db
 check-db:
-	docker-compose exec mariadb mysql -u root -ppassword -e 'select 1'
+	docker-compose exec -T mariadb mysql -u root -ppassword -e 'select 1'
 
 .PHONY: migrate
 migrate:
