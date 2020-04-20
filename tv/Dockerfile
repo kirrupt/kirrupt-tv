@@ -1,14 +1,8 @@
-FROM elixir:1.5-slim
+FROM alpine:3.8
 
-ENV LANG=C.UTF-8
-
-# nodejs prereq
-RUN apt-get update \
-	&& apt-get install -y curl && \
-	curl -sL https://deb.nodesource.com/setup_13.x | bash - && \
-	apt-get install -y --no-install-recommends ca-certificates git build-essential nodejs npm && \
-	apt-get clean && \
-	rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache elixir nodejs nodejs-npm git make g++ ca-certificates && \
+    update-ca-certificates --fresh && \
+    rm -rf /var/cache/apk/*
 
 ADD mix.exs /app/mix.exs
 ADD mix.lock /app/mix.lock
