@@ -31,8 +31,10 @@ jobs:
         run: docker-compose up -d tv
       - name: Wait for web server
         run: retry --verbose -i 5s -c 30 curl --fail --show-error http://localhost:8080/
-      - name: Test
-        run: make cypress-ci
+      - name: Test E2E
+        uses: cypress-io/github-action@v1
+        with:
+          config-file: tests/cypress.json
       - name: Debug logs
         if: always()
         run: docker-compose logs

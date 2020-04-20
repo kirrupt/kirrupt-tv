@@ -15,7 +15,7 @@ cypress:
 	make seed
 	cd tests/integration/ && ./node_modules/.bin/cypress run
 
-.PHONY: cypress-ci
+.PHONY: cypress-docker
 cypress-ci:
 	make seed
 	docker-compose run -T -e CYPRESS_baseUrl=http://tv:8080/ --entrypoint=cypress cypress run
