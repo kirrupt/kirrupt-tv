@@ -26,7 +26,7 @@ jobs:
       - name: Wait for DB
         run: retry --verbose -i 5s -c 20 make check-db
       - name: Wait for web server
-        run: retry --verbose -i 5s -c 20 curl --fail --show-error http://localhost:8080/account/login
+        run: retry --verbose -i 5s -c 20 curl --fail --show-error http://localhost:8080/
       - name: Test
         run: make cypress-ci
       - name: Debug logs
