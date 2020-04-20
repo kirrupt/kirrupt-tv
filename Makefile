@@ -6,8 +6,8 @@ import:
 
 .PHONY: seed
 seed:
-	docker-compose exec mariadb mysql -u root -ppassword -e "DROP DATABASE IF EXISTS kirrupt"
-	docker-compose exec mariadb mysql -u root -ppassword -e "CREATE DATABASE kirrupt"
+	docker-compose exec -T mariadb mysql -u root -ppassword -e "DROP DATABASE IF EXISTS kirrupt"
+	docker-compose exec -T mariadb mysql -u root -ppassword -e "CREATE DATABASE kirrupt"
 	docker-compose exec -T mariadb mysql -u root -ppassword kirrupt < scripts/seed.sql
 
 .PHONY: cypress
@@ -18,7 +18,7 @@ cypress:
 .PHONY: cypress-ci
 cypress-ci:
 	make seed
-	docker-compose run -e CYPRESS_baseUrl=http://tv:8080/ --entrypoint=cypress cypress run
+	docker-compose run -T -e CYPRESS_baseUrl=http://tv:8080/ --entrypoint=cypress cypress run
 
 .PHONY: cypress-dev
 cypress-dev:
