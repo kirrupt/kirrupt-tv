@@ -12,6 +12,7 @@ jobs:
         uses: machine-learning-apps/gpr-docker-publish@master
         id: docker
         with:
+          CACHE: true
           IMAGE_NAME: 'kirrupt-tv'
           DOCKERFILE_PATH: './tv/Dockerfile'
           BUILD_CONTEXT: './tv'
