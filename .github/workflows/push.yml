@@ -1,0 +1,17 @@
+name: docker-compose-actions-workflow
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install retry
+        run: curl -sLo linux_amd64.zip https://github.com/linyows/go-retry/releases/download/v0.3.1/linux_amd64.zip && unzip linux_amd64.zip && sudo mv retry /usr/local/bin
+      - name: Build & run
+        run: docker-compose up -d
+      - name: Wait for DB
+        run: retry --verbose -i 5s -c 200 make check-db
+      - name: Wait for web server
+        run: retry --verbose -i 5s -c 200 curl --fail --show-error http://localhost:8080/account/login
+      - name: Test
+        run: make cypress-ci
