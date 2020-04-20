@@ -7,7 +7,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install retry
         run: curl -sLo linux_amd64.zip https://github.com/linyows/go-retry/releases/download/v0.3.1/linux_amd64.zip && unzip linux_amd64.zip && sudo mv retry /usr/local/bin
-      # output: IMAGE_SHA_NAME and IMAGE_URL
       - name: Build and publish
         uses: machine-learning-apps/gpr-docker-publish@master
         id: docker
@@ -19,9 +18,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Update `docker-compose.yml`
-        run: 'sed -i -e "s+build: ./tv/+image: $IMAGE_URL+g" docker-compose.yml'
+        run: 'sed -i -e "s+build: ./tv/+image: $IMAGE_URL:$IMAGE_SHA_NAME+g" docker-compose.yml'
         env:
           IMAGE_URL: ${{ steps.docker.outputs.IMAGE_URL }}
+          IMAGE_SHA_NAME: ${{ steps.docker.outputs.IMAGE_SHA_NAME }}
       - name: Run
         run: docker-compose up -d
       - name: Wait for DB
