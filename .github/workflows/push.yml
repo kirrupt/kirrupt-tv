@@ -26,7 +26,9 @@ jobs:
       - name: Check running containers
         run: docker ps -a
       - name: Check logs
-        run: docker logs tv
+        run: docker logs kirrupt-tv_tv_1
+      - name: logs 2
+        run: docker-compose logs
       - name: Wait for DB
         run: retry --verbose -i 5s -c 20 make check-db
       - name: Wait for web server
