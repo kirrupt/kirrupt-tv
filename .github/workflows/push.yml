@@ -25,7 +25,7 @@ jobs:
         run: docker-compose up -d mariadb
       - name: Wait for DB
         run: retry --verbose -i 5s -c 20 make check-db
-       name: Run web server
+      - name: Run web server
         run: docker-compose up -d tv
       - name: Wait for web server
         run: retry --verbose -i 5s -c 30 curl --fail --show-error http://localhost:8080/
