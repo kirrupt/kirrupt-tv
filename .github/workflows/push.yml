@@ -23,9 +23,13 @@ jobs:
           IMAGE_SHA_NAME: ${{ steps.docker.outputs.IMAGE_SHA_NAME }}
       - name: Run
         run: docker-compose up -d
+      - name: Check running containers
+        run: docker ps -a
+      - name: Check logs
+        run: docker logs tv
       - name: Wait for DB
-        run: retry --verbose -i 5s -c 200 make check-db
+        run: retry --verbose -i 5s -c 20 make check-db
       - name: Wait for web server
-        run: retry --verbose -i 5s -c 200 curl --fail --show-error http://localhost:8080/account/login
+        run: retry --verbose -i 5s -c 20 curl --fail --show-error http://localhost:8080/account/login
       - name: Test
         run: make cypress-ci
