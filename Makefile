@@ -13,7 +13,7 @@ seed:
 .PHONY: cypress
 cypress:
 	make seed
-	cd tests/integration/ && ./node_modules/.bin/cypress run
+	cd tests/e2e/ && ./node_modules/.bin/cypress run
 
 .PHONY: cypress-docker
 cypress-ci:
@@ -23,7 +23,7 @@ cypress-ci:
 .PHONY: cypress-dev
 cypress-dev:
 	make seed
-	cd tests/integration/ && ./node_modules/.bin/cypress open
+	cd tests/e2e/ && ./node_modules/.bin/cypress open
 
 .PHONY: db
 sql:

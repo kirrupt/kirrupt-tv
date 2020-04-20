@@ -34,7 +34,7 @@ jobs:
       - name: Test E2E
         uses: cypress-io/github-action@v1
         with:
-          config-file: tests/cypress.json
+          working-directory: tests/e2e/
       - name: Debug logs
         if: always()
         run: docker-compose logs

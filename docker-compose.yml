@@ -25,5 +25,5 @@ services:
     image: cypress/included:4.4.0
     entrypoint: ['bash', '-c', 'exit 0']
     volumes:
-      - ./tests/integration/cypress:/cypress
-      - ./tests/integration/cypress.json:/cypress.json
+      - ./tests/e2e/cypress:/cypress
+      - ./tests/e2e/cypress.json:/cypress.json
