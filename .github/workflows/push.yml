@@ -18,9 +18,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Update `docker-compose.yml`
-        run: 'sed -i -e "s+build: ./tv/+image: $IMAGE_URL:$IMAGE_SHA_NAME+g" docker-compose.yml'
+        run: 'sed -i -e "s+build: ./tv/+image: $IMAGE_SHA_NAME+g" docker-compose.yml'
         env:
-          IMAGE_URL: ${{ steps.docker.outputs.IMAGE_URL }}
           IMAGE_SHA_NAME: ${{ steps.docker.outputs.IMAGE_SHA_NAME }}
       - name: Run
         run: docker-compose up -d
