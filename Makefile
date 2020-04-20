@@ -13,17 +13,17 @@ seed:
 .PHONY: cypress
 cypress:
 	make seed
-	cd tests/integration/ && CYPRESS_baseUrl=$(URL) ./node_modules/.bin/cypress run
+	cd tests/integration/ && ./node_modules/.bin/cypress run
 
 .PHONY: cypress-ci
 cypress-ci:
 	make seed
-	docker-compose run -e CYPRESS_baseUrl=http://app:8080/ cypress -P /tests
+	docker-compose run -e CYPRESS_baseUrl=http://tv:8080/ --entrypoint=cypress cypress run
 
 .PHONY: cypress-dev
 cypress-dev:
 	make seed
-	cd tests/integration/ && CYPRESS_baseUrl=$(URL) ./node_modules/.bin/cypress open
+	cd tests/integration/ && ./node_modules/.bin/cypress open
 
 .PHONY: db
 sql:

@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=password
-  app:
+  tv:
     build: ./tv/
     ports:
       - "0.0.0.0:8080:8080"
@@ -22,6 +22,8 @@ services:
       - SENTRY_DSN=
     command: mix phoenix.server
   cypress:
-    image: cypress/included:4.2.0
+    image: cypress/included:4.4.0
+    entrypoint: exit 0
     volumes:
-      - ./tests/integration/:/tests
+      - ./tests/integration/cypress:/cypress
+      - ./tests/integration/cypress.json:/cypress.json

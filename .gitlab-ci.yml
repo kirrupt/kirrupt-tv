@@ -14,21 +14,9 @@ build-tv:
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA
     - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:latest
     - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/tv:latest
-build-e2e:
-  image: docker:latest
-  services:
-    - docker:dind
-  stage: build
-  script:
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker pull registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:latest || true
-    - docker build --cache-from registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:latest -t registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:$CI_COMMIT_SHA ./ci/cypress/
-    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:$CI_COMMIT_SHA
-    - docker tag registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:$CI_COMMIT_SHA registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:latest
-    - docker push registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:latest
 
 test-e2e:
-  image: registry.gitlab.com/kirrupt/kirrupt-tv-elixir/ci-cypress:$CI_COMMIT_SHA
+  image: docker:latest
   services:
     - docker:dind
   stage: test
@@ -36,9 +24,11 @@ test-e2e:
     # docker compose
     - sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     - sudo chmod +x /usr/local/bin/docker-compose
+    # retry
+    - curl -sLo linux_amd64.zip https://github.com/linyows/go-retry/releases/download/v0.3.1/linux_amd64.zip && unzip linux_amd64.zip && sudo mv retry /usr/local/bin
     # docker login
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    # preapre and start app
+    # prepare and start app
     - scripts/sed.sh
     - docker-compose up -d
     - retry --verbose -i 5s -c 200 make check-db
