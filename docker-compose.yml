@@ -23,7 +23,7 @@ services:
     command: mix phoenix.server
   cypress:
     image: cypress/included:4.4.0
-    entrypoint: exit 0
+    entrypoint: ['bash', '-c', 'exit 0']
     volumes:
       - ./tests/integration/cypress:/cypress
       - ./tests/integration/cypress.json:/cypress.json
