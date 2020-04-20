@@ -33,11 +33,17 @@ test-e2e:
     - docker:dind
   stage: test
   script:
+    # docker compose
+    - sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    - sudo chmod +x /usr/local/bin/docker-compose
+    # docker login
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    # preapre and start app
     - scripts/sed.sh
     - docker-compose up -d
     - retry --verbose -i 5s -c 200 make check-db
     - retry --verbose -i 5s -c 200 curl --fail --show-error http://localhost:8080/account/login
+    # run tests
     - make cypress-ci
 
 deploy-staging:
