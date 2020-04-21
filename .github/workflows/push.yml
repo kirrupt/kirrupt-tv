@@ -25,6 +25,8 @@ jobs:
         run: docker-compose up -d mariadb
       - name: Wait for DB
         run: retry --verbose -i 5s -c 20 make check-db
+      - name: Unit & integration tests
+        run: make test
       - name: Seed database
         run: make seed
       - name: Run web server
