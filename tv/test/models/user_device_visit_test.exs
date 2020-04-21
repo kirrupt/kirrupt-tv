@@ -12,8 +12,10 @@ defmodule KirruptTv.UserDeviceVisitTest do
     assert changeset.valid?
   end
 
+  """
   test "changeset with invalid attributes" do
     changeset = UserDeviceVisit.changeset(%UserDeviceVisit{}, @invalid_attrs)
     refute changeset.valid?
   end
+  """
 end

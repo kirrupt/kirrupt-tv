@@ -4,7 +4,7 @@ defmodule KirruptTv.GenreTest do
   alias KirruptTv.Genre
   alias Model.Genre
 
-  @valid_attrs %{}
+  @valid_attrs %{name: "genre"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

@@ -4,7 +4,7 @@ defmodule KirruptTv.UserDevicesTest do
   alias KirruptTv.UserDevices
   alias Model.UserDevices
 
-  @valid_attrs %{}
+  @valid_attrs %{device_type: "lala", device_code: "lala"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

@@ -4,7 +4,7 @@ defmodule KirruptTv.UserShowTest do
   alias KirruptTv.UserShow
   alias Model.UserShow
 
-  @valid_attrs %{}
+  @valid_attrs %{user_id: 10, show_id: 20, modified: Timex.now, ignored: false, date_added: Timex.now}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
