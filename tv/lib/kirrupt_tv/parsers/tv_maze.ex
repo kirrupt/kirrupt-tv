@@ -144,12 +144,8 @@ defmodule KirruptTv.Parser.TVMaze do
 
   defp parse_embedded(result, data) do
     if data["_embedded"] && data["_embedded"]["episodes"] do
-      Map.merge(result, %{
-        episodes: data["_embedded"]["episodes"]
-          |> Enum.reduce([], fn(ep, acc) ->
-            acc ++ [parse_episode(ep)]
-          end)
-      })
+      Map.put(result, :episodes,
+              data["_embedded"]["episodes"] |> Enum.reduce([], fn(ep, acc) -> acc ++ [parse_episode(ep)] end))
     else
       result
     end
