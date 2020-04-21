@@ -10,6 +10,12 @@ seed:
 	docker-compose exec -T mariadb mysql -u root -ppassword -e "CREATE DATABASE kirrupt"
 	docker-compose exec -T mariadb mysql -u root -ppassword kirrupt < scripts/seed.sql
 
+.PHONY: test
+test:
+	docker-compose exec -T mariadb mysql -u root -ppassword -e "DROP DATABASE IF EXISTS kirrupt_test"
+	docker-compose exec -T mariadb mysql -u root -ppassword -e "CREATE DATABASE kirrupt_test"
+	docker-compose run -T test mix test
+
 .PHONY: cypress
 cypress:
 	make seed

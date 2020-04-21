@@ -2,6 +2,7 @@ defmodule KirruptTv.GenreTest do
   use KirruptTv.ModelCase
 
   alias KirruptTv.Genre
+  alias Model.Genre
 
   @valid_attrs %{}
   @invalid_attrs %{}

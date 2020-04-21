@@ -2,6 +2,7 @@ defmodule KirruptTv.UserDevicesTest do
   use KirruptTv.ModelCase
 
   alias KirruptTv.UserDevices
+  alias Model.UserDevices
 
   @valid_attrs %{}
   @invalid_attrs %{}

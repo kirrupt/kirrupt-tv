@@ -41,10 +41,17 @@ config :addict,
 config :arc,
   storage: Arc.Storage.Local
 
+pool = if System.get_env("MYSQL_DB") == "kirrupt_test" do
+  Ecto.Adapters.SQL.Sandbox
+else
+  nil
+end
+
 config :kirrupt_tv, KirruptTv.Repo,
   adapter: Ecto.Adapters.MySQL,
   username: System.get_env("MYSQL_USER"),
   password: System.get_env("MYSQL_PASS"),
   database: System.get_env("MYSQL_DB"),
   hostname: System.get_env("MYSQL_HOST"),
-  pool_size: 10
+  pool_size: 10,
+  pool: pool

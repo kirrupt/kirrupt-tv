@@ -2,6 +2,7 @@ defmodule KirruptTv.EpisodeTest do
   use KirruptTv.ModelCase
 
   alias KirruptTv.Episode
+  alias Model.Episode
 
   @valid_attrs %{}
   @invalid_attrs %{}

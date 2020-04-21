@@ -2,6 +2,7 @@ defmodule KirruptTv.WatchedEpisodeStatusTest do
   use KirruptTv.ModelCase
 
   alias KirruptTv.WatchedEpisodeStatus
+  alias Model.WatchedEpisodeStatus
 
   @valid_attrs %{}
   @invalid_attrs %{}
