@@ -18,7 +18,7 @@ services:
       - MYSQL_PASS
       - MYSQL_DB
       - SENTRY_DSN
-    command: mix phoenix.server
+    command: mix phx.server
 networks:
   mariadb_default:
     external: true

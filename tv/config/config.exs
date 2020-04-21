@@ -32,11 +32,8 @@ config :sentry,
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
 
-config :addict,
-  secret_key: "2432622431322446555067626b6375664152643659323048626265752e",
-  extra_validation: fn ({valid, errors}, user_params) -> {valid, errors} end, # define extra validation here
-  user_schema: Model.User,
-  repo: KirruptTv.Repo
+# Use Jason for JSON parsing in Phoenix
+config :phoenix, :json_library, Jason
 
 config :arc,
   storage: Arc.Storage.Local
@@ -48,7 +45,7 @@ else
 end
 
 config :kirrupt_tv, KirruptTv.Repo,
-  adapter: Ecto.Adapters.MySQL,
+  adapter: Ecto.Adapters.MyXQL,
   username: System.get_env("MYSQL_USER"),
   password: System.get_env("MYSQL_PASS"),
   database: System.get_env("MYSQL_DB"),

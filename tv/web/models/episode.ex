@@ -9,7 +9,7 @@ defmodule Model.Episode do
     field :season, :integer
     field :episode, :integer
     field :tvrage_url, :string
-    field :airdate, Timex.Ecto.DateTime
+    field :airdate, utc_datetime
     field :summary, :string
     field :screencap, :string
 

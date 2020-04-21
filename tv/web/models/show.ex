@@ -14,7 +14,7 @@ defmodule Model.Show do
     field :runtime, :integer
     field :genre, :string
     field :status, :string
-    field :last_checked, Timex.Ecto.DateTime
+    field :last_checked, :utc_datetime
     field :wikipedia_url, :string
     field :picture_url, :string
     field :thumbnail_url, :string
@@ -22,8 +22,8 @@ defmodule Model.Show do
     field :tvrage_id, :integer
     field :tvmaze_id, :integer
     field :year, :integer
-    field :started, Timex.Ecto.Date
-    field :ended, Timex.Ecto.Date
+    field :started, :date
+    field :ended, :date
     field :origin_country, :string
     field :airtime, :string
     field :airday, :string

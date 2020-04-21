@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.11
 
 RUN apk add --no-cache elixir nodejs nodejs-npm git make g++ ca-certificates && \
     update-ca-certificates --fresh && \

@@ -5,8 +5,8 @@ defmodule Model.UserShow do
   @primary_key false
   schema "users_shows" do
     field :ignored, :boolean
-    field :modified, Timex.Ecto.DateTime
-    field :date_added, Timex.Ecto.DateTime
+    field :modified, :utc_datetime
+    field :date_added, :utc_datetime
 
     belongs_to :user, Model.User, primary_key: true
     belongs_to :show, Model.Show, primary_key: true

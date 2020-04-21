@@ -19,8 +19,8 @@ defmodule Model.User do
     field :password, :string
     field :password_new_hash, :string
     field :is_active, :boolean
-    field :last_login, Timex.Ecto.DateTime, default: Timex.now
-    field :date_joined, Timex.Ecto.DateTime, default: Timex.now
+    field :last_login, :utc_datetime, default: Timex.now
+    field :date_joined, :utc_datetime, default: Timex.now
     field :auto_hash, :string
     field :registration_code, :string
     field :password_code, :string

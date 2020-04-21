@@ -1,13 +1,12 @@
-defmodule KirruptTv.Mixfile do
+defmodule KirruptTv.MixProject do
   use Mix.Project
 
   def project do
     [app: :kirrupt_tv,
      version: "0.0.1",
-     elixir: "~> 1.5",
-     elixirc_paths: elixirc_paths(Mix.env),
-     compilers: [:phoenix, :gettext] ++ Mix.compilers,
-     build_embedded: Mix.env == :prod,
+     elixir: "~> 1.7",
+     elixirc_paths: elixirc_paths(Mix.env()),
+     compilers: [:phoenix, :gettext] ++ Mix.compilers(),
      start_permanent: Mix.env == :prod,
      aliases: aliases(),
      deps: deps()]
@@ -18,9 +17,11 @@ defmodule KirruptTv.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {KirruptTv, []},
-     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :mariaex, :timex, :timex_ecto, :httpotion, :sentry,
-                    :comeonin]]
+      extra_applications: [:logger, :runtime_tools],
+      #applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
+      #              :phoenix_ecto, :myxql, :timex, :httpotion, :sentry,
+      #              :comeonin]
+    ]
   end
 
   # Specifies which paths to compile per environment.
@@ -31,25 +32,27 @@ defmodule KirruptTv.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.3.0"},
-     {:phoenix_pubsub, "~> 1.0"},
-     {:phoenix_ecto, "~> 3.0"},
-     {:mariaex, "~> 0.8.2"},
-     {:phoenix_html, "~> 2.6"},
-     {:phoenix_live_reload, "~> 1.0", only: :dev},
-     {:gettext, "~> 0.11"},
-     {:plug_cowboy, "~> 1.0"},
-     {:timex, "~> 3.0"},
-     {:timex_ecto, "~> 3.0"},
-     {:httpotion, "~> 3.0.2"},
-     {:html_sanitize_ex, "~> 1.0.0"},
-     {:sentry, "~> 3.0.0"},
-     {:sweet_xml, "~> 0.6.2"},
-     {:comeonin, "~> 2.5"},
-     {:addict, "~> 0.3"},
-     {:mailgun, github: "chrismccord/mailgun", branch: "master", override: true},
-     {:arc, "~> 0.7.0"},
-     {:quantum, ">= 2.2.0"}]
+    [{:phoenix, "~> 1.5"},
+     {:phoenix_pubsub, "~> 2.0"},
+     {:phoenix_ecto, "~> 4.1"},
+     {:ecto_sql, "~> 3.4"},
+     {:myxql, ">= 0.0.0"},
+     {:phoenix_html, "~> 2.14"},
+     {:phoenix_live_reload, "~> 1.2", only: :dev},
+     {:phoenix_live_dashboard, "~> 0.2.0"},
+     {:telemetry_metrics, "~> 0.4"},
+     {:telemetry_poller, "~> 0.4"},
+     {:jason, "~> 1.0"},
+     {:gettext, "~> 0.17"},
+     {:plug_cowboy, "~> 2.2"},
+     {:timex, "~> 3.6"},
+     {:httpotion, "~> 3.1"},
+     {:html_sanitize_ex, "~> 1.4"},
+     {:sentry, "~> 7.2"},
+     {:sweet_xml, "~> 0.6"},
+     {:comeonin, "~> 5.3"},
+     {:arc, "~> 0.11"},
+     {:quantum, "~> 2.4"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

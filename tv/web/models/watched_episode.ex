@@ -3,7 +3,7 @@ defmodule Model.WatchedEpisode do
 
   @primary_key false
   schema "watched_episodes" do
-    field :added, Timex.Ecto.DateTime
+    field :added, :utc_datetime
 
     belongs_to :user, Model.User, primary_key: true
     belongs_to :episode, Model.Episode, primary_key: true

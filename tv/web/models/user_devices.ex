@@ -7,7 +7,7 @@ defmodule Model.UserDevices do
   schema "users_devices" do
     field :device_type, :string
     field :device_code, :string
-    field :last_login, Timex.Ecto.DateTime
+    field :last_login, :utc_datetime
 
     belongs_to :user, Model.User
     timestamps(inserted_at: :first_login, updated_at: nil)
