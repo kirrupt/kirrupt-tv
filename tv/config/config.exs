@@ -44,7 +44,7 @@ config :arc,
 pool = if System.get_env("MYSQL_DB") == "kirrupt_test" do
   Ecto.Adapters.SQL.Sandbox
 else
-  nil
+  DBConnection.Poolboy
 end
 
 config :kirrupt_tv, KirruptTv.Repo,
