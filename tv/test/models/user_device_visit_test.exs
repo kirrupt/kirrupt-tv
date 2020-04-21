@@ -5,7 +5,7 @@ defmodule KirruptTv.UserDeviceVisitTest do
   alias Model.UserDeviceVisit
 
   @valid_attrs %{}
-  @invalid_attrs %{}
+  # @invalid_attrs %{}
 
   test "changeset with valid attributes" do
     changeset = UserDeviceVisit.changeset(%UserDeviceVisit{}, @valid_attrs)

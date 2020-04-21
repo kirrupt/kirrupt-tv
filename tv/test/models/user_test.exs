@@ -5,7 +5,7 @@ defmodule KirruptTv.UserTest do
   alias Model.User
 
   @valid_attrs %{}
-  @invalid_attrs %{}
+  # @invalid_attrs %{}
 
   test "changeset with valid attributes" do
     changeset = User.changeset(%User{}, @valid_attrs)

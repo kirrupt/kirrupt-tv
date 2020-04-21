@@ -5,7 +5,7 @@ defmodule KirruptTv.WatchedEpisodeTest do
   alias Model.WatchedEpisode
 
   @valid_attrs %{}
-  @invalid_attrs %{}
+  # @invalid_attrs %{}
 
   test "changeset with valid attributes" do
     changeset = WatchedEpisode.changeset(%WatchedEpisode{}, @valid_attrs)
