@@ -7,8 +7,10 @@ defmodule KirruptTv.PageController do
   def search(conn, params) do
     shows = Model.Show.search(params["q"], conn.assigns[:current_user])
 
-    if KirruptTv.Helpers.RequestHelpers.xhr?(conn) do
-      conn = conn |> put_layout(false)
+    conn = if KirruptTv.Helpers.RequestHelpers.xhr?(conn) do
+      conn |> put_layout(false)
+    else
+      conn
     end
 
     render(conn, "search.html", %{

@@ -37,6 +37,124 @@ defmodule KirruptTv.Parser.TVMaze do
     end
   end
 
+  defp parse_year(result, data) do
+    if year = get_year_from_date(data["premiered"]) do
+      Map.put(result, :year, year)
+    else
+      result
+    end
+  end
+
+  defp parse_image(result, data) do
+    if data["image"] && data["image"]["original"] do
+      Map.put(result, :image, data["image"]["original"])
+    else
+      result
+    end
+  end
+
+  defp parse_network_country(result, data) do
+    if data["network"]["country"]["code"] do
+      Map.put(result, :origin_country, data["network"]["country"]["code"])
+    else
+      result
+    end
+  end
+
+  defp parse_network_timezone(result, data) do
+    if data["network"]["country"]["timezone"] do
+      Map.put(result, :timezone, data["network"]["country"]["timezone"])
+    else
+      result
+    end
+  end
+
+  defp parse_network(result, data) do
+    if data["network"] && data["network"]["country"] do
+      result = parse_network_country(result, data)
+      parse_network_timezone(result, data)
+    else
+      result
+    end
+  end
+
+  defp parse_schedule_time(result, data) do
+    if data["schedule"]["time"] do
+      Map.put(result, :airtime, data["schedule"]["time"])
+    else
+      result
+    end
+  end
+
+  defp parse_schedule_day(result, data) do
+    if data["schedule"]["days"] do
+      if day = data["schedule"]["days"] |> List.first do
+        Map.put(result, :airday, day)
+      else
+        result
+      end
+    else
+      result
+    end
+  end
+
+  defp parse_schedule(result, data) do
+    if data["schedule"] do
+      result = parse_schedule_time(result, data)
+      parse_schedule_day(result, data)
+    end
+  end
+
+  defp parse_premiered(result, data) do
+    if data["premiered"] do
+      Map.put(result, :started, data["premiered"])
+    else
+      result
+    end
+  end
+
+  defp parse_genres(result, data) do
+    if data["genres"] do
+      Map.put(result, :genres, data["genres"])
+    else
+      result
+    end
+  end
+
+  defp parse_episode_image(parsed, ep) do
+    if ep["image"] && ep["image"]["original"] do
+      Map.put(parsed, :screencap, ep["image"]["original"])
+    else
+      parsed
+    end
+  end
+
+  defp parse_episode(ep) do
+    parsed = %{
+      episode: ep["number"],
+      season: ep["season"],
+      airdate: ep["airdate"],
+      url: ep["url"],
+      title: ep["name"],
+      summary: remove_html(ep["summary"])
+    }
+
+    parse_episode_image(parsed, ep)
+  end
+
+  defp parse_embedded(result, data) do
+    if data["_embedded"] && data["_embedded"]["episodes"] do
+      Map.merge(result, %{
+        episodes: data["_embedded"]["episodes"]
+          |> Enum.reduce([], fn(ep, acc) ->
+            acc ++ [parse_episode(ep)]
+          end)
+      })
+    else
+      result
+    end
+  end
+
   def parse_show_data(data) do
     result = %{
       tvmaze_id: data["id"],
@@ -50,68 +168,17 @@ defmodule KirruptTv.Parser.TVMaze do
       timezone: nil
     }
 
-    if year = get_year_from_date(data["premiered"]) do
-      result = Map.merge(result, %{year: year})
-    end
-
-    if data["image"] && data["image"]["original"] do
-      result = Map.merge(result, %{image: data["image"]["original"]})
-    end
-
-    if data["network"] && data["network"]["country"] do
-      if data["network"]["country"]["code"] do
-        result = Map.merge(result, %{origin_country: data["network"]["country"]["code"]})
-      end
-
-      if data["network"]["country"]["timezone"] do
-        result = Map.merge(result, %{timezone: data["network"]["country"]["timezone"]})
-      end
-    end
-
-    if data["schedule"] do
-      if data["schedule"]["time"] do
-        result = Map.merge(result, %{airtime: data["schedule"]["time"]})
-      end
-
-      if data["schedule"]["days"] && (day = data["schedule"]["days"] |> List.first) do
-        result = Map.merge(result, %{airday: day})
-      end
-    end
-
-    if data["premiered"] do
-      result = Map.merge(result, %{started: data["premiered"]})
-    end
+    result = parse_year(result, data)
+    result = parse_image(result, data)
+    result = parse_network(result, data)
+    result = parse_schedule(result, data)
+    result = parse_premiered(result, data)
 
     # missing fields on TVmaze:
     # - ended
 
-    if data["genres"] do
-      result = Map.merge(result, %{genres: data["genres"]})
-    end
-
-    if data["_embedded"] && data["_embedded"]["episodes"] do
-      result = Map.merge(result, %{
-        episodes: data["_embedded"]["episodes"]
-          |> Enum.reduce([], fn(ep, acc) ->
-            episode = %{
-              episode: ep["number"],
-              season: ep["season"],
-              airdate: ep["airdate"],
-              url: ep["url"],
-              title: ep["name"],
-              summary: remove_html(ep["summary"])
-            }
-
-            if ep["image"] && ep["image"]["original"] do
-              episode = Map.merge(episode, %{screencap: ep["image"]["original"]})
-            end
-
-            acc ++ [episode]
-          end)
-      })
-    end
-
-    result
+    result = parse_genres(result, data)
+    parse_embedded(result, data)
   end
 
   def search(name) do

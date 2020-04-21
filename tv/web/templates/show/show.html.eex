@@ -53,7 +53,7 @@
   <h2>season <%= @season %></h2>
 <% else %>
   <h2>Latest episodes</h2>
-<%= end %>
+<% end %>
 
 <%= for episode <- @latest_episodes do %>
   <%= render_existing @view_module, "episode.html", %{conn: @conn, show_added: @show_added, episode: episode, watched: episode_watched?(episode, @watched_episodes)} %>

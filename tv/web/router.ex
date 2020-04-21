@@ -20,13 +20,6 @@ defmodule KirruptTv.Router do
     plug KirruptTv.Plugs.ServerTime
   end
 
-  scope "/" do
-    pipe_through :browser
-    addict :routes,
-      login: [path: "/account/login", controller: KirruptTv.AccountController, action: :login],
-      logout: [path: "/account/logout", controller: KirruptTv.AccountController, action: :logout]
-  end
-
   scope "/", KirruptTv do
     get "/thumbs/:thumb_type/*image_path", ThumbController, :index
   end
