@@ -46,12 +46,7 @@ defmodule KirruptTv.AccountController do
 
   def register_create(conn, params) do
     changeset = Model.User.registration_changeset(%Model.User{}, params["user"])
-
-    user = if changeset.valid? do
-      Model.User.register_user(changeset)
-    else
-      nil
-    end
+    user = changeset.valid? and Model.User.register_user(changeset)
 
     if user do
       conn

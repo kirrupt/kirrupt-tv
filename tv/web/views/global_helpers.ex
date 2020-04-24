@@ -52,10 +52,6 @@ defmodule KirruptTv.GlobalHelpers do
     Enum.member?(["backgroundthumb", "cardthumb"], type)
   end
 
-  def unwrap_error(value) do
-    if value do
-      {msg, _} = value
-      msg
-    end
-  end
+  def unwrap_error(nil), do: nil
+  def unwrap_error({msg, _}), do: msg
 end
