@@ -28,7 +28,7 @@ cypress:
 	cd tests/e2e/ && ./node_modules/.bin/cypress run
 
 .PHONY: cypress-docker
-cypress-ci:
+cypress-docker:
 	make seed
 	docker-compose run -T -e CYPRESS_baseUrl=http://tv:8080/ --entrypoint=cypress cypress run
 
@@ -37,8 +37,12 @@ cypress-dev:
 	make seed
 	cd tests/e2e/ && ./node_modules/.bin/cypress open
 
+.PHONY: local
+local:
+	cd tv/ && PORT=8080 MIX_ENV=dev MYSQL_HOST=localhost MYSQL_USER=root MYSQL_PASS=password MYSQL_DB=kirrupt SENTRY_DSN= mix phx.server
+
 .PHONY: db
-sql:
+db:
 	docker-compose exec mariadb mysql -u root -ppassword kirrupt
 
 .PHONY: check-db
