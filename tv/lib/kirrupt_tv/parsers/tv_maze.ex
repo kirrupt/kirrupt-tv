@@ -44,93 +44,47 @@ defmodule KirruptTv.Parser.TVMaze do
       result
     end
   end
+  defp parse_year(result, _), do: result
 
-  defp parse_image(result, data) do
-    if data["image"] && data["image"]["original"] do
-      Map.put(result, :image, data["image"]["original"])
-    else
-      result
-    end
+  defp parse_image(result, %{"image" => %{"original" => original}}), do: Map.put(result, :image, original)
+  defp parse_image(result, _), do: result
+
+  defp parse_network_country(result, %{"code" => code}), do: Map.put(result, :origin_country, code)
+  defp parse_network_country(result, _), do: result
+
+  defp parse_network_timezone(result, %{"timezone" => timezone}), do: Map.put(result, :timezone, timezone)
+  defp parse_network_timezone(result, _), do: result
+
+  defp parse_network(result, %{"network" => %{"country" => country}}) do
+    result
+    |> parse_network_country(country)
+    |> parse_network_timezone(country)
+  end
+  defp parse_network(result, _), do: result
+
+  defp parse_schedule_time(result, %{"time" => time}), do: Map.put(result, :airtime, time)
+  defp parse_schedule_time(result, _), do: result
+
+  defp parse_schedule_day(result, %{"days" => [ head | _ ]}), do: Map.put(result, :airday, head)
+  defp parse_schedule_day(result, _), do: result
+
+  defp parse_schedule(result, %{"schedule" => schedule}) do
+    result
+    |> parse_schedule_time(schedule)
+    |> parse_schedule_day(schedule)
   end
 
-  defp parse_network_country(result, data) do
-    if data["network"]["country"]["code"] do
-      Map.put(result, :origin_country, data["network"]["country"]["code"])
-    else
-      result
-    end
-  end
+  defp parse_premiered(result, %{"premiered" => premiered}), do: Map.put(result, :started, premiered)
+  defp parse_premiered(result, _), do: result
 
-  defp parse_network_timezone(result, data) do
-    if data["network"]["country"]["timezone"] do
-      Map.put(result, :timezone, data["network"]["country"]["timezone"])
-    else
-      result
-    end
-  end
+  defp parse_genres(result, %{"genres" => genres}), do: Map.put(result, :genres, genres)
+  defp parse_genres(result, _), do: result
 
-  defp parse_network(result, data) do
-    if data["network"] && data["network"]["country"] do
-      result = parse_network_country(result, data)
-      parse_network_timezone(result, data)
-    else
-      result
-    end
-  end
-
-  defp parse_schedule_time(result, data) do
-    if data["schedule"]["time"] do
-      Map.put(result, :airtime, data["schedule"]["time"])
-    else
-      result
-    end
-  end
-
-  defp parse_schedule_day(result, data) do
-    if data["schedule"]["days"] do
-      if day = data["schedule"]["days"] |> List.first do
-        Map.put(result, :airday, day)
-      else
-        result
-      end
-    else
-      result
-    end
-  end
-
-  defp parse_schedule(result, data) do
-    if data["schedule"] do
-      result = parse_schedule_time(result, data)
-      parse_schedule_day(result, data)
-    end
-  end
-
-  defp parse_premiered(result, data) do
-    if data["premiered"] do
-      Map.put(result, :started, data["premiered"])
-    else
-      result
-    end
-  end
-
-  defp parse_genres(result, data) do
-    if data["genres"] do
-      Map.put(result, :genres, data["genres"])
-    else
-      result
-    end
-  end
-
-  defp parse_episode_image(parsed, ep) do
-    if ep["image"] && ep["image"]["original"] do
-      Map.put(parsed, :screencap, ep["image"]["original"])
-    else
-      parsed
-    end
-  end
+  defp parse_episode_image(parsed, %{"image" => %{"original" => original}}), do: Map.put(parsed, :screencap, original)
+  defp parse_episode_image(parsed, _), do: parsed
 
   defp parse_episode(ep) do
-    parsed = %{
+    %{
       episode: ep["number"],
       season: ep["season"],
       airdate: ep["airdate"],
@@ -138,8 +92,7 @@ defmodule KirruptTv.Parser.TVMaze do
       title: ep["name"],
       summary: remove_html(ep["summary"])
     }
-
-    parse_episode_image(parsed, ep)
+    |> parse_episode_image(ep)
   end
 
   defp parse_embedded(result, data) do
@@ -152,7 +105,7 @@ defmodule KirruptTv.Parser.TVMaze do
   end
 
   def parse_show_data(data) do
-    result = %{
+    %{
       tvmaze_id: data["id"],
       name: data["name"],
       url: data["url"],
@@ -163,18 +116,17 @@ defmodule KirruptTv.Parser.TVMaze do
       origin_country: nil,
       timezone: nil
     }
-
-    result = parse_year(result, data)
-    result = parse_image(result, data)
-    result = parse_network(result, data)
-    result = parse_schedule(result, data)
-    result = parse_premiered(result, data)
+    |> parse_year(data)
+    |> parse_image(data)
+    |> parse_network(data)
+    |> parse_schedule(data)
+    |> parse_premiered(data)
 
     # missing fields on TVmaze:
     # - ended
 
-    result = parse_genres(result, data)
-    parse_embedded(result, data)
+    |> parse_genres(data)
+    |> parse_embedded(data)
   end
 
   def search(name) do
