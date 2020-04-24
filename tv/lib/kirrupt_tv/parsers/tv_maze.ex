@@ -2,7 +2,7 @@ defmodule KirruptTv.Parser.TVMaze do
   require Logger
   use Timex
 
-  defp process_response_body(body) do
+  def process_response_body(body) do
     case body |> Poison.decode do
        {:ok, data} -> data
        {:error, _} -> Logger.error("Could not parse response body"); nil
@@ -37,54 +37,55 @@ defmodule KirruptTv.Parser.TVMaze do
     end
   end
 
-  defp parse_year(result, data) do
-    if year = get_year_from_date(data["premiered"]) do
+  def parse_year(result, %{"premiered" => premiered}) do
+    if year = get_year_from_date(premiered) do
       Map.put(result, :year, year)
     else
       result
     end
   end
-  defp parse_year(result, _), do: result
+  def parse_year(result, _), do: result
 
-  defp parse_image(result, %{"image" => %{"original" => original}}), do: Map.put(result, :image, original)
-  defp parse_image(result, _), do: result
+  def parse_image(result, %{"image" => %{"original" => original}}), do: Map.put(result, :image, original)
+  def parse_image(result, _), do: result
 
-  defp parse_network_country(result, %{"code" => code}), do: Map.put(result, :origin_country, code)
-  defp parse_network_country(result, _), do: result
+  def parse_network_country(result, %{"code" => code}), do: Map.put(result, :origin_country, code)
+  def parse_network_country(result, _), do: result
 
-  defp parse_network_timezone(result, %{"timezone" => timezone}), do: Map.put(result, :timezone, timezone)
-  defp parse_network_timezone(result, _), do: result
+  def parse_network_timezone(result, %{"timezone" => timezone}), do: Map.put(result, :timezone, timezone)
+  def parse_network_timezone(result, _), do: result
 
-  defp parse_network(result, %{"network" => %{"country" => country}}) do
+  def parse_network(result, %{"network" => %{"country" => country}}) do
     result
     |> parse_network_country(country)
     |> parse_network_timezone(country)
   end
-  defp parse_network(result, _), do: result
+  def parse_network(result, _), do: result
 
-  defp parse_schedule_time(result, %{"time" => time}), do: Map.put(result, :airtime, time)
-  defp parse_schedule_time(result, _), do: result
+  def parse_schedule_time(result, %{"time" => time}), do: Map.put(result, :airtime, time)
+  def parse_schedule_time(result, _), do: result
 
-  defp parse_schedule_day(result, %{"days" => [ head | _ ]}), do: Map.put(result, :airday, head)
-  defp parse_schedule_day(result, _), do: result
+  def parse_schedule_day(result, %{"days" => [ head | _ ]}), do: Map.put(result, :airday, head)
+  def parse_schedule_day(result, _), do: result
 
-  defp parse_schedule(result, %{"schedule" => schedule}) do
+  def parse_schedule(result, %{"schedule" => schedule}) do
     result
     |> parse_schedule_time(schedule)
     |> parse_schedule_day(schedule)
   end
+  def parse_schedule(result, _), do: result
 
-  defp parse_premiered(result, %{"premiered" => premiered}), do: Map.put(result, :started, premiered)
-  defp parse_premiered(result, _), do: result
+  def parse_premiered(result, %{"premiered" => premiered}), do: Map.put(result, :started, premiered)
+  def parse_premiered(result, _), do: result
 
-  defp parse_genres(result, %{"genres" => genres}), do: Map.put(result, :genres, genres)
-  defp parse_genres(result, _), do: result
+  def parse_genres(result, %{"genres" => genres}), do: Map.put(result, :genres, genres)
+  def parse_genres(result, _), do: result
 
-  defp parse_episode_image(parsed, %{"image" => %{"original" => original}}), do: Map.put(parsed, :screencap, original)
-  defp parse_episode_image(parsed, _), do: parsed
+  def parse_episode_image(result, %{"image" => %{"original" => original}}), do: Map.put(result, :screencap, original)
+  def parse_episode_image(result, _), do: result
 
-  defp parse_episode(ep) do
-    %{
+  def parse_episode(ep) do
+    x = %{
       episode: ep["number"],
       season: ep["season"],
       airdate: ep["airdate"],
@@ -95,14 +96,10 @@ defmodule KirruptTv.Parser.TVMaze do
     |> parse_episode_image(ep)
   end
 
-  defp parse_embedded(result, data) do
-    if data["_embedded"] && data["_embedded"]["episodes"] do
-      Map.put(result, :episodes,
-              data["_embedded"]["episodes"] |> Enum.reduce([], fn(ep, acc) -> acc ++ [parse_episode(ep)] end))
-    else
-      result
-    end
+  def parse_embedded(result, %{"_embedded" => %{"episodes" => episodes}}) do
+    Map.put(result, :episodes, episodes |> Enum.reduce([], fn(ep, acc) -> acc ++ [parse_episode(ep)] end))
   end
+  def parse_embedded(result, _), do: result
 
   def parse_show_data(data) do
     %{
