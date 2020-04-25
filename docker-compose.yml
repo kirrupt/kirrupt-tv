@@ -22,27 +22,11 @@ services:
       - PORT=8080
       - MIX_ENV=dev
       - MYSQL_HOST=mariadb
-      - MYSQL_USER=root
-      - MYSQL_PASS=password
-      - MYSQL_DB=kirrupt
-      - SENTRY_DSN=
     command: mix phoenix.server
   test:
     build: ./tv/
-    volumes:
-      - ./data/shows/:/app/shows
-      - ./tv/lib:/app/lib
-      - ./tv/web:/app/web
-      - ./tv/test:/app/test
-      - ./tv/config:/app/config
     environment:
-      - PORT=8080
-      - MIX_ENV=dev
-      - MYSQL_HOST=mariadb
-      - MYSQL_USER=root
-      - MYSQL_PASS=password
-      - MYSQL_DB=kirrupt_test
-      - SENTRY_DSN=
+      - MIX_ENV=test
     command: exit 0
   cypress:
     image: cypress/included:4.4.0

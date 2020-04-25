@@ -13,7 +13,7 @@ config :logger, level: :warn
 config :kirrupt_tv, KirruptTv.Repo,
   adapter: Ecto.Adapters.MySQL,
   username: "root",
-  password: "",
-  database: "kirrupt_tv_test",
+  password: "password",
+  database: "kirrupt_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

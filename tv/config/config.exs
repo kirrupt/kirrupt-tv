@@ -5,6 +5,15 @@
 # is restricted to this project.
 use Mix.Config
 
+defmodule ConfigHelpers do
+  def get_env_with_fallback(key, fallback) do
+    case System.get_env(key) do
+      nil -> fallback
+      value -> value
+    end
+  end
+end
+
 # General application configuration
 config :kirrupt_tv,
   ecto_repos: [KirruptTv.Repo]
@@ -28,24 +37,17 @@ config :sentry,
   use_error_logger: true,
   environment_name: :dev
 
-# Import environment specific config. This must remain at the bottom
-# of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
-
 config :arc,
   storage: Arc.Storage.Local
 
-pool = if System.get_env("MYSQL_DB") == "kirrupt_test" do
-  Ecto.Adapters.SQL.Sandbox
-else
-  DBConnection.Poolboy
-end
-
 config :kirrupt_tv, KirruptTv.Repo,
   adapter: Ecto.Adapters.MySQL,
-  username: System.get_env("MYSQL_USER"),
-  password: System.get_env("MYSQL_PASS"),
-  database: System.get_env("MYSQL_DB"),
-  hostname: System.get_env("MYSQL_HOST"),
-  pool_size: 10,
-  pool: pool
+  username: ConfigHelpers.get_env_with_fallback("MYSQL_USER", "root"),
+  password: ConfigHelpers.get_env_with_fallback("MYSQL_PASS", "password"),
+  database: ConfigHelpers.get_env_with_fallback("MYSQL_DB", "kirrupt"),
+  hostname: ConfigHelpers.get_env_with_fallback("MYSQL_HOST", "localhost"),
+  pool_size: 10
+
+# Import environment specific config. This must remain at the bottom
+# of this file so it overrides the configuration defined above.
+import_config "#{Mix.env}.exs"
