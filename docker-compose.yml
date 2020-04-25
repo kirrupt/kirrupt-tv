@@ -19,7 +19,6 @@ services:
       - ./tv/test:/app/test
       - ./tv/config:/app/config
     environment:
-      - PORT=8080
       - MIX_ENV=dev
       - MYSQL_HOST=mariadb
     command: mix phoenix.server
@@ -27,6 +26,7 @@ services:
     build: ./tv/
     environment:
       - MIX_ENV=test
+      - MYSQL_HOST=mariadb
     command: exit 0
   cypress:
     image: cypress/included:4.4.0

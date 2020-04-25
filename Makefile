@@ -16,12 +16,6 @@ test:
 	docker-compose exec -T mariadb mysql -u root -ppassword -e "CREATE DATABASE kirrupt_test"
 	docker-compose run -T test mix test
 
-.PHONY: test-shell
-test-shell:
-	docker-compose exec -T mariadb mysql -u root -ppassword -e "DROP DATABASE IF EXISTS kirrupt_test"
-	docker-compose exec -T mariadb mysql -u root -ppassword -e "CREATE DATABASE kirrupt_test"
-	docker-compose run -T test bash
-
 .PHONY: cypress
 cypress:
 	make seed
