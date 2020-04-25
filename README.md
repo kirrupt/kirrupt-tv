@@ -4,30 +4,60 @@
 
 ### Requirements
 
-* local k8s cluster (e.g. minikube)
-* skaffold
+* docker-compose
+* make
+* elixir
+* node
 
 macOS:
 ```bash
-brew cask install minikube
-brew install skaffold
-
-# start minikube
-minikube --memory 4096 --cpus 2 start
+brew cask install docker
+brew install elixir node
 ```
 
 ### Getting started
 Clone repository and run:
 ```bash
-make
+docker-compose up -d mariadb
+make seed
 ```
-to build images and start them in development mode on k8s.
+to start and seed the database.
 
-After application is started, you can use:
+Run:
 ```bash
-make browser
+cd tv/
+mix phx.server
 ```
-to open website in your default browser.
+to start the server locally.
+
+After application is started, you can go to http://localhost:8080.
+
+#### Docker
+Alternatively, you can run server via Docker:
+```bash
+# dev
+docker-compose up dev
+
+# or
+
+# prod
+docker-compose up prod
+```
+
+### e2e tests
+Pre-requirement is to start the server (either locally or via Docker).
+
+Then you can use:
+```bash
+# Run cypress tests locally.
+make cypress
+
+# Run cypress tests via their GUI (good for development and debugging).
+make cypress-dev
+
+# Run cypress via Docker like on CI.
+make cypress-docker
+```
 
 ### Helpful commands
 #### Import of existing database
@@ -38,11 +68,8 @@ make import
 
 #### Database migration
 ```bash
-docker-compose exec app mix ecto.migrate
+docker-compose exec dev mix ecto.migrate
 ```
-
-#### Ambassador Dashboard
-Open [`http://localhost/ambassador/v0/diag/?loglevel=debug`](http://localhost/ambassador/v0/diag/?loglevel=debug) in your web browser.
 
 # API docs
 
