@@ -8,6 +8,8 @@ import:
 seed:
 	docker-compose exec -T mariadb mysql -u root -ppassword -e "DROP DATABASE IF EXISTS kirrupt"
 	docker-compose exec -T mariadb mysql -u root -ppassword -e "CREATE DATABASE kirrupt"
+	docker-compose exec -T mariadb mysql -u root -ppassword -e "DROP DATABASE IF EXISTS kirrupt_test"
+	docker-compose exec -T mariadb mysql -u root -ppassword -e "CREATE DATABASE kirrupt_test"
 	docker-compose exec -T mariadb mysql -u root -ppassword kirrupt < scripts/seed.sql
 
 .PHONY: test
@@ -15,12 +17,6 @@ test:
 	docker-compose exec -T mariadb mysql -u root -ppassword -e "DROP DATABASE IF EXISTS kirrupt_test"
 	docker-compose exec -T mariadb mysql -u root -ppassword -e "CREATE DATABASE kirrupt_test"
 	docker-compose run -T test mix test
-
-.PHONY: test-shell
-test-shell:
-	docker-compose exec -T mariadb mysql -u root -ppassword -e "DROP DATABASE IF EXISTS kirrupt_test"
-	docker-compose exec -T mariadb mysql -u root -ppassword -e "CREATE DATABASE kirrupt_test"
-	docker-compose run -T test bash
 
 .PHONY: cypress
 cypress:
@@ -36,14 +32,6 @@ cypress-docker:
 cypress-dev:
 	make seed
 	cd tests/e2e/ && ./node_modules/.bin/cypress open
-
-.PHONY: local
-local:
-	cd tv/ && PORT=8080 MIX_ENV=dev MYSQL_HOST=localhost MYSQL_USER=root MYSQL_PASS=password MYSQL_DB=kirrupt SENTRY_DSN= mix phx.server
-
-.PHONY: test-env
-test-env:
-	cd tv/ && PORT=8080 MIX_ENV=dev MYSQL_HOST=localhost MYSQL_USER=root MYSQL_PASS=password MYSQL_DB=kirrupt_test SENTRY_DSN= bash
 
 .PHONY: db
 db:

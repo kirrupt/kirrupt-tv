@@ -18,7 +18,7 @@ ADD package.json /app/package.json
 
 RUN npm install
 
-ENV MIX_ENV dev
+ENV MIX_ENV prod
 RUN mix compile
 
 ADD . /app
