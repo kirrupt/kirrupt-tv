@@ -41,6 +41,10 @@ cypress-dev:
 local:
 	cd tv/ && PORT=8080 MIX_ENV=dev MYSQL_HOST=localhost MYSQL_USER=root MYSQL_PASS=password MYSQL_DB=kirrupt SENTRY_DSN= mix phx.server
 
+.PHONY: test-env
+test-env:
+	cd tv/ && PORT=8080 MIX_ENV=dev MYSQL_HOST=localhost MYSQL_USER=root MYSQL_PASS=password MYSQL_DB=kirrupt_test SENTRY_DSN= bash
+
 .PHONY: db
 db:
 	docker-compose exec mariadb mysql -u root -ppassword kirrupt
