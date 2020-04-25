@@ -19,6 +19,7 @@ defmodule KirruptTv.Parser.FanartTV do
     end
   end
 
+  def get_image_list(nil), do: nil
   def get_image_list(the_tv_db_id) do
     if data = get_json("http://webservice.fanart.tv/v3/tv/#{the_tv_db_id}?api_key=#{Application.get_env(:kirrupt_tv, KirruptTv.Endpoint)[:fanart_key]}") do
       # available
