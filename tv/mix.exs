@@ -46,8 +46,6 @@ defmodule KirruptTv.Mixfile do
      {:sentry, "~> 3.0.0"},
      {:sweet_xml, "~> 0.6.2"},
      {:comeonin, "~> 2.5"},
-     {:addict, "~> 0.3"},
-     {:mailgun, github: "chrismccord/mailgun", branch: "master", override: true},
      {:arc, "~> 0.7.0"},
      {:quantum, ">= 2.2.0"}]
   end

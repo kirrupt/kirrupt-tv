@@ -1,6 +1,5 @@
 defmodule KirruptTv.Router do
   use KirruptTv.Web, :router
-  use Addict.RoutesHelper
 
   if Application.get_env(:sentry, :dsn) do
     use Plug.ErrorHandler
