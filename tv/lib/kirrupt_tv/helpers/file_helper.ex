@@ -50,7 +50,11 @@ defmodule KirruptTv.Helpers.FileHelpers do
       _ -> Path.join(dest_folder, image_name)
     end
 
-    download_file(url, Path.join(base_folder, image_path))
+    # return relative path if image is downloaded (download_file reuturns absolute path)
+    case download_file(url, Path.join(base_folder, image_path)) do
+      nil -> nil
+      _ -> image_path
+    end
   end
 
   defp get_image(url) do
