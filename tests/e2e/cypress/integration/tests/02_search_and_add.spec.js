@@ -11,7 +11,7 @@ context('User show', () => {
         cy.get('#search_q')
             .type('Swedish Dicks')
 
-        cy.contains('Add to my shows', { timeout: 60000 }).click()
+        cy.contains('Add to my shows').click({ timeout: 60000 })
 
         cy.location().should((location) => {
             expect(location.pathname).to.eq('/show/swedish-dicks')
