@@ -12,8 +12,8 @@ config :logger, level: :warn
 # Configure your database
 config :kirrupt_tv, KirruptTv.Repo,
   adapter: Ecto.Adapters.MySQL,
-  username: "root",
-  password: "password",
-  database: "kirrupt_test",
-  hostname: "localhost",
+  username: ConfigHelpers.get_env_with_fallback("MYSQL_USER", "root"),
+  password: ConfigHelpers.get_env_with_fallback("MYSQL_PASS", "password"),
+  database: ConfigHelpers.get_env_with_fallback("MYSQL_DB", "kirrupt_test"),
+  hostname: ConfigHelpers.get_env_with_fallback("MYSQL_HOST", "localhost"),
   pool: Ecto.Adapters.SQL.Sandbox
