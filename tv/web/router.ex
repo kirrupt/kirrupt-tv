@@ -1,6 +1,5 @@
 defmodule KirruptTv.Router do
   use KirruptTv.Web, :router
-  use Addict.RoutesHelper
 
   if Application.get_env(:sentry, :dsn) do
     use Plug.ErrorHandler
@@ -18,13 +17,6 @@ defmodule KirruptTv.Router do
   pipeline :api do
     plug :accepts, ["json"]
     plug KirruptTv.Plugs.ServerTime
-  end
-
-  scope "/" do
-    pipe_through :browser
-    addict :routes,
-      login: [path: "/account/login", controller: KirruptTv.AccountController, action: :login],
-      logout: [path: "/account/logout", controller: KirruptTv.AccountController, action: :logout]
   end
 
   scope "/", KirruptTv do
