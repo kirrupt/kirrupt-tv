@@ -225,29 +225,33 @@ defmodule Model.Show do
     KirruptTv.Helpers.FileHelpers.download_and_save_file(url, "#{KirruptTv.Helpers.FileHelpers.root_folder}/static", "shows")
   end
 
-  def add_tvmaze_show(tvmaze_id) do
-    if s_obj = Repo.get_by(Model.Show, tvmaze_id: tvmaze_id) do
-      s_obj
-    else
-      if info = KirruptTv.Parser.TVMaze.show_info(tvmaze_id) do
-        s_obj = %Model.Show {
-          name: info[:name],
-          tvrage_url: info[:url],
-          status: info[:status],
-          tvmaze_id: info[:tvmaze_id],
-          runtime: info[:runtime],
-          genre: "",
-          picture_url: info[:image],
-          wikipedia_checked: false,
-          picture_url: download_and_save_image(info[:image]),
-          last_checked: Timex.now
-        }
+  defp insert_tvmaze_show(tvmaze_id) do
+    info = KirruptTv.Parser.TVMaze.show_info(tvmaze_id)
+  
+    if info do
+      s_obj = %Model.Show {
+        name: info[:name],
+        tvrage_url: info[:url],
+        status: info[:status],
+        tvmaze_id: info[:tvmaze_id],
+        runtime: info[:runtime],
+        genre: "",
+        wikipedia_checked: false,
+        picture_url: download_and_save_image(info[:image]),
+        last_checked: Timex.now
+      }
 
-        case Repo.insert s_obj do
-          {:ok, s_struct} -> update_show_and_episodes(s_struct); s_struct
-          {:error, _changeset} -> nil
-        end
+      case Repo.insert s_obj do
+        {:ok, s_struct} -> update_show_and_episodes(s_struct); s_struct
+        {:error, _changeset} -> nil
       end
+    end
+  end
+
+  def add_tvmaze_show(tvmaze_id) do
+    case Repo.get_by(Model.Show, tvmaze_id: tvmaze_id) do
+      nil -> insert_tvmaze_show(tvmaze_id)
+      show -> show
     end
   end
 
@@ -289,56 +293,59 @@ defmodule Model.Show do
     end
   end
 
-  def update_show_and_episodes(s_obj) do
-    if info = KirruptTv.Parser.TVMaze.show_info(s_obj.tvmaze_id) do
-      s_obj = s_obj |> Repo.preload([:genres])
+  def update_tvmaze_show_and_episodes(s_obj, info) do
+    s_obj = s_obj |> Repo.preload([:genres])
 
-      changes = %{
-        last_checked: Timex.now,
-        summary: info[:summary],
-        status: info[:status],
-        year: info[:year],
-        started: info[:started],
-        runtime: info[:runtime],
-        origin_country: info[:origin_country],
-        airtime: info[:airtime],
-        airday: info[:airday],
-        timezone: info[:timezone],
-        thetvdb_id: get_the_tv_db_id(s_obj)
-      }
-      |> Common.Map.compact_selective([:summary])
+    changes = %{
+      last_checked: Timex.now,
+      summary: info[:summary],
+      status: info[:status],
+      year: info[:year],
+      started: info[:started],
+      runtime: info[:runtime],
+      origin_country: info[:origin_country],
+      airtime: info[:airtime],
+      airday: info[:airday],
+      timezone: info[:timezone],
+      thetvdb_id: get_the_tv_db_id(s_obj)
+    }
+    |> Common.Map.compact_selective([:summary])
 
-      changes = get_picture_url_changes(s_obj, info, changes)
+    changes = get_picture_url_changes(s_obj, info, changes)
 
-      # TODO
-      # Remove old genres !!???
-      info[:genres]
-      |> Enum.each(fn(genre) ->
-        if !Enum.find(s_obj.genres, fn(s_genre) -> String.downcase(s_genre.name) == String.downcase(genre) end) do
-          if g_obj = Model.Genre.find_or_create(genre) do
-            Model.ShowGenre.insert(s_obj, g_obj)
-          end
+    # TODO
+    # Remove old genres !!???
+    info[:genres]
+    |> Enum.each(fn(genre) ->
+      if !Enum.find(s_obj.genres, fn(s_genre) -> String.downcase(s_genre.name) == String.downcase(genre) end) do
+        if g_obj = Model.Genre.find_or_create(genre) do
+          Model.ShowGenre.insert(s_obj, g_obj)
         end
-      end)
-
-      result = s_obj
-      |> Model.Show.changeset(changes)
-      |> Repo.update
-
-      case result do
-        {:ok, struct}        -> s_obj = struct
-        {:error, changeset} -> Logger.error("Could't update show '#{s_obj.id}' - #{inspect(changeset.errors)}"); fake_update(s_obj); false
       end
+    end)
 
-      if info[:episodes] do
-        info[:episodes]
-        |> Enum.each(fn(episode) -> Model.Episode.insert_or_update(s_obj, episode) end)
-      end
+    result = s_obj
+    |> Model.Show.changeset(changes)
+    |> Repo.update
 
-      set_frant_tv_image(s_obj)
-      set_url(s_obj)
-    else
-      Logger.error("Could't update show '#{s_obj.id}'"); fake_update(s_obj); nil
+    s_obj = case result do
+      {:ok, struct}       -> struct
+      {:error, changeset} -> Logger.error("Could't update show '#{s_obj.id}' - #{inspect(changeset.errors)}"); fake_update(s_obj); false
+    end
+
+    if info[:episodes] do
+      info[:episodes]
+      |> Enum.each(fn(episode) -> Model.Episode.insert_or_update(s_obj, episode) end)
+    end
+
+    set_fanart_tv_image(s_obj)
+    set_url(s_obj)
+  end
+
+  def update_show_and_episodes(s_obj) do
+    case KirruptTv.Parser.TVMaze.show_info(s_obj.tvmaze_id) do
+      nil -> Logger.error("Could't update show '#{s_obj.id}'"); fake_update(s_obj); nil
+      info -> update_tvmaze_show_and_episodes(s_obj, info)
     end
   end
 
@@ -353,7 +360,7 @@ defmodule Model.Show do
     # update show including last_updated field (=mimics behaviour of Python codebase)
     |> Repo.update
     |> case do
-      {:ok, struct}        -> true
+      {:ok, _}            -> true
       {:error, changeset} -> Logger.error("Couldn't fake update show '#{show.id}' - #{inspect(changeset.errors)}"); false
     end
   end
@@ -365,7 +372,7 @@ defmodule Model.Show do
         changes
       # picture is not specified or doesn't exists, check if fanart has url to it
       Map.get(images, fanart_attr) ->
-        Map.put(changes, attr, (url = download_and_save_image(Map.get(images, fanart_attr) |> List.first)))
+        Map.put(changes, attr, download_and_save_image(Map.get(images, fanart_attr) |> List.first))
       # picture is specified but it doesn't exists, fanart doesn't have it
       Map.get(s_obj, attr) ->
         Map.put(changes, attr, nil)
@@ -375,7 +382,7 @@ defmodule Model.Show do
     end
   end
 
-  def set_frant_tv_image(s_obj) do
+  def set_fanart_tv_image(s_obj) do
     cond do
       images = KirruptTv.Parser.FanartTV.get_image_list(s_obj.thetvdb_id) ->
         changes = %{}

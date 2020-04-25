@@ -85,7 +85,7 @@ defmodule KirruptTv.Parser.TVMaze do
   def parse_episode_image(result, _), do: result
 
   def parse_episode(ep) do
-    x = %{
+    %{
       episode: ep["number"],
       season: ep["season"],
       airdate: ep["airdate"],

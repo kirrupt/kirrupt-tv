@@ -34,7 +34,7 @@ import_config "#{Mix.env}.exs"
 
 config :addict,
   secret_key: "2432622431322446555067626b6375664152643659323048626265752e",
-  extra_validation: fn ({valid, errors}, user_params) -> {valid, errors} end, # define extra validation here
+  extra_validation: fn ({valid, errors}, _) -> {valid, errors} end, # define extra validation here
   user_schema: Model.User,
   repo: KirruptTv.Repo
 

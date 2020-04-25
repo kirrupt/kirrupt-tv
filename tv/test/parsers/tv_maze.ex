@@ -172,4 +172,3 @@ defmodule KirruptTv.TVMazeTest do
           }
     end
   end
-  

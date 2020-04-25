@@ -34,9 +34,10 @@ defmodule KirruptTv.Helpers.FileHelpers do
     end
   end
 
+  def download_and_save_file(url, base_folder, dest_folder \\ nil)
   def download_and_save_file(nil, _, _), do: nil
   def download_and_save_file(_, nil, _), do: nil
-  def download_and_save_file(url, base_folder, dest_folder \\ nil) do
+  def download_and_save_file(url, base_folder, dest_folder) do
     image_name = "#{UUID.uuid4(:hex)}.#{url |> String.split(".") |> List.last}"
 
     mkdirs(case dest_folder do
@@ -49,10 +50,7 @@ defmodule KirruptTv.Helpers.FileHelpers do
       _ -> Path.join(dest_folder, image_name)
     end
 
-    case download_file(url, Path.join(base_folder, image_path)) do
-      path -> image_path
-      _ -> nil
-    end
+    download_file(url, Path.join(base_folder, image_path))
   end
 
   defp get_image(url) do
