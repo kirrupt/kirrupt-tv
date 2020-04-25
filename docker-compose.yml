@@ -29,7 +29,6 @@ services:
     restart: always
     environment:
       - PORT=8080
-      - MIX_ENV=prod
       - MYSQL_HOST=mariadb
     command: mix phx.server
   test:
