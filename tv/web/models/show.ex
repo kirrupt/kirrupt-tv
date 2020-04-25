@@ -242,7 +242,7 @@ defmodule Model.Show do
       }
 
       case Repo.insert s_obj do
-        {:ok, s_struct} -> update_show_and_episodes(s_struct); s_struct
+        {:ok, s_struct} -> update_show_and_episodes(s_struct)
         {:error, _changeset} -> nil
       end
     end
