@@ -31,8 +31,6 @@ jobs:
         run: docker-compose run -T test mix coveralls
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Seed database
-        run: make seed
       - name: Run web server
         run: docker-compose up -d prod
       - name: Test E2E
