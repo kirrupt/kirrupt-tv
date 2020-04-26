@@ -63,3 +63,12 @@ jobs:
       - name: Debug logs
         if: always()
         run: docker-compose logs
+  deploy:
+    needs: [test]
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: run webhook
+        run: curl -X POST --silent --show-error --fail $webhook
+        env:
+          webhook: ${{ secrets.WEBHOOK }}
