@@ -37,6 +37,8 @@ config :sentry,
   use_error_logger: true,
   environment_name: :dev
 
+config :phoenix, :json_library, Jason
+
 config :arc,
   storage: Arc.Storage.Local
 

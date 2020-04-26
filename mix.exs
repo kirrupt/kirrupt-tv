@@ -10,7 +10,9 @@ defmodule KirruptTv.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases(),
-     deps: deps()]
+     deps: deps(),
+     test_coverage: [tool: ExCoveralls],
+     preferred_cli_env: [coveralls: :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test]]
   end
 
   # Configuration for the OTP application.
@@ -38,7 +40,7 @@ defmodule KirruptTv.Mixfile do
      {:phoenix_html, "~> 2.6"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
-     {:plug_cowboy, "~> 1.0"},
+     {:plug_cowboy, "~> 2.1"},
      {:timex, "~> 3.0"},
      {:timex_ecto, "~> 3.0"},
      {:httpotion, "~> 3.0.2"},
@@ -47,7 +49,8 @@ defmodule KirruptTv.Mixfile do
      {:sweet_xml, "~> 0.6.2"},
      {:comeonin, "~> 2.5"},
      {:arc, "~> 0.7.0"},
-     {:quantum, ">= 2.2.0"}]
+     {:quantum, ">= 2.2.0"},
+     {:excoveralls, "~> 0.12", only: :test}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

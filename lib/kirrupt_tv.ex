@@ -18,9 +18,9 @@ defmodule KirruptTv do
       # worker(KirruptTv.Worker, [arg1, arg2, arg3]),
     ]
 
-    if !File.exists?(Path.join(KirruptTv.Helpers.FileHelpers.root_folder, "static/shows")) do
-      IO.puts File.ln_s("/app/shows", Path.join(KirruptTv.Helpers.FileHelpers.root_folder, "static/shows"))
-    end
+    shows_path = Path.join(KirruptTv.Helpers.FileHelpers.root_folder, "static/shows")
+    IO.puts "static/shows path: #{shows_path}"
+    File.mkdir_p(shows_path)
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
