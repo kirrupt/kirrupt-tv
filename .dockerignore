@@ -1,1 +1,4 @@
 /database.sql
+/_build
+/node_modules
+/deps
