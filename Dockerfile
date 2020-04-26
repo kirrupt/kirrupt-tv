@@ -1,6 +1,6 @@
 FROM alpine:3.11
 
-RUN apk add --no-cache elixir erlang-xmerl nodejs nodejs-npm git make g++ ca-certificates && \
+RUN apk add --no-cache elixir erlang-xmerl erlang-tools nodejs nodejs-npm git make g++ ca-certificates && \
     update-ca-certificates --fresh && \
     rm -rf /var/cache/apk/*
 

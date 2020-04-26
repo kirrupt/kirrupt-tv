@@ -13,11 +13,11 @@ use Mix.Config
 # which you typically run after static files are built.
 
 # Do not print debug messages in production
-config :logger, level: :info
+config :logger, level: :debug
 
 config :kirrupt_tv, KirruptTv.Endpoint,
   http: [ip: {0,0,0,0}, port: {:system, "PORT"}],
-  url: [host: "phoenix.kirrupt.com", port: 80],
+  url: [host: {:system, "HOSTNAME"}, port: 80],
   cache_static_manifest: "priv/static/manifest.json"
 
 config :sentry,

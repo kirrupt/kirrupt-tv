@@ -9,12 +9,12 @@ defmodule KirruptTv.Plugs.Authenticated do
     conn = fetch_session(conn)
 
     unless is_logged_in(conn.assigns[:current_user]) do
-      case Enum.member?(conn.private[:phoenix_pipelines], :browser) do
-        true ->
+      case conn.private[:pipeline_name] do
+        :browser ->
           conn
           |> Phoenix.Controller.redirect(to: KirruptTv.Router.Helpers.account_path(conn, :login))
           |> halt
-        false ->
+        _ ->
           conn
           |> send_resp(401, "unauthorized")
           |> halt

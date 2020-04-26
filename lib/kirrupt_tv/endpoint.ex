@@ -2,6 +2,7 @@ defmodule KirruptTv.Endpoint do
   use Phoenix.Endpoint, otp_app: :kirrupt_tv
 
   socket "/socket", KirruptTv.UserSocket
+  socket "/live", Phoenix.LiveView.Socket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -10,6 +11,10 @@ defmodule KirruptTv.Endpoint do
   plug Plug.Static,
     at: "/", from: :kirrupt_tv, gzip: false,
     only: ~w(css fonts images js shows favicon.ico robots.txt)
+
+  plug Phoenix.LiveDashboard.RequestLogger,
+    param_key: "request_logger",
+    cookie_key: "request_logger"
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

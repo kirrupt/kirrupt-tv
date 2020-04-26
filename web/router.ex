@@ -1,13 +1,19 @@
 defmodule KirruptTv.Router do
   use KirruptTv.Web, :router
+  import Phoenix.LiveDashboard.Router
 
   if Application.get_env(:sentry, :dsn) do
     use Plug.ErrorHandler
     use Sentry.Plug
   end
 
+  defp inject_pipeline_name(conn, name) do
+    Plug.Conn.put_private(conn, :pipeline_name, name)
+  end
+
   pipeline :browser do
     plug :accepts, ["html"]
+    plug :inject_pipeline_name, :browser
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
@@ -16,11 +22,23 @@ defmodule KirruptTv.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :inject_pipeline_name, :api
     plug KirruptTv.Plugs.ServerTime
+  end
+
+  pipeline :admin do
+    plug KirruptTv.Plugs.Authenticate
+    plug KirruptTv.Plugs.Authenticated.Admin
   end
 
   scope "/", KirruptTv do
     get "/thumbs/:thumb_type/*image_path", ThumbController, :index
+  end
+
+  scope "/admin/", KirruptTv do
+    pipe_through [:browser, :admin]
+
+    live_dashboard "/dashboard", metrics: KirruptTv.Telemetry
   end
 
   scope "/account/", KirruptTv do
