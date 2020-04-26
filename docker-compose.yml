@@ -8,22 +8,22 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=password
   dev:
-    build: ./tv/
+    build: ./
     ports:
       - "0.0.0.0:8080:8080"
     restart: always
     volumes:
       - ./data/shows/:/app/shows
-      - ./tv/lib:/app/lib
-      - ./tv/web:/app/web
-      - ./tv/test:/app/test
-      - ./tv/config:/app/config
+      - ./lib:/app/lib
+      - ./web:/app/web
+      - ./test:/app/test
+      - ./config:/app/config
     environment:
       - MIX_ENV=dev
       - MYSQL_HOST=mariadb
     command: mix phx.server
   prod:
-    build: ./tv/
+    build: ./
     ports:
       - "0.0.0.0:8080:8080"
     restart: always
@@ -32,7 +32,7 @@ services:
       - MYSQL_HOST=mariadb
     command: mix phx.server
   test:
-    build: ./tv/
+    build: ./
     environment:
       - MIX_ENV=test
       - MYSQL_HOST=mariadb
@@ -41,5 +41,5 @@ services:
     image: cypress/included:4.4.0
     entrypoint: ['bash', '-c', 'exit 0']
     volumes:
-      - ./tests/e2e/cypress:/cypress
-      - ./tests/e2e/cypress.json:/cypress.json
+      - ./e2e/cypress:/cypress
+      - ./e2e/cypress.json:/cypress.json

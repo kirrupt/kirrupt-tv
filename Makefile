@@ -21,7 +21,7 @@ test:
 .PHONY: cypress
 cypress:
 	make seed
-	cd tests/e2e/ && ./node_modules/.bin/cypress run
+	cd e2e/ && ./node_modules/.bin/cypress run
 
 .PHONY: cypress-docker
 cypress-docker:
@@ -31,7 +31,7 @@ cypress-docker:
 .PHONY: cypress-dev
 cypress-dev:
 	make seed
-	cd tests/e2e/ && ./node_modules/.bin/cypress open
+	cd e2e/ && ./node_modules/.bin/cypress open
 
 .PHONY: db
 db:

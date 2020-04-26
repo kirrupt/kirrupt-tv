@@ -13,12 +13,12 @@ jobs:
         with:
           CACHE: true
           IMAGE_NAME: 'kirrupt-tv'
-          DOCKERFILE_PATH: './tv/Dockerfile'
-          BUILD_CONTEXT: './tv'
+          DOCKERFILE_PATH: './Dockerfile'
+          BUILD_CONTEXT: './'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Update `docker-compose.yml`
-        run: 'sed -i -e "s+build: ./tv/+image: $IMAGE_SHA_NAME+g" docker-compose.yml'
+        run: 'sed -i -e "s+build: ./+image: $IMAGE_SHA_NAME+g" docker-compose.yml'
         env:
           IMAGE_SHA_NAME: ${{ steps.docker.outputs.IMAGE_SHA_NAME }}
       - name: Run DB
@@ -34,7 +34,7 @@ jobs:
       - name: Test E2E
         uses: cypress-io/github-action@v1
         with:
-          working-directory: tests/e2e/
+          working-directory: e2e/
           wait-on: 'http://localhost:8080/'
           # wait for 2 minutes for the server to respond
           wait-on-timeout: 120
@@ -48,13 +48,13 @@ jobs:
         if: failure()
         with:
           name: cypress-screenshots
-          path: tests/e2e/cypress/screenshots
+          path: e2e/cypress/screenshots
       # Test run video was always captured, so this action uses "always()" condition
-      - uses: actions/upload-artifact@v1
-        if: always()
-        with:
-          name: cypress-videos
-          path: tests/e2e/cypress/videos
+      #- uses: actions/upload-artifact@v1
+      #  if: always()
+      #  with:
+      #    name: cypress-videos
+      #    path: e2e/cypress/videos
       - name: Debug logs
         if: always()
         run: docker-compose logs
