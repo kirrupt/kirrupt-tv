@@ -28,7 +28,7 @@ jobs:
       - name: Seed DB
         run: make seed
       - name: Unit & integration tests
-        run: docker-compose run -T test -e GITHUB_TOKEN mix coveralls.github
+        run: docker-compose run -e GITHUB_TOKEN -T test mix coveralls.github
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Seed database
