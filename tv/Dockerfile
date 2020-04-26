@@ -1,6 +1,6 @@
 FROM alpine:3.11
 
-RUN apk add --no-cache elixir nodejs nodejs-npm git make g++ ca-certificates && \
+RUN apk add --no-cache elixir erlang-xmerl nodejs nodejs-npm git make g++ ca-certificates && \
     update-ca-certificates --fresh && \
     rm -rf /var/cache/apk/*
 
@@ -18,7 +18,7 @@ ADD package.json /app/package.json
 
 RUN npm install
 
-ENV MIX_ENV dev
+ENV MIX_ENV prod
 RUN mix compile
 
 ADD . /app

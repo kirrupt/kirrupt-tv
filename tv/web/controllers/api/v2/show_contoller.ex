@@ -15,8 +15,10 @@ defmodule KirruptTv.Api.V2.ShowController do
       true -> []
     end
 
-    if params["except_show_ids"] do
-      show_ids = Enum.reject(show_ids, fn(id) -> Enum.member?(params["except_show_ids"], id) end)
+    show_ids = if params["except_show_ids"] do
+      Enum.reject(show_ids, fn(id) -> Enum.member?(params["except_show_ids"], id) end)
+    else
+      show_ids
     end
 
     render conn, "index.json", data: %{shows: Model.Show.get_shows(show_ids), ignored_show_ids: ignored_show_ids}
@@ -44,7 +46,7 @@ defmodule KirruptTv.Api.V2.ShowController do
     else
       conn
       |> put_status(400)
-      |> render "add_external_show.json", data: %{error: "COULD_NOT_ADD_EXTERNAL_SHOW"}
+      |> render("add_external_show.json", data: %{error: "COULD_NOT_ADD_EXTERNAL_SHOW"})
     end
   end
 
@@ -54,7 +56,7 @@ defmodule KirruptTv.Api.V2.ShowController do
     else
       conn
       |> put_status(400)
-      |> render "add_show.json", data: %{error: "COULD_NOT_ADD_SHOW"}
+      |> render("add_show.json", data: %{error: "COULD_NOT_ADD_SHOW"})
     end
   end
 

@@ -51,4 +51,7 @@ defmodule KirruptTv.GlobalHelpers do
   defp validate_thumb_type(type) do
     Enum.member?(["backgroundthumb", "cardthumb"], type)
   end
+
+  def unwrap_error(nil), do: nil
+  def unwrap_error({msg, _}), do: msg
 end

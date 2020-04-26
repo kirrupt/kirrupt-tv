@@ -6,10 +6,15 @@ defmodule KirruptTv.AccountController do
   plug KirruptTv.Plugs.Authenticated when action in [:logout]
   plug KirruptTv.Plugs.Authenticated.Redirect when action in [:login]
 
-  alias Model.User
+  def login_user(%{"login" => login}) do
+    Model.User.authenticate(login["username"], login["password"])
+  end
+  def login_user(_), do: nil
 
   def login(conn, params) do
-    if params["login"] && (user = Model.User.authenticate(params["login"]["username"], params["login"]["password"])) do
+    user = login_user(params)
+  
+    if user do
       opts = case params["login"]["auto_login"] == "true" do
         true  -> [max_age: 60 * 60 * 24 * 365]
         false -> []
@@ -42,8 +47,9 @@ defmodule KirruptTv.AccountController do
 
   def register_create(conn, params) do
     changeset = Model.User.registration_changeset(%Model.User{}, params["user"])
+    user = changeset.valid? and Model.User.register_user(changeset)
 
-    if changeset.valid? && (user = Model.User.register_user(changeset)) do
+    if user do
       conn
       |> put_resp_cookie("auto_hash", Model.User.get_auth_hash(user))
       |> put_flash(:info, "Successfully registered and logged in")

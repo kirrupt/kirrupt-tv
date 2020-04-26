@@ -5,9 +5,11 @@ services:
     ports:
       - "0.0.0.0:3306:3306"
     restart: always
+    ports:
+      - "0.0.0.0:3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=password
-  tv:
+  dev:
     build: ./tv/
     ports:
       - "0.0.0.0:8080:8080"
@@ -19,30 +21,23 @@ services:
       - ./tv/test:/app/test
       - ./tv/config:/app/config
     environment:
-      - PORT=8080
       - MIX_ENV=dev
       - MYSQL_HOST=mariadb
-      - MYSQL_USER=root
-      - MYSQL_PASS=password
-      - MYSQL_DB=kirrupt
-      - SENTRY_DSN=
+    command: mix phx.server
+  prod:
+    build: ./tv/
+    ports:
+      - "0.0.0.0:8080:8080"
+    restart: always
+    environment:
+      - PORT=8080
+      - MYSQL_HOST=mariadb
     command: mix phx.server
   test:
     build: ./tv/
-    volumes:
-      - ./data/shows/:/app/shows
-      - ./tv/lib:/app/lib
-      - ./tv/web:/app/web
-      - ./tv/test:/app/test
-      - ./tv/config:/app/config
     environment:
-      - PORT=8080
-      - MIX_ENV=dev
+      - MIX_ENV=test
       - MYSQL_HOST=mariadb
-      - MYSQL_USER=root
-      - MYSQL_PASS=password
-      - MYSQL_DB=kirrupt_test
-      - SENTRY_DSN=
     command: exit 0
   cypress:
     image: cypress/included:4.4.0

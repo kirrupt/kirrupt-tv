@@ -7,7 +7,7 @@ defmodule Common.Map do
 
   def compact_selective(data, nilable_fields) when is_map(data) do
     data
-    |> Enum.reject(fn({_, v}) -> v == nil && Enum.member?(nilable_fields, v) end)
+    |> Enum.reject(fn({k, v}) -> v == nil && Enum.member?(nilable_fields, k) end)
     |> Enum.into(%{})
   end
 end

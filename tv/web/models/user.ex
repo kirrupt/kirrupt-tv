@@ -51,6 +51,7 @@ defmodule Model.User do
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 6, message: "should be at least 6 characters")
     |> validate_confirmation(:password, message: "does not match password")
+    |> validate_required([:username, :email, :password])
     |> unique_constraint(:username, name: :username)
     |> unique_constraint(:email, name: :email_index)
     |> put_password_hash
