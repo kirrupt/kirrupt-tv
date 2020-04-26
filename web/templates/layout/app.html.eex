@@ -30,7 +30,13 @@
 					<%= if @current_user do %>
 					<li><a href="<%= account_path(@conn, :logout) %>">logout</a></li>
 					<li style="margin-right:10px;padding-right:10px;border-right:1px #eee solid;">
-						<a href="<%= account_path(@conn, :account) %>"><%= @current_user.username %></a></li>
+						<a href="<%= account_path(@conn, :account) %>"><%= @current_user.username %></a>
+					</li>
+					<%= if @current_user.is_admin do %>
+						<li style="margin-right:10px;padding-right:10px;border-right:1px #eee solid;">
+							<a href="/admin/dashboard">phx.dashboard</a>
+						</li>
+					<% end %>
 					<% else %>
 					<li><a href="<%= account_path(@conn, :register_new) %>">register</a></li>
 					<li style="margin-right:10px;padding-right:10px;border-right:1px #eee solid;"><a href="<%= account_path(@conn, :login) %>">login</a></li>
@@ -49,10 +55,6 @@
   						<li><a href="<%= recent_path(@conn, :index) %>"<%= if @conn.request_path == "/" do %> class="selected"<% end %>>recent</a></li>
   						<li><a href="<%= show_path(@conn, :my_shows) %>"<%= if @conn.request_path == "/my-shows" || @conn.request_path == "/add" || assigns[:show] do %> class="selected"<% end %>>shows</a></li>
   						<li><a href="<%= time_wasted_path(@conn, :index) %>"<%= if @conn.request_path == "/time-wasted" do %> class="selected"<% end %>>time wasted</a></li>
-
-  						<%= if @current_user.is_editor == 8888 do %>
-  							<li><a href="{{url_for('admin')}}">admin</a></li>
-  						<% end %>
 						<% else %>
 						  <li><a href="<%= recent_path(@conn, :index) %>" class="selected">recent</a></li>
 						<% end %>

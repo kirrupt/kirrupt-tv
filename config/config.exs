@@ -27,6 +27,9 @@ config :kirrupt_tv, KirruptTv.Endpoint,
            adapter: Phoenix.PubSub.PG2],
   fanart_key: "e5b2ae915bf77dc6f0ebb1af149c27ce"
 
+config :kirrupt_tv, KirruptTv.Endpoint,
+  live_view: [signing_salt: "FglqWk3uhmjKfAGi"]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n", metadata: [:file, :line],

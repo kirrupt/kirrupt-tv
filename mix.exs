@@ -37,7 +37,7 @@ defmodule KirruptTv.Mixfile do
      {:phoenix_pubsub, "~> 2.0"},
      {:phoenix_ecto, "~> 3.0"},
      {:mariaex, "~> 0.8.2"},
-     {:phoenix_html, "~> 2.6"},
+     {:phoenix_html, "~> 2.14"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:plug_cowboy, "~> 2.1"},
@@ -50,6 +50,10 @@ defmodule KirruptTv.Mixfile do
      {:comeonin, "~> 2.5"},
      {:arc, "~> 0.7.0"},
      {:quantum, ">= 2.2.0"},
+     {:jason, "~> 1.2"},
+     {:phoenix_live_dashboard, "~> 0.1"},
+     {:telemetry_poller, "~> 0.4"},
+     {:telemetry_metrics, "~> 0.4"},
      {:excoveralls, "~> 0.12", only: :test}]
   end
 

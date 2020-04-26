@@ -1,5 +1,6 @@
 defmodule KirruptTv.Router do
   use KirruptTv.Web, :router
+  import Phoenix.LiveDashboard.Router
 
   if Application.get_env(:sentry, :dsn) do
     use Plug.ErrorHandler
@@ -25,8 +26,19 @@ defmodule KirruptTv.Router do
     plug KirruptTv.Plugs.ServerTime
   end
 
+  pipeline :admin do
+    plug KirruptTv.Plugs.Authenticate
+    plug KirruptTv.Plugs.Authenticated.Admin
+  end
+
   scope "/", KirruptTv do
     get "/thumbs/:thumb_type/*image_path", ThumbController, :index
+  end
+
+  scope "/admin/", KirruptTv do
+    pipe_through [:browser, :admin]
+
+    live_dashboard "/dashboard", metrics: KirruptTv.Telemetry
   end
 
   scope "/account/", KirruptTv do

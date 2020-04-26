@@ -4,16 +4,18 @@ defmodule KirruptTv do
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
-    import Supervisor.Spec
-
     # Define workers and child supervisors to be supervised
     children = [
       # Start the Ecto repository
-      supervisor(KirruptTv.Repo, []),
+      KirruptTv.Repo,
       # Start the endpoint when the application starts
-      supervisor(KirruptTv.Endpoint, []),
+      KirruptTv.Endpoint,
       # Start the scheduler
-      worker(KirruptTv.Scheduler, []),
+      KirruptTv.Scheduler,
+
+      {Phoenix.PubSub, name: HelloPhoenix.PubSub},
+
+      KirruptTv.Telemetry,
       # Start your own worker by calling: KirruptTv.Worker.start_link(arg1, arg2, arg3)
       # worker(KirruptTv.Worker, [arg1, arg2, arg3]),
     ]
