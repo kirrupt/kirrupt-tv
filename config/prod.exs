@@ -17,7 +17,7 @@ config :logger, level: :info
 
 config :kirrupt_tv, KirruptTv.Endpoint,
   http: [ip: {0,0,0,0}, port: {:system, "PORT"}],
-  url: [host: "phoenix.kirrupt.com", port: 80],
+  url: [host: {:system, "HOSTNAME"}, port: 80],
   cache_static_manifest: "priv/static/manifest.json"
 
 config :sentry,
