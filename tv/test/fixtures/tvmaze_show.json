@@ -1,0 +1,122 @@
+{
+    "id": 517,
+    "url": "http://www.tvmaze.com/shows/517/psych",
+    "name": "Psych",
+    "type": "Scripted",
+    "language": "English",
+    "genres": [
+        "Drama",
+        "Comedy",
+        "Crime"
+    ],
+    "status": "Ended",
+    "runtime": 42,
+    "premiered": "2006-07-07",
+    "officialSite": "http://www.usanetwork.com/psych",
+    "schedule": {
+        "time": "21:00",
+        "days": [
+            "Wednesday"
+        ]
+    },
+    "rating": {
+        "average": 8
+    },
+    "weight": 95,
+    "network": {
+        "id": 30,
+        "name": "USA Network",
+        "country": {
+            "name": "United States",
+            "code": "US",
+            "timezone": "America/New_York"
+        }
+    },
+    "webChannel": null,
+    "externals": {
+        "tvrage": 8322,
+        "thetvdb": 79335,
+        "imdb": "tt0491738"
+    },
+    "image": {
+        "medium": "http://static.tvmaze.com/uploads/images/medium_portrait/4/11255.jpg",
+        "original": "http://static.tvmaze.com/uploads/images/original_untouched/4/11255.jpg"
+    },
+    "summary": "<p><b>Psych</b> is a quick-witted comedy starring James Roday as young police consultant Shawn Spencer, who solves crimes with powers of observation so acute that Santa Barbara PD detectives think he's psychic. <i>Psych</i> also stars Dule Hill as Shawn's best friend and reluctant sidekick, Gus, and Corbin Bernsen as Shawn's disapproving father, Henry, who ironically was the one who honed his son's \"observation\" skills as a child.</p>",
+    "updated": 1587024870,
+    "_links": {
+        "self": {
+            "href": "http://api.tvmaze.com/shows/517"
+        },
+        "previousepisode": {
+            "href": "http://api.tvmaze.com/episodes/46656"
+        }
+    },
+    "_embedded": {
+        "episodes": [
+            {
+                "id": 46536,
+                "url": "http://www.tvmaze.com/episodes/46536/psych-1x01-pilot",
+                "name": "Pilot",
+                "season": 1,
+                "number": 1,
+                "airdate": "2006-07-07",
+                "airtime": "21:00",
+                "airstamp": "2006-07-08T01:00:00+00:00",
+                "runtime": 60,
+                "image": {
+                    "medium": "http://static.tvmaze.com/uploads/images/medium_landscape/128/321823.jpg",
+                    "original": "http://static.tvmaze.com/uploads/images/original_untouched/128/321823.jpg"
+                },
+                "summary": "<p>Shawn Spencer is always moving on to the next fun thing and has never held a job for more than six months. He also has an incredible eye for detail and a near photographic memory, a skill drilled into him since he was young by his overbearing cop father. It's this ability that enables him to solve crimes just by watching the stories on the news. But as he goes in to pick up his reward check for one such helpful tip, he's hauled into questioning by Detective Lassiter for being in on the crime. No one could have that kind of information and not be on the inside. Backed into a corner, accused of being a partner in the crime, Shawn talks his way out of incarceration by claiming he got the information psychically. Since there's no way to disprove his claim, the police have to let him go.<br></p>",
+                "_links": {
+                    "self": {
+                        "href": "http://api.tvmaze.com/episodes/46536"
+                    }
+                }
+            },
+            {
+                "id": 46537,
+                "url": "http://www.tvmaze.com/episodes/46537/psych-1x02-spellingg-bee",
+                "name": "Spellingg Bee",
+                "season": 1,
+                "number": 2,
+                "airdate": "2006-07-14",
+                "airtime": "21:00",
+                "airstamp": "2006-07-15T01:00:00+00:00",
+                "runtime": 60,
+                "image": {
+                    "medium": "http://static.tvmaze.com/uploads/images/medium_landscape/128/321824.jpg",
+                    "original": "http://static.tvmaze.com/uploads/images/original_untouched/128/321824.jpg"
+                },
+                "summary": "<p>Gus is a closet fan of spelling bees. He knows everything there is to know, from the major players to the winning words each year. When Shawn catches him watching the Regional Spelling Bee that he Tivo'd earlier, they see that this year's favorite, Brendan Vu, collapsed while spelling a word. Shawn doesn't think it was an accident. He notices something is wrong with Brendan's inhaler. They get a call from Interim Chief Vick to come down and investigate. This is Gus' dream come true.</p>",
+                "_links": {
+                    "self": {
+                        "href": "http://api.tvmaze.com/episodes/46537"
+                    }
+                }
+            },
+            {
+                "id": 46656,
+                "url": "http://www.tvmaze.com/episodes/46656/psych-8x10-the-break-up",
+                "name": "The Break Up",
+                "season": 8,
+                "number": 10,
+                "airdate": "2014-03-26",
+                "airtime": "21:00",
+                "airstamp": "2014-03-27T01:00:00+00:00",
+                "runtime": 60,
+                "image": {
+                    "medium": "http://static.tvmaze.com/uploads/images/medium_landscape/145/363950.jpg",
+                    "original": "http://static.tvmaze.com/uploads/images/original_untouched/145/363950.jpg"
+                },
+                "summary": "<p>Shawn and Gus assist Lassiter and Betsy Brannigan, with the help of Henry and Woody, in solving the murder of real estate executive, Warren Dern. Meanwhile, Shawn has decided to move to San Francisco to be with Juliet, but is struggling to find a way to break the news to Gus.</p>",
+                "_links": {
+                    "self": {
+                        "href": "http://api.tvmaze.com/episodes/46656"
+                    }
+                }
+            }
+        ]
+    }
+}

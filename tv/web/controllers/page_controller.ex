@@ -1,5 +1,6 @@
 defmodule KirruptTv.PageController do
   use KirruptTv.Web, :controller
+  import KirruptTv.Helpers.RequestHelpers
   import KirruptTv.Helpers.BackgroundHelpers
 
   plug KirruptTv.Plugs.Authenticate
@@ -7,11 +8,7 @@ defmodule KirruptTv.PageController do
   def search(conn, params) do
     shows = Model.Show.search(params["q"], conn.assigns[:current_user])
 
-    if KirruptTv.Helpers.RequestHelpers.xhr?(conn) do
-      conn = conn |> put_layout(false)
-    end
-
-    render(conn, "search.html", %{
+    render(conn |> disable_layout_on_xhr, "search.html", %{
       shows: shows,
       my_shows: Model.Show.filter_user_shows(shows, conn.assigns[:current_user]),
       background: random_background(shows),

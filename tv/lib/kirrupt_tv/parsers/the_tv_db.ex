@@ -15,7 +15,7 @@ defmodule KirruptTv.Parser.TheTVDB do
   end
 
   def get_show_id(show_name) do
-    if data = get_show_xml("http://thetvdb.com/api/GetSeries.php?seriesname=#{URI.encode(show_name)}&language=en") do
+    if data = get_show_xml("https://thetvdb.com/api/GetSeries.php?seriesname=#{URI.encode(show_name)}&language=en") do
       ser = try do
         data |> xpath(
           ~x"//Data/Series"l,

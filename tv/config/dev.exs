@@ -19,7 +19,8 @@ config :kirrupt_tv, KirruptTv.Endpoint,
 config :kirrupt_tv, KirruptTv.Endpoint,
   live_reload: [
     patterns: [
-      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
+      # ignore reloading on static files to prevent image uploading triggering a reload
+      #~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{web/views/.*(ex)$},
       ~r{web/templates/.*(eex)$}
