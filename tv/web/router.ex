@@ -6,8 +6,13 @@ defmodule KirruptTv.Router do
     use Sentry.Plug
   end
 
+  defp inject_pipeline_name(conn, name) do
+    Plug.Conn.put_private(conn, :pipeline_name, name)
+  end
+
   pipeline :browser do
     plug :accepts, ["html"]
+    plug :inject_pipeline_name, :browser
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
@@ -16,6 +21,7 @@ defmodule KirruptTv.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :inject_pipeline_name, :api
     plug KirruptTv.Plugs.ServerTime
   end
 

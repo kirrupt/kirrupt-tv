@@ -31,8 +31,8 @@ defmodule KirruptTv.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.3.0"},
-     {:phoenix_pubsub, "~> 1.0"},
+    [{:phoenix, "~> 1.5"},
+     {:phoenix_pubsub, "~> 2.0"},
      {:phoenix_ecto, "~> 3.0"},
      {:mariaex, "~> 0.8.2"},
      {:phoenix_html, "~> 2.6"},

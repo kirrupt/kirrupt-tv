@@ -40,10 +40,10 @@ defmodule KirruptTv.Plugs.Authenticate do
   end
 
   defp device_type(conn) do
-    cond do
-      Enum.member?(conn.private[:phoenix_pipelines], :browser) -> %{device_type: "browser", device_code: "/"}
-      Enum.member?(conn.private[:phoenix_pipelines], :api) -> %{device_type: "api", device_code: "/"}
-      true -> nil
+    case conn.private[:pipeline_name] do
+      :browser -> %{device_type: "browser", device_code: "/"}
+      :api -> %{device_type: "api", device_code: "/"}
+      name -> raise "invalid pipeline_name: #{name}"
     end
   end
 
