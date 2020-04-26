@@ -23,10 +23,10 @@ jobs:
           IMAGE_SHA_NAME: ${{ steps.docker.outputs.IMAGE_SHA_NAME }}
       - name: Run DB
         run: docker-compose up -d mariadb
-      - name: Seed DB
-        run: make seed
       - name: Wait for DB
         run: retry --verbose -i 5s -c 20 make check-db
+      - name: Seed DB
+        run: make seed
       - name: Unit & integration tests
         run: docker-compose run -T test -e GITHUB_TOKEN mix coveralls.github
         env:
