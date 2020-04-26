@@ -25,7 +25,6 @@ to start and seed the database.
 
 Run:
 ```bash
-cd tv/
 mix phx.server
 ```
 to start the server locally.
