@@ -27,3 +27,5 @@ RUN ./node_modules/brunch/bin/brunch build --production
 RUN mix phx.digest
 
 RUN mix compile
+
+CMD mix phx.server
