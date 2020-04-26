@@ -25,6 +25,7 @@ to start and seed the database.
 
 Run:
 ```bash
+npm install
 mix phx.server
 ```
 to start the server locally.
