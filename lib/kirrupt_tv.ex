@@ -22,7 +22,14 @@ defmodule KirruptTv do
 
     shows_path = Path.join(KirruptTv.Helpers.FileHelpers.root_folder, "static/shows")
     IO.puts "static/shows path: #{shows_path}"
-    File.mkdir_p(shows_path)
+
+    if File.exists?("/data/shows") do
+      IO.puts "/data/shows exist, using it"
+      File.ln_s!("/data/shows", shows_path)
+    else
+      IO.puts "/data/shows missing, creating new directory"
+      File.mkdir_p(shows_path)
+    end
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
