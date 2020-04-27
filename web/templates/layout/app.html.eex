@@ -9,6 +9,7 @@
 			body{
 				background:#f4f4f4 url('<%= static_path(@conn, "/#{assigns[:background]}") %>') fixed;
 				background-position:center 97px;
+				background-size: 100% auto;
 			}
 			</style>
 		<% end %>
@@ -17,6 +18,7 @@
 			body{
 				background:#f4f4f4 url('<%= static_path(@conn, "/#{assigns[:show].fixed_background}") %>') fixed;
 				background-position:center 97px;
+				background-size: 100% auto;
 			}
 			</style>
 		<% end %>
