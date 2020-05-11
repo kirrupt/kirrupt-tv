@@ -78,12 +78,12 @@
 			</div>
 			<div id="body">
 				<div class="inner" id="content_ajax">
-          <%= render @view_module, @view_template, assigns %>
+          <%= @inner_content %>
 				</div>
 
 
 			<div id="footer" style="text-align:right;margin-top:20px">
-				&copy; Kirrupt 2019
+				&copy; Kirrupt 2020
 			</div>
 			</div>
 
@@ -93,7 +93,6 @@
 
 
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-		<script type="text/javascript">var site_url='<%= recent_path(@conn, :index) %>/';</script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
 
     <%= render_existing @view_module, "scripts.html", assigns %>
