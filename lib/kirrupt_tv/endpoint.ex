@@ -1,4 +1,19 @@
 defmodule KirruptTv.Endpoint do
+  # Apply 'cache forever' caching headers for resources that will never change.
+  def caching_headers(conn, args) do
+    [head|_] = conn.path_info
+
+    case should_cache_forever(head) do
+      true -> [{"cache-control", "public, max-age=31536000"}]
+      false -> []
+    end
+  end
+
+  def should_cache_forever("images"), do: true
+  def should_cache_forever("favicon.ico"), do: true
+  def should_cache_forever("shows"), do: true
+  def should_cache_forever(_), do: false
+
   use Phoenix.Endpoint, otp_app: :kirrupt_tv
 
   socket "/socket", KirruptTv.UserSocket
@@ -10,7 +25,8 @@ defmodule KirruptTv.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/", from: :kirrupt_tv, gzip: false,
-    only: ~w(css fonts images js shows favicon.ico robots.txt)
+    only: ~w(css fonts images js shows favicon.ico robots.txt),
+    headers: {__MODULE__, :caching_headers, [%{}]}
 
   plug Phoenix.LiveDashboard.RequestLogger,
     param_key: "request_logger",
