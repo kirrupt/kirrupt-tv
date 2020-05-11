@@ -5,23 +5,6 @@
 /tests/e2e/cypress/screenshots/
 /tests/e2e/cypress/videos/
 
-# App artifacts
-/_build
-/db
-/deps
-/*.ez
-
-# Generated on crash by the VM
-erl_crash.dump
-
-# Static artifacts
-/node_modules
-
-# Since we are building assets from web/static,
-# we ignore priv/static. You may want to comment
-# this depending on your deployment strategy.
-/priv/static/
-
 # The config/prod.secret.exs file by default contains sensitive
 # data and you should not commit it into version control.
 #
@@ -30,6 +13,39 @@ erl_crash.dump
 # variables.
 /config/prod.secret.exs
 
-/tmp
-erl_crash.dump
 .DS_Store
+
+# The directory Mix will write compiled artifacts to.
+/_build/
+
+# If you run "mix test --cover", coverage assets end up here.
+/cover/
+
+# The directory Mix downloads your dependencies sources to.
+/deps/
+
+# Where 3rd-party dependencies like ExDoc output generated docs.
+/doc/
+
+# Ignore .fetch files in case you like to edit your project deps locally.
+/.fetch
+
+# If the VM crashes, it generates a dump, let's ignore it too.
+erl_crash.dump
+
+# Also ignore archive artifacts (built via "mix archive.build").
+*.ez
+
+# Ignore package tarball (built via "mix hex.build").
+hello_phoenix-*.tar
+
+# If NPM crashes, it generates a log, let's ignore it too.
+npm-debug.log
+
+# The directory NPM downloads your dependencies sources to.
+/assets/node_modules/
+
+# Since we are building assets from assets/,
+# we ignore priv/static. You may want to comment
+# this depending on your deployment strategy.
+/priv/static/
