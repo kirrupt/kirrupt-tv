@@ -48,11 +48,11 @@ defmodule Model.Show do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:id, :name, :tvrage_url, :runtime, :genre, :status, :last_checked,
+    |> cast(params, [:id, :name, :tvrage_url, :genre, :status, :last_checked,
                      :wikipedia_url, :picture_url, :thumbnail_url, :wikipedia_checked,
                      :tvrage_id, :tvmaze_id, :year, :started, :summary, :thetvdb_id,
                      :fixed_thumb, :fixed_background, :fixed_banner, :url, :added])
-    |> validate_required([:id, :name, :runtime, :status, :added])
+    |> validate_required([:id, :name, :status, :added])
   end
 
   def runtime_num(show) do
