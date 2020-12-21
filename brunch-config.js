@@ -2,7 +2,7 @@ exports.config = {
   // See http://brunch.io/#documentation for docs.
   files: {
     javascripts: {
-      joinTo: "js/app.js"
+      joinTo: "js-old/app.js"
 
       // To use a separate vendor.js bundle, specify two files path
       // http://brunch.io/docs/config#-files-
@@ -20,13 +20,13 @@ exports.config = {
       // }
     },
     stylesheets: {
-      joinTo: "css/app.css",
+      joinTo: "css-old/app.css",
       order: {
         after: ["web/static/css/app.css"] // concat app.css last
       }
     },
     templates: {
-      joinTo: "js/app.js"
+      joinTo: "js-old/app.js"
     }
   },
 
@@ -59,7 +59,7 @@ exports.config = {
 
   modules: {
     autoRequire: {
-      "js/app.js": ["web/static/js/app"]
+      "js-old/app.js": ["web/static/js/app"]
     }
   },
 
