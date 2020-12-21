@@ -12,8 +12,11 @@ config :kirrupt_tv, KirruptTv.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
-                    cd: Path.expand("../", __DIR__)]]
-
+                    cd: Path.expand("../", __DIR__)],
+             node: [
+               "node_modules/@vue/cli-service/bin/vue-cli-service.js", "build", "--watch", "--mode=development",
+               cd: Path.expand("../frontend", __DIR__)
+             ]]
 
 # Watch static and templates for browser reloading.
 config :kirrupt_tv, KirruptTv.Endpoint,

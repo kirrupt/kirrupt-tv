@@ -25,8 +25,16 @@ defmodule KirruptTv.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/", from: :kirrupt_tv, gzip: false,
-    only: ~w(css fonts images js shows favicon.ico robots.txt),
+    only: ~w(fonts css-old js-old images shows favicon.ico robots.txt),
     headers: {__MODULE__, :caching_headers, [%{}]}
+  
+  plug Plug.Static,
+    at: "/",
+    from: "priv/dist",
+    gzip: false,
+    only: ~w(index.html manifest.json service-worker.js css fonts img js favicon.ico robots.txt),
+    headers: {__MODULE__, :caching_headers, [%{}]}
+    #only_matching: ["precache-manifest"]
 
   plug Phoenix.LiveDashboard.RequestLogger,
     param_key: "request_logger",

@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title><%= if assigns[:title] do %><%= assigns[:title] %> - <% end %>TV Episodes</title>
-    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css-old/app.css") %>">
 		<%= if assigns[:background] do %>
 			<style>
 			body{
@@ -93,7 +93,7 @@
 
 
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script src="<%= static_path(@conn, "/js-old/app.js") %>"></script>
 
     <%= render_existing @view_module, "scripts.html", assigns %>
 

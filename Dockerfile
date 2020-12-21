@@ -18,6 +18,15 @@ ADD package.json /app/package.json
 
 RUN npm install
 
+WORKDIR /app/frontend
+ADD frontend/package* /app/frontend/
+RUN npm install
+
+ADD frontend/ /app/frontend/
+RUN npm run build
+
+WORKDIR /app
+
 ENV MIX_ENV prod
 RUN mix compile
 
