@@ -34,7 +34,7 @@ jobs:
       - name: Run web server
         run: docker-compose up -d prod
       - name: Test E2E
-        uses: cypress-io/github-action@v1
+        uses: cypress-io/github-action@v2
         with:
           working-directory: e2e/
           wait-on: 'http://localhost:8080/'
@@ -46,13 +46,13 @@ jobs:
       # thus we store screenshots only on failures
       # Alternative: create and commit an empty cypress/screenshots folder
       # to always have something to upload
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v2
         if: failure()
         with:
           name: cypress-screenshots
           path: e2e/cypress/screenshots
       # Test run video was always captured, so this action uses "always()" condition
-      #- uses: actions/upload-artifact@v1
+      #- uses: actions/upload-artifact@v2
       #  if: always()
       #  with:
       #    name: cypress-videos
