@@ -15,6 +15,14 @@ brew cask install docker
 brew install elixir node
 ```
 
+Linux/WSL2:
+```bash
+wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb && sudo dpkg -i erlang-solutions_2.0_all.deb
+curl -fsSL https://deb.nodesource.com/setup_15.x | sudo -E bash -
+sudo apt update
+sudo apt install -y inotify-tools esl-erlang elixir nodejs
+```
+
 ### Getting started
 Clone repository and run:
 ```bash

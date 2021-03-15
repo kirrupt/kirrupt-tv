@@ -21,6 +21,7 @@ services:
     environment:
       - MIX_ENV=dev
       - MYSQL_HOST=mariadb
+    command: mix phx.server
   prod:
     build: ./
     ports:
@@ -36,7 +37,7 @@ services:
       - MYSQL_HOST=mariadb
     command: exit 0
   cypress:
-    image: cypress/included:4.4.0
+    image: cypress/included:6.6
     entrypoint: ['bash', '-c', 'exit 0']
     volumes:
       - ./e2e/cypress:/cypress

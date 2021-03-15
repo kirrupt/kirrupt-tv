@@ -22,7 +22,7 @@ defmodule KirruptTv.Mixfile do
     [mod: {KirruptTv, []},
     extra_applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
                     :phoenix_ecto, :mariaex, :timex, :timex_ecto, :sentry,
-                    :comeonin, :arc]]
+                    :comeonin, :arc, :tools]]
   end
 
   # Specifies which paths to compile per environment.
@@ -53,7 +53,7 @@ defmodule KirruptTv.Mixfile do
      {:phoenix_live_dashboard, "~> 0.1"},
      {:telemetry_poller, "~> 0.4"},
      {:telemetry_metrics, "~> 0.4"},
-     {:excoveralls, "~> 0.12", only: :test},
+     {:excoveralls, "~> 0.12"},
      {:httpoison, "~> 1.8"},
      {:elixir_uuid, "~> 1.2"}]
   end
