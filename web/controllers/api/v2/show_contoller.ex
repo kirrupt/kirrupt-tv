@@ -70,4 +70,3 @@ defmodule KirruptTv.Api.V2.ShowController do
     end
   end
 end
-
