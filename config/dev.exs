@@ -11,19 +11,23 @@ config :kirrupt_tv, KirruptTv.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
-                    cd: Path.expand("../", __DIR__)],
-             node: [
-               "node_modules/@vue/cli-service/bin/vue-cli-service.js", "build", "--watch", "--mode=development",
-               cd: Path.expand("../frontend", __DIR__)
-             ]]
+  watchers: [
+    node: ["node_modules/brunch/bin/brunch", "watch", "--stdin", cd: Path.expand("../", __DIR__)],
+    node: [
+      "node_modules/@vue/cli-service/bin/vue-cli-service.js",
+      "build",
+      "--watch",
+      "--mode=development",
+      cd: Path.expand("../frontend", __DIR__)
+    ]
+  ]
 
 # Watch static and templates for browser reloading.
 config :kirrupt_tv, KirruptTv.Endpoint,
   live_reload: [
     patterns: [
       # ignore reloading on static files to prevent image uploading triggering a reload
-      #~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
+      # ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{web/views/.*(ex)$},
       ~r{web/templates/.*(eex)$}

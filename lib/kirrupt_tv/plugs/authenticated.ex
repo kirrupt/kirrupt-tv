@@ -14,6 +14,7 @@ defmodule KirruptTv.Plugs.Authenticated do
           conn
           |> Phoenix.Controller.redirect(to: KirruptTv.Router.Helpers.account_path(conn, :login))
           |> halt
+
         _ ->
           conn
           |> send_resp(401, "unauthorized")
@@ -27,7 +28,7 @@ defmodule KirruptTv.Plugs.Authenticated do
   def is_logged_in(user_session) do
     case user_session do
       nil -> false
-      _   -> true
+      _ -> true
     end
   end
 end

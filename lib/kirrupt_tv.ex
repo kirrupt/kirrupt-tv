@@ -12,22 +12,20 @@ defmodule KirruptTv do
       KirruptTv.Endpoint,
       # Start the scheduler
       KirruptTv.Scheduler,
-
       {Phoenix.PubSub, name: HelloPhoenix.PubSub},
-
-      KirruptTv.Telemetry,
+      KirruptTv.Telemetry
       # Start your own worker by calling: KirruptTv.Worker.start_link(arg1, arg2, arg3)
       # worker(KirruptTv.Worker, [arg1, arg2, arg3]),
     ]
 
-    shows_path = Path.join(KirruptTv.Helpers.FileHelpers.root_folder, "static/shows")
-    IO.puts "static/shows path: #{shows_path}"
+    shows_path = Path.join(KirruptTv.Helpers.FileHelpers.root_folder(), "static/shows")
+    IO.puts("static/shows path: #{shows_path}")
 
     if File.exists?("/data/shows") do
-      IO.puts "/data/shows exist, using it"
+      IO.puts("/data/shows exist, using it")
       File.ln_s!("/data/shows", shows_path)
     else
-      IO.puts "/data/shows missing, creating new directory"
+      IO.puts("/data/shows missing, creating new directory")
       File.mkdir_p(shows_path)
     end
 

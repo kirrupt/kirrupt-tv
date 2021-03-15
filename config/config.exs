@@ -23,16 +23,15 @@ config :kirrupt_tv, KirruptTv.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "9fBcrjyVj50bjDHq/pxoX6ImrGKsLK0IfRm55NEiH9x8/GNOM8ZVrN53VqKFywHN",
   render_errors: [view: KirruptTv.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: KirruptTv.PubSub,
-           adapter: Phoenix.PubSub.PG2],
+  pubsub: [name: KirruptTv.PubSub, adapter: Phoenix.PubSub.PG2],
   fanart_key: "e5b2ae915bf77dc6f0ebb1af149c27ce"
 
-config :kirrupt_tv, KirruptTv.Endpoint,
-  live_view: [signing_salt: "FglqWk3uhmjKfAGi"]
+config :kirrupt_tv, KirruptTv.Endpoint, live_view: [signing_salt: "FglqWk3uhmjKfAGi"]
 
 # Configures Elixir's Logger
 config :logger, :console,
-  format: "$time $metadata[$level] $message\n", metadata: [:file, :line],
+  format: "$time $metadata[$level] $message\n",
+  metadata: [:file, :line],
   metadata: [:request_id]
 
 # Configures Sentry's Logger
@@ -55,4 +54,4 @@ config :kirrupt_tv, KirruptTv.Repo,
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
+import_config "#{Mix.env()}.exs"

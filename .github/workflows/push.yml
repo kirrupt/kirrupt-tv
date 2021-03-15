@@ -21,6 +21,10 @@ jobs:
         run: 'sed -i -e "s+build: ./+image: $IMAGE_SHA_NAME+g" docker-compose.yml'
         env:
           IMAGE_SHA_NAME: ${{ steps.docker.outputs.IMAGE_SHA_NAME }}
+
+      - name: Check formatting
+        run: docker-compose run test mix format --check-formatted
+
       - name: Run DB
         run: docker-compose up -d mariadb
       - name: Wait for DB

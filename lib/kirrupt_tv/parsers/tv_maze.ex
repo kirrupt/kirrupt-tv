@@ -3,31 +3,44 @@ defmodule KirruptTv.Parser.TVMaze do
   use Timex
 
   def process_response_body(body) do
-    case body |> Poison.decode do
-       {:ok, data} -> data
-       {:error, _} -> Logger.error("Could not parse response body"); nil
+    case body |> Poison.decode() do
+      {:ok, data} ->
+        data
+
+      {:error, _} ->
+        Logger.error("Could not parse response body")
+        nil
     end
   end
 
   defp get_show_json(url) do
     Logger.info("Processing #{url}")
-    response = HTTPoison.get url
+    response = HTTPoison.get(url)
 
     case response do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> process_response_body(body)
-      _ -> Logger.error("Could not access #{response} #{url}"); nil
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        process_response_body(body)
+
+      _ ->
+        Logger.error("Could not access #{response} #{url}")
+        nil
     end
   end
 
   defp remove_html(nil), do: nil
+
   defp remove_html(text) do
     HtmlSanitizeEx.strip_tags(text)
   end
 
   defp get_year_from_date(date_string) do
     case Timex.parse(date_string, "{YYYY}-{0M}-{0D}") do
-      {:ok, date} -> date.year
-      {:error, _} -> Logger.error("Could not parse date"); nil
+      {:ok, date} ->
+        date.year
+
+      {:error, _} ->
+        Logger.error("Could not parse date")
+        nil
     end
   end
 
@@ -44,15 +57,20 @@ defmodule KirruptTv.Parser.TVMaze do
       result
     end
   end
+
   def parse_year(result, _), do: result
 
-  def parse_image(result, %{"image" => %{"original" => original}}), do: Map.put(result, :image, original)
+  def parse_image(result, %{"image" => %{"original" => original}}),
+    do: Map.put(result, :image, original)
+
   def parse_image(result, _), do: result
 
   def parse_network_country(result, %{"code" => code}), do: Map.put(result, :origin_country, code)
   def parse_network_country(result, _), do: result
 
-  def parse_network_timezone(result, %{"timezone" => timezone}), do: Map.put(result, :timezone, timezone)
+  def parse_network_timezone(result, %{"timezone" => timezone}),
+    do: Map.put(result, :timezone, timezone)
+
   def parse_network_timezone(result, _), do: result
 
   def parse_network(result, %{"network" => %{"country" => country}}) do
@@ -60,12 +78,13 @@ defmodule KirruptTv.Parser.TVMaze do
     |> parse_network_country(country)
     |> parse_network_timezone(country)
   end
+
   def parse_network(result, _), do: result
 
   def parse_schedule_time(result, %{"time" => time}), do: Map.put(result, :airtime, time)
   def parse_schedule_time(result, _), do: result
 
-  def parse_schedule_day(result, %{"days" => [ head | _ ]}), do: Map.put(result, :airday, head)
+  def parse_schedule_day(result, %{"days" => [head | _]}), do: Map.put(result, :airday, head)
   def parse_schedule_day(result, _), do: result
 
   def parse_schedule(result, %{"schedule" => schedule}) do
@@ -73,15 +92,20 @@ defmodule KirruptTv.Parser.TVMaze do
     |> parse_schedule_time(schedule)
     |> parse_schedule_day(schedule)
   end
+
   def parse_schedule(result, _), do: result
 
-  def parse_premiered(result, %{"premiered" => premiered}), do: Map.put(result, :started, premiered)
+  def parse_premiered(result, %{"premiered" => premiered}),
+    do: Map.put(result, :started, premiered)
+
   def parse_premiered(result, _), do: result
 
   def parse_genres(result, %{"genres" => genres}), do: Map.put(result, :genres, genres)
   def parse_genres(result, _), do: result
 
-  def parse_episode_image(result, %{"image" => %{"original" => original}}), do: Map.put(result, :screencap, original)
+  def parse_episode_image(result, %{"image" => %{"original" => original}}),
+    do: Map.put(result, :screencap, original)
+
   def parse_episode_image(result, _), do: result
 
   def parse_episode(ep) do
@@ -97,8 +121,13 @@ defmodule KirruptTv.Parser.TVMaze do
   end
 
   def parse_embedded(result, %{"_embedded" => %{"episodes" => episodes}}) do
-    Map.put(result, :episodes, episodes |> Enum.reduce([], fn(ep, acc) -> acc ++ [parse_episode(ep)] end))
+    Map.put(
+      result,
+      :episodes,
+      episodes |> Enum.reduce([], fn ep, acc -> acc ++ [parse_episode(ep)] end)
+    )
   end
+
   def parse_embedded(result, _), do: result
 
   def parse_show_data(data) do
@@ -128,11 +157,13 @@ defmodule KirruptTv.Parser.TVMaze do
 
   def search(name) do
     if data = get_show_json("https://api.tvmaze.com/search/shows?q=#{URI.encode(name)}") do
-      Enum.reduce(data, [], fn(show, acc) ->
+      Enum.reduce(data, [], fn show, acc ->
         cond do
           show["show"] ->
             acc ++ [parse_show_data(show["show"])]
-          true -> acc
+
+          true ->
+            acc
         end
       end)
     else

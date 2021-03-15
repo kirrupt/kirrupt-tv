@@ -3,8 +3,12 @@ defmodule Common.Timex do
 
   def parse(date, format) do
     case Timex.parse(date, format) do
-      {:ok, d} -> d
-      {:error, _} -> Logger.warn("Could't parse date(#{date}) with format (#{format})"); nil
+      {:ok, d} ->
+        d
+
+      {:error, _} ->
+        Logger.warn("Could't parse date(#{date}) with format (#{format})")
+        nil
     end
   end
 end
