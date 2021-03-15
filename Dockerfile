@@ -38,8 +38,6 @@ RUN npm run build
 
 WORKDIR /app
 
-RUN mix compile
-
 ADD . /app
 
 RUN ./node_modules/brunch/bin/brunch build --production
