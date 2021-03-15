@@ -11,11 +11,11 @@ defmodule KirruptTv.Parser.FanartTV do
 
   defp get_json(url) do
     Logger.info("Processing #{url}")
-    response = HTTPotion.get url
+    response = HTTPoison.get url
 
     case response do
-      %{status_code: 200, body: body} -> process_response_body(body)
-      _ -> Logger.error("Could not access #{url}"); nil
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> process_response_body(body)
+      _ -> Logger.error("Could not access #{response} #{url}"); nil
     end
   end
 

@@ -58,11 +58,11 @@ defmodule KirruptTv.Helpers.FileHelpers do
   end
 
   defp get_image(url) do
-    response = HTTPotion.get url
+    response = HTTPoison.get url
 
     case response do
-      %{status_code: 200, body: body} -> body
-      _ -> Logger.error("Could not access #{url}"); nil
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> body
+      _ -> Logger.error("Could not access #{response} #{url}"); nil
     end
   end
 end
