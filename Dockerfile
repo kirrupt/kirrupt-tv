@@ -47,5 +47,3 @@ RUN mix phx.digest
 RUN mix compile
 
 CMD mix phx.server --no-compile
-
-RUN apk add --no-cache xvfb && rm -rf /var/cache/apk/*
