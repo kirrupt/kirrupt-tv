@@ -20,9 +20,9 @@ defmodule KirruptTv.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {KirruptTv, []},
-     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :mariaex, :timex, :timex_ecto, :httpotion, :sentry,
-                    :comeonin]]
+    extra_applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
+                    :phoenix_ecto, :mariaex, :timex, :timex_ecto, :sentry,
+                    :comeonin, :arc]]
   end
 
   # Specifies which paths to compile per environment.
@@ -43,18 +43,19 @@ defmodule KirruptTv.Mixfile do
      {:plug_cowboy, "~> 2.1"},
      {:timex, "~> 3.0"},
      {:timex_ecto, "~> 3.0"},
-     {:httpotion, "~> 3.0.2"},
      {:html_sanitize_ex, "~> 1.0.0"},
-     {:sentry, "~> 3.0.0"},
+     {:sentry, "~> 6.0"},
      {:sweet_xml, "~> 0.6.2"},
      {:comeonin, "~> 2.5"},
-     {:arc, "~> 0.7.0"},
+     {:arc, "~> 0.11.0"},
      {:quantum, ">= 2.2.0"},
      {:jason, "~> 1.2"},
      {:phoenix_live_dashboard, "~> 0.1"},
      {:telemetry_poller, "~> 0.4"},
      {:telemetry_metrics, "~> 0.4"},
-     {:excoveralls, "~> 0.12", only: :test}]
+     {:excoveralls, "~> 0.12", only: :test},
+     {:httpoison, "~> 1.8"},
+     {:elixir_uuid, "~> 1.2"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

@@ -11,11 +11,11 @@ defmodule KirruptTv.Parser.TVMaze do
 
   defp get_show_json(url) do
     Logger.info("Processing #{url}")
-    response = HTTPotion.get url
+    response = HTTPoison.get url
 
     case response do
-      %{status_code: 200, body: body} -> process_response_body(body)
-      _ -> Logger.error("Could not access #{url}"); nil
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> process_response_body(body)
+      _ -> Logger.error("Could not access #{response} #{url}"); nil
     end
   end
 
@@ -32,7 +32,7 @@ defmodule KirruptTv.Parser.TVMaze do
   end
 
   def show_info(show_id) do
-    if data = get_show_json("http://api.tvmaze.com/shows/#{show_id}?embed[]=episodes") do
+    if data = get_show_json("https://api.tvmaze.com/shows/#{show_id}?embed[]=episodes") do
       parse_show_data(data)
     end
   end
@@ -127,7 +127,7 @@ defmodule KirruptTv.Parser.TVMaze do
   end
 
   def search(name) do
-    if data = get_show_json("http://api.tvmaze.com/search/shows?q=#{URI.encode(name)}") do
+    if data = get_show_json("https://api.tvmaze.com/search/shows?q=#{URI.encode(name)}") do
       Enum.reduce(data, [], fn(show, acc) ->
         cond do
           show["show"] ->
