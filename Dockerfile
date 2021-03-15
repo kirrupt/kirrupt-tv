@@ -14,21 +14,30 @@ RUN mix local.rebar --force
 
 RUN mix deps.get
 
+# Compile deps for `prod`
+ENV MIX_ENV prod
+RUN mix deps.compile
+
+# Compile deps for `test`
+ENV MIX_ENV test
+RUN mix deps.compile
+
+# Use `prod`
+ENV MIX_ENV prod
+
 ADD package.json /app/package.json
 
 RUN npm install
 
 WORKDIR /app/frontend
 ADD frontend/package* /app/frontend/
+ENV CYPRESS_INSTALL_BINARY 0
 RUN npm install
 
 ADD frontend/ /app/frontend/
 RUN npm run build
 
 WORKDIR /app
-
-ENV MIX_ENV prod
-RUN mix compile
 
 ADD . /app
 

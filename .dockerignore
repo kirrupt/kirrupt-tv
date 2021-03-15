@@ -3,3 +3,7 @@
 /node_modules
 /deps
 /frontend/node_modules
+/.git
+/priv/dist
+/priv/static
+/e2e/node_modules
