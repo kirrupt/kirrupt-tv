@@ -7,8 +7,11 @@ defmodule KirruptTv.Plugs.Authenticated.Redirect do
 
   def call(conn, _) do
     conn = fetch_session(conn)
+
     if conn.assigns[:current_user] do
-      conn |> Phoenix.Controller.redirect(to: KirruptTv.Router.Helpers.recent_path(conn, :index)) |> halt
+      conn
+      |> Phoenix.Controller.redirect(to: KirruptTv.Router.Helpers.recent_path(conn, :index))
+      |> halt
     else
       conn
     end

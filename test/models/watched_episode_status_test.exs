@@ -4,7 +4,7 @@ defmodule KirruptTv.WatchedEpisodeStatusTest do
   alias KirruptTv.WatchedEpisodeStatus
   alias Model.WatchedEpisodeStatus
 
-  @valid_attrs %{user_id: 10, episode_id: 20, modified: Timex.now, status: true}
+  @valid_attrs %{user_id: 10, episode_id: 20, modified: Timex.now(), status: true}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

@@ -15,13 +15,18 @@ defmodule KirruptTv.Plugs.Authenticate do
   end
 
   defp find_user(conn) do
-    auto_hash = cond do
-      ah = Map.get(conn.req_cookies, "auto_hash") -> ah
-      ah = conn.req_headers |> Enum.find(fn({header, _}) -> header == "authorization" end) ->
-        {_header, token} = ah
-        token |> String.split(" ") |> List.last
-      true -> nil
-    end
+    auto_hash =
+      cond do
+        ah = Map.get(conn.req_cookies, "auto_hash") ->
+          ah
+
+        ah = conn.req_headers |> Enum.find(fn {header, _} -> header == "authorization" end) ->
+          {_header, token} = ah
+          token |> String.split(" ") |> List.last()
+
+        true ->
+          nil
+      end
 
     if auto_hash do
       Repo.get_by(User, auto_hash: auto_hash)
@@ -29,11 +34,13 @@ defmodule KirruptTv.Plugs.Authenticate do
   end
 
   defp check_device_visit(_conn, nil), do: nil
+
   defp check_device_visit(conn, user) do
     if device_info = device_type(conn) do
       if !Model.User.has_device(user, device_info[:device_type], device_info[:device_code]) do
         Model.User.add_device(user, device_info[:device_type])
       end
+
       Model.User.add_device_visit(user, device_info[:device_type], device_info[:device_code])
       Model.User.get_last_login(user, device_info[:device_type], device_info[:device_code])
     end

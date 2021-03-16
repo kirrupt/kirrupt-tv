@@ -16,7 +16,7 @@ use Mix.Config
 config :logger, level: :debug
 
 config :kirrupt_tv, KirruptTv.Endpoint,
-  http: [ip: {0,0,0,0}, port: {:system, "PORT"}],
+  http: [ip: {0, 0, 0, 0}, port: {:system, "PORT"}],
   url: [host: {:system, "HOSTNAME"}, port: 80],
   cache_static_manifest: "priv/static/manifest.json"
 
@@ -27,6 +27,6 @@ config :sentry,
   }
 
 config :kirrupt_tv, KirruptTv.Scheduler,
-jobs: [
-  {{:extended, "*/30"}, {Model.Show, :update_any_show, []}}
-]
+  jobs: [
+    {{:extended, "*/30"}, {Model.Show, :update_any_show, []}}
+  ]

@@ -25,7 +25,6 @@ defmodule KirruptTv.ChannelCase do
       import Ecto.Changeset
       import Ecto.Query
 
-
       # The default endpoint for testing
       @endpoint KirruptTv.Endpoint
     end

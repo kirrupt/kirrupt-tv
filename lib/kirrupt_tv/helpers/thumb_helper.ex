@@ -6,11 +6,13 @@ defmodule KirruptTv.Helpers.ThumbHelper do
   end
 
   def thumbs_folder, do: Path.join(static_folder(), "thumbs")
-  def thumbs_folder(thumb_type, image_path), do: Path.dirname(thumb_image_path(thumb_type, image_path))
+
+  def thumbs_folder(thumb_type, image_path),
+    do: Path.dirname(thumb_image_path(thumb_type, image_path))
 
   def relative_thumb_folder(thumb_type, image_path) do
     thumbs_folder(thumb_type, image_path)
-    |> String.slice(String.length(Application.app_dir(:kirrupt_tv)) + 1..-1)
+    |> String.slice((String.length(Application.app_dir(:kirrupt_tv)) + 1)..-1)
   end
 
   def filename_from_path(path) do
@@ -27,15 +29,18 @@ defmodule KirruptTv.Helpers.ThumbHelper do
 
   def get_thumb(_, nil), do: nil
   def get_thumb(nil, _), do: nil
+
   def get_thumb(thumb_type, image_path) do
     case File.exists?(original_image_path(image_path)) do
       true ->
         unless File.exists?(thumb_image_path(thumb_type, image_path)) do
           gen_thumb_image(thumb_type, image_path)
         end
-        
+
         thumb_image_path(thumb_type, image_path)
-      false -> nil
+
+      false ->
+        nil
     end
   end
 
