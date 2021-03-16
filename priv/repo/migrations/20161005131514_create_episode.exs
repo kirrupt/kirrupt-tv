@@ -2,8 +2,7 @@ defmodule KirruptTv.Repo.Migrations.CreateEpisode do
   use Ecto.Migration
 
   def change do
-    create table(:episodes, primary_key: false) do
-      add :id, :bigint, primary_key: true, size: 255
+    create table(:episodes) do
       add :show_id, :bigint, null: false, size: 255
       add :title, :string, null: false
       add :season, :integer, null: false, size: 255
