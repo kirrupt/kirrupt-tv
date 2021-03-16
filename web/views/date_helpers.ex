@@ -13,11 +13,12 @@ defmodule KirruptTv.DateHelpers do
 
   def format_date(value, format \\ "medium")
   def format_date("", _format), do: ""
+
   def format_date(value, format) do
     if valid_date?(value) do
       value = time_delta(value, 1)
-      date = value |> Timex.to_date
-      today = Timex.today
+      date = value |> Timex.to_date()
+      today = Timex.today()
       tomorrow = time_delta(today, 1)
       yesterday = time_delta(today, -1)
 
@@ -27,7 +28,7 @@ defmodule KirruptTv.DateHelpers do
         date == today -> "today"
         date == tomorrow -> "tomorrow"
         date == yesterday -> "yesterday"
-        diff > 0 && diff < 8 -> value |> format("{WDfull}") |> String.downcase
+        diff > 0 && diff < 8 -> value |> format("{WDfull}") |> String.downcase()
         format == "diff" -> "#{diff} days"
         format == "full" -> value |> format("{WDfull}, {0D}. {Mfull}. {YYYY}")
         format == "medium" -> value |> format("{0D}.{0M}.{YYYY}")

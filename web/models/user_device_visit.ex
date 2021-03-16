@@ -5,8 +5,8 @@ defmodule Model.UserDeviceVisit do
   alias KirruptTv.Repo
 
   schema "users_device_visit" do
-    belongs_to :user, Model.User
-    belongs_to :device, Model.UserDevices
+    belongs_to(:user, Model.User)
+    belongs_to(:device, Model.UserDevices)
 
     timestamps(inserted_at: :date, updated_at: nil)
   end
@@ -24,10 +24,12 @@ defmodule Model.UserDeviceVisit do
 
   def last_device_visit(user_device) do
     Repo.one(
-      from udv in Model.UserDeviceVisit,
-      where: udv.user_id == ^user_device.user_id and udv.device_id == ^user_device.id,
-      order_by: [desc: udv.date],
-      limit: 1)
+      from(udv in Model.UserDeviceVisit,
+        where: udv.user_id == ^user_device.user_id and udv.device_id == ^user_device.id,
+        order_by: [desc: udv.date],
+        limit: 1
+      )
+    )
   end
 
   def add_user_visit(user_device) do
@@ -35,11 +37,16 @@ defmodule Model.UserDeviceVisit do
       Model.UserDeviceVisit.changeset(%Model.UserDeviceVisit{}, %{
         user_id: user_device.user_id,
         device_id: user_device.id
-      }) |> Repo.insert
+      })
+      |> Repo.insert()
 
     case result do
-      {:ok, struct}        -> struct
-      {:error, _changeset} -> Logger.error("Could't add user visit for device '#{user_device.id}'"); nil
+      {:ok, struct} ->
+        struct
+
+      {:error, _changeset} ->
+        Logger.error("Could't add user visit for device '#{user_device.id}'")
+        nil
     end
   end
 end
