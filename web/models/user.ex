@@ -51,7 +51,7 @@ defmodule Model.User do
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 6, message: "should be at least 6 characters")
     |> validate_confirmation(:password, message: "does not match password")
-    |> validate_required([:username, :email, :password])
+    |> validate_required([:first_name, :last_name, :username, :email, :password])
     |> unique_constraint(:username, name: :username)
     |> unique_constraint(:email, name: :email_index)
     |> put_password_hash
@@ -71,7 +71,7 @@ defmodule Model.User do
     "sha1$#{salt}$#{new_pass}"
   end
 
-  defp put_password_hash(changeset) do
+  def put_password_hash(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
 
