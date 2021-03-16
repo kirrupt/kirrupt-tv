@@ -2,7 +2,7 @@ defmodule KirruptTv.GenreController do
   use KirruptTv.Web, :controller
   use Timex
 
-  plug KirruptTv.Plugs.Authenticate
+  plug(KirruptTv.Plugs.Authenticate)
 
   alias Model.Genre
 
@@ -10,7 +10,7 @@ defmodule KirruptTv.GenreController do
     data = Genre.index(name)
 
     if data do
-      render conn, "genre.html", data
+      render(conn, "genre.html", data)
     else
       conn |> Phoenix.Controller.redirect(to: recent_path(conn, :index)) |> halt
     end

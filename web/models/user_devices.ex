@@ -5,11 +5,11 @@ defmodule Model.UserDevices do
   alias KirruptTv.Repo
 
   schema "users_devices" do
-    field :device_type, :string
-    field :device_code, :string
-    field :last_login, Timex.Ecto.DateTime
+    field(:device_type, :string)
+    field(:device_code, :string)
+    field(:last_login, Timex.Ecto.DateTime)
 
-    belongs_to :user, Model.User
+    belongs_to(:user, Model.User)
     timestamps(inserted_at: :first_login, updated_at: nil)
   end
 
@@ -28,23 +28,32 @@ defmodule Model.UserDevices do
         user_id: user.id,
         device_type: device_type,
         device_code: UUID.uuid4(:hex) |> String.slice(0, 20),
-        last_login: Timex.now
-      }) |> Repo.insert
+        last_login: Timex.now()
+      })
+      |> Repo.insert()
 
     case result do
-      {:ok, struct}        -> struct
-      {:error, _changeset} -> Logger.error("Could't create device for user '#{user.id}' with type '#{device_type}'"); nil
+      {:ok, struct} ->
+        struct
+
+      {:error, _changeset} ->
+        Logger.error("Could't create device for user '#{user.id}' with type '#{device_type}'")
+        nil
     end
   end
 
   def update_last_login(user_device) do
     result =
-      Model.UserDevices.changeset(user_device, %{last_login: Timex.now})
-      |> Repo.update
+      Model.UserDevices.changeset(user_device, %{last_login: Timex.now()})
+      |> Repo.update()
 
     case result do
-      {:ok, struct}        -> struct
-      {:error, _changeset} -> Logger.error("Could't update last login for device '#{user_device.id}'"); nil
+      {:ok, struct} ->
+        struct
+
+      {:error, _changeset} ->
+        Logger.error("Could't update last login for device '#{user_device.id}'")
+        nil
     end
   end
 end

@@ -16,6 +16,9 @@ defmodule KirruptTv.ApiCardThumb do
 
   # Override the storage directory:
   def storage_dir(_, {file, _}) do
-    KirruptTv.Helpers.ThumbHelper.relative_thumb_folder("cardthumb", Path.join("shows", file.file_name))
+    KirruptTv.Helpers.ThumbHelper.relative_thumb_folder(
+      "cardthumb",
+      Path.join("shows", file.file_name)
+    )
   end
 end

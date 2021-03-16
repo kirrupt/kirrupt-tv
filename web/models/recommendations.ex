@@ -17,16 +17,16 @@ defmodule Model.Recommendations do
   end
 
   def show(id) do
-      Ecto.Adapters.SQL.query!(Repo, "SELECT mid2,
+    Ecto.Adapters.SQL.query!(Repo, "SELECT mid2,
         (weight*similarity) as o
       FROM  `recommendation_item_similarity`
       WHERE mid1 = ?
       ORDER BY o DESC
       LIMIT 0 , 50", [id]).rows
-      |> Enum.map(fn [id, _] ->
-        id
-      end)
-      |> get_shows(4)
+    |> Enum.map(fn [id, _] ->
+      id
+    end)
+    |> get_shows(4)
   end
 
   def user_shows(user) do

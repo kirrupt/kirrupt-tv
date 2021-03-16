@@ -4,12 +4,12 @@ defmodule Model.UserShow do
 
   @primary_key false
   schema "users_shows" do
-    field :ignored, :boolean
-    field :modified, Timex.Ecto.DateTime
-    field :date_added, Timex.Ecto.DateTime
+    field(:ignored, :boolean)
+    field(:modified, Timex.Ecto.DateTime)
+    field(:date_added, Timex.Ecto.DateTime)
 
-    belongs_to :user, Model.User, primary_key: true
-    belongs_to :show, Model.Show, primary_key: true
+    belongs_to(:user, Model.User, primary_key: true)
+    belongs_to(:show, Model.Show, primary_key: true)
   end
 
   @doc """

@@ -5,14 +5,20 @@ defmodule KirruptTv.Api.V2.SearchView do
 
   def render("search_kirrupt.json", %{data: %{shows: shows}}) do
     shows
-    |> Enum.map(fn(show) ->
+    |> Enum.map(fn show ->
       %{
         id: show.id,
         name: show.name,
         status: show.status,
-        started: if show.started do Date.to_iso8601(show.started) end,
-        ended: if show.ended do Date.to_iso8601(show.ended) end,
-        genres: show.genres |> Enum.map(fn(genre) -> genre.name end),
+        started:
+          if show.started do
+            Date.to_iso8601(show.started)
+          end,
+        ended:
+          if show.ended do
+            Date.to_iso8601(show.ended)
+          end,
+        genres: show.genres |> Enum.map(fn genre -> genre.name end),
         summary: show.summary,
         tvrage_url: show.tvrage_url,
         picture_url: show.picture_url |> img_prefix,
@@ -23,7 +29,7 @@ defmodule KirruptTv.Api.V2.SearchView do
 
   def render("search_external.json", %{data: %{shows: shows}}) do
     shows
-    |> Enum.map(fn(show) ->
+    |> Enum.map(fn show ->
       %{
         external_id: show[:tvmaze_id],
         name: show[:name],

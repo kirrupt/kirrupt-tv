@@ -3,11 +3,11 @@ defmodule Model.WatchedEpisodeStatus do
 
   @primary_key false
   schema "watched_episodes_status" do
-    field :modified, Timex.Ecto.DateTime
-    field :status, :boolean
+    field(:modified, Timex.Ecto.DateTime)
+    field(:status, :boolean)
 
-    belongs_to :user, Model.User, primary_key: true
-    belongs_to :episode, Model.Episode, primary_key: true
+    belongs_to(:user, Model.User, primary_key: true)
+    belongs_to(:episode, Model.Episode, primary_key: true)
   end
 
   @doc """
