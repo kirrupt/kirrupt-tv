@@ -445,3 +445,28 @@ CREATE TABLE `watched_episodes_status` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2019-03-25 21:33:54
+
+
+--
+-- Table structure for table `schema_migrations`
+--
+
+DROP TABLE IF EXISTS `schema_migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `schema_migrations` (
+  `version` bigint(20) NOT NULL,
+  `inserted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `schema_migrations`
+--
+
+LOCK TABLES `schema_migrations` WRITE;
+/*!40000 ALTER TABLE `schema_migrations` DISABLE KEYS */;
+INSERT INTO `schema_migrations` VALUES (20161005083743,'2021-03-19 14:04:10'),(20161005131514,'2021-03-19 14:04:10'),(20161006131912,'2021-03-19 14:04:10'),(20161007084841,'2021-03-19 14:04:10'),(20161010111921,'2021-03-19 14:04:11'),(20161010114517,'2021-03-19 14:04:11'),(20161011112714,'2021-03-19 14:04:11'),(20161017132631,'2021-03-19 14:04:11'),(20161017133010,'2021-03-19 14:04:11'),(20161020072004,'2021-03-19 14:04:11'),(20161020073348,'2021-03-19 14:04:11'),(20161020073844,'2021-03-19 14:04:11'),(20161104142458,'2021-03-19 14:04:11'),(20161104143145,'2021-03-19 14:04:11'),(20161106112017,'2021-03-19 14:04:11'),(20210317204421,'2021-03-19 14:04:11'),(20210319140501,'2021-03-19 14:08:17');
+/*!40000 ALTER TABLE `schema_migrations` ENABLE KEYS */;
+UNLOCK TABLES;
