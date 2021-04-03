@@ -9,8 +9,8 @@ defmodule KirruptTv.Repo.Migrations.CreateUser do
       add :email, :string, null: false, size: 75
       add :password, :string, null: false
       add :is_active, :boolean
-      add :last_login, :datetime, null: false
-      add :date_joined, :datetime, null: false
+      add :last_login, :utc_datetime, null: false
+      add :date_joined, :utc_datetime, null: false
       add :auto_hash, :string
       add :registration_code, :string
       add :password_code, :string

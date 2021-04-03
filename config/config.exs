@@ -23,22 +23,21 @@ config :kirrupt_tv, KirruptTv.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "9fBcrjyVj50bjDHq/pxoX6ImrGKsLK0IfRm55NEiH9x8/GNOM8ZVrN53VqKFywHN",
   render_errors: [view: KirruptTv.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: KirruptTv.PubSub, adapter: Phoenix.PubSub.PG2],
+  pubsub_server: KirruptTv.PubSub,
   fanart_key: "e5b2ae915bf77dc6f0ebb1af149c27ce"
 
 config :kirrupt_tv, KirruptTv.Endpoint, live_view: [signing_salt: "FglqWk3uhmjKfAGi"]
 
 # Configures Elixir's Logger
-config :logger, :console,
+config :logger,
   format: "$time $metadata[$level] $message\n",
-  metadata: [:file, :line],
   metadata: [:request_id],
   backends: [:console, Sentry.LoggerBackend]
 
-# Configures Sentry's Logger
 config :sentry,
-  use_error_logger: true,
-  dsn: System.get_env("SENTRY_DSN")
+  dsn: System.get_env("SENTRY_DSN"),
+  enable_source_code_context: true,
+  root_source_code_path: File.cwd!()
 
 config :phoenix, :json_library, Jason
 

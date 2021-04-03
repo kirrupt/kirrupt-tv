@@ -1,10 +1,10 @@
 <%= if @shows == [] && @category == :my_shows do %>
-	<h2>Looks a bit lonely here. Wanna add new show? <a href="<%= show_path(@conn, :add) %>">Add new show</a></h2><br />
+	<h2>Looks a bit lonely here. Wanna add new show? <a href="<%= Routes.show_path(@conn, :add) %>">Add new show</a></h2><br />
 <% else %>
   <h2><%= if @category == :my_shows do "Current shows" else @title end %></h2>
   <%= for show <- @shows do %>
   	<div class="show_episode">
-  		<a style="color:#666" href="<%= show_path(@conn, :index, get_show_url(show)) %>">
+  		<a style="color:#666" href="<%= Routes.show_path(@conn, :index, get_show_url(show)) %>">
   			<div style="float:left;width:220px">&nbsp;
   				<%= if show.fixed_thumb do %>
   					<img src="<%= show |> Model.Show.show_thumb %>" />

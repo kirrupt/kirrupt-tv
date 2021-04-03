@@ -12,7 +12,7 @@ defmodule KirruptTv.GenreController do
     if data do
       render(conn, "genre.html", data)
     else
-      conn |> Phoenix.Controller.redirect(to: recent_path(conn, :index)) |> halt
+      conn |> Phoenix.Controller.redirect(to: Routes.recent_path(conn, :index)) |> halt
     end
   end
 end

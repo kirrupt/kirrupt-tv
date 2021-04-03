@@ -10,7 +10,7 @@ defmodule KirruptTv.Plugs.Authenticated.Redirect do
 
     if conn.assigns[:current_user] do
       conn
-      |> Phoenix.Controller.redirect(to: KirruptTv.Router.Helpers.recent_path(conn, :index))
+      |> Phoenix.Controller.redirect(to: Routes.recent_path(conn, :index))
       |> halt
     else
       conn

@@ -14,7 +14,7 @@ defmodule KirruptTv.Plugs.Authenticated.Admin do
   def admin_or_login(conn) do
     unless is_admin(conn.assigns[:current_user]) do
       conn
-      |> Phoenix.Controller.redirect(to: KirruptTv.Router.Helpers.account_path(conn, :login))
+      |> Phoenix.Controller.redirect(to: Routes.account_path(conn, :login))
       |> halt
     else
       conn

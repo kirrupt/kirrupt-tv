@@ -22,13 +22,13 @@ defmodule KirruptTv.ShowController do
     if show_details do
       render(conn, "show-list.html", Map.merge(show_details, %{title: show_details[:show].name}))
     else
-      redirect(conn, to: KirruptTv.Router.Helpers.recent_path(conn, :index))
+      redirect(conn, to: Routes.recent_path(conn, :index))
     end
   end
 
   def ignore(conn, %{"name" => name}) do
     Model.Show.ignore_show(Model.Show.find_by_url_or_id(name), conn.assigns[:current_user])
-    redirect(conn, to: KirruptTv.Router.Helpers.show_path(conn, :index, name))
+    redirect(conn, to: Routes.show_path(conn, :index, name))
   end
 
   def add(conn, _params) do
@@ -37,26 +37,26 @@ defmodule KirruptTv.ShowController do
 
   def add_to_my_shows(conn, %{"name" => name}) do
     if Model.User.add_show(conn.assigns[:current_user], Model.Show.find_by_url_or_id(name)) do
-      redirect(conn, to: KirruptTv.Router.Helpers.show_path(conn, :index, name))
+      redirect(conn, to: Routes.show_path(conn, :index, name))
     else
-      redirect(conn, to: KirruptTv.Router.Helpers.recent_path(conn, :index))
+      redirect(conn, to: Routes.recent_path(conn, :index))
     end
   end
 
   def update(conn, %{"name" => name}) do
     if show = Model.Show.find_by_url_or_id(name) do
       Model.Show.update_show_and_episodes(show)
-      redirect(conn, to: KirruptTv.Router.Helpers.show_path(conn, :index, name))
+      redirect(conn, to: Routes.show_path(conn, :index, name))
     else
-      redirect(conn, to: KirruptTv.Router.Helpers.recent_path(conn, :index))
+      redirect(conn, to: Routes.recent_path(conn, :index))
     end
   end
 
   def add_tvmaze(conn, %{"tvmaze_id" => tvmaze_id}) do
     if show = Model.Show.add_tvmaze_show(tvmaze_id) do
-      redirect(conn, to: KirruptTv.Router.Helpers.show_path(conn, :index, show.url || show.id))
+      redirect(conn, to: Routes.show_path(conn, :index, show.url || show.id))
     else
-      redirect(conn, to: KirruptTv.Router.Helpers.recent_path(conn, :index))
+      redirect(conn, to: Routes.recent_path(conn, :index))
     end
   end
 
@@ -95,7 +95,7 @@ defmodule KirruptTv.ShowController do
     if show_details do
       render(conn, "show.html", Map.merge(show_details, %{title: show_details[:show].name}))
     else
-      redirect(conn, to: KirruptTv.Router.Helpers.recent_path(conn, :index))
+      redirect(conn, to: Routes.recent_path(conn, :index))
     end
   end
 end

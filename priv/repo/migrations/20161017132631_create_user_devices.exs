@@ -6,8 +6,8 @@ defmodule KirruptTv.Repo.Migrations.CreateUserDevices do
       add :user_id, :bigint, null: false, size: 255
       add :device_type, :string, null: false
       add :device_code, :string, null: false
-      add :first_login, :datetime, null: false
-      add :last_login, :datetime, null: false
+      add :first_login, :utc_datetime, null: false
+      add :last_login, :utc_datetime, null: false
     end
   end
 end

@@ -25,7 +25,7 @@ defmodule KirruptTv.AccountController do
       conn
       |> put_resp_cookie("auto_hash", Model.User.get_auth_hash(user), opts)
       |> put_flash(:info, "Logged in")
-      |> redirect(to: KirruptTv.Router.Helpers.recent_path(conn, :index))
+      |> redirect(to: Routes.recent_path(conn, :index))
     else
       conn
       |> login_flash
@@ -55,7 +55,7 @@ defmodule KirruptTv.AccountController do
       conn
       |> put_resp_cookie("auto_hash", Model.User.get_auth_hash(user))
       |> put_flash(:info, "Successfully registered and logged in")
-      |> redirect(to: recent_path(conn, :index))
+      |> redirect(to: Routes.recent_path(conn, :index))
     else
       changeset = %{changeset | action: :insert, errors: changeset.errors}
       render(conn, "register.html", %{title: "Register", changeset: changeset})

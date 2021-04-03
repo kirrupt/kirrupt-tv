@@ -53,16 +53,16 @@
 		});
 
     // add.html
-    var loader = '<p align=center style="margin-top:20px"><img src="<%= static_path(@conn, "/images/ajax-loader.gif") %>" /></p>';
+    var loader = '<p align=center style="margin-top:20px"><img src="<%= Routes.static_path(@conn, "/images/ajax-loader.gif") %>" /></p>';
 		$('#add_search').submit(function() {
 			$('#add_results').html(loader);
 
-			$.get("<%= page_path(@conn, :search_kirrupt) %>", {'name':$('#add_name').val()}, function(data){
+			$.get("<%= Routes.page_path(@conn, :search_kirrupt) %>", {'name':$('#add_name').val()}, function(data){
 			     $('#add_results').html(data + loader);
 			     output = data;
 			   });
 
-			$.get("<%= page_path(@conn, :search_tvmaze) %>", {'name':$('#add_name').val()}, function(data){
+			$.get("<%= Routes.page_path(@conn, :search_tvmaze) %>", {'name':$('#add_name').val()}, function(data){
 			    $('#add_results').html(output + data);
 
 			   	if( $('.recent_episode').length == 0)
