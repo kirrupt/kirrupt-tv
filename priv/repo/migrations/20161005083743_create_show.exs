@@ -2,8 +2,7 @@ defmodule KirruptTv.Repo.Migrations.CreateShow do
   use Ecto.Migration
 
   def up do
-    create table(:shows, primary_key: false) do
-      add :id, :bigint, primary_key: true, size: 255
+    create table(:shows) do
       add :name, :string, null: false
       add :tvrage_url, :string
       add :runtime, :integer, size: 255

@@ -1,9 +1,8 @@
 defmodule KirruptTv.Api.V2.AccountController do
   use KirruptTv.Web, :controller
 
-  plug KirruptTv.Plugs.Authenticate
-  plug KirruptTv.Plugs.Authenticated when action in [:user_info]
-
+  plug(KirruptTv.Plugs.Authenticate)
+  plug(KirruptTv.Plugs.Authenticated when action in [:user_info])
 
   def login(conn, params) do
     cond do
@@ -11,8 +10,10 @@ defmodule KirruptTv.Api.V2.AccountController do
         conn
         |> put_status(400)
         |> render("login.json", data: %{error: "MISSING_USERNAME_OR_PASSWORD"})
+
       user = Model.User.authenticate(params["username"], params["password"]) ->
-        render conn, "login.json", data: %{token: user.auto_hash}
+        render(conn, "login.json", data: %{token: user.auto_hash})
+
       true ->
         conn
         |> put_status(400)
@@ -21,6 +22,6 @@ defmodule KirruptTv.Api.V2.AccountController do
   end
 
   def user_info(conn, _params) do
-    render conn, "user-info.json", data: %{user: conn.assigns[:current_user]}
+    render(conn, "user-info.json", data: %{user: conn.assigns[:current_user]})
   end
 end

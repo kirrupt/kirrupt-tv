@@ -3,10 +3,10 @@ defmodule KirruptTv.Api.V2.RecommendationsView do
 
   def render("recommendations.json", %{data: shows}) do
     shows
-    |> Enum.map(fn(show) ->
+    |> Enum.map(fn show ->
       %{
         id: show.id,
-        img: show |> Model.Show.show_thumb,
+        img: show |> Model.Show.show_thumb(),
         url: show.url
       }
     end)

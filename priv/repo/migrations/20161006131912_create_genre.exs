@@ -2,8 +2,7 @@ defmodule KirruptTv.Repo.Migrations.CreateGenre do
   use Ecto.Migration
 
   def change do
-    create table(:genres, primary_key: false) do
-      add :id, :integer, primary_key: true, size: 255
+    create table(:genres) do
       add :name, :string, null: false
       add :url, :string
     end

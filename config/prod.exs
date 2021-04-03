@@ -20,12 +20,6 @@ config :kirrupt_tv, KirruptTv.Endpoint,
   url: [host: {:system, "HOSTNAME"}, port: 80],
   cache_static_manifest: "priv/static/manifest.json"
 
-config :sentry,
-  dsn: System.get_env("SENTRY_DSN"),
-  tags: %{
-    env: "production"
-  }
-
 config :kirrupt_tv, KirruptTv.Scheduler,
   jobs: [
     {{:extended, "*/30"}, {Model.Show, :update_any_show, []}}

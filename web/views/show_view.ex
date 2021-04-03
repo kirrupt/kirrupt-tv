@@ -1,6 +1,6 @@
 defmodule KirruptTv.ShowView do
   use KirruptTv.Web, :view
-  
+
   import KirruptTv.DateHelpers
   import KirruptTv.GlobalHelpers
 

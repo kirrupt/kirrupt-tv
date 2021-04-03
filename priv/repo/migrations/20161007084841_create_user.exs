@@ -2,8 +2,7 @@ defmodule KirruptTv.Repo.Migrations.CreateUser do
   use Ecto.Migration
 
   def change do
-    create table(:users, primary_key: false) do
-      add :id, :integer, primary_key: true, size: 11
+    create table(:users) do
       add :username, :string, null: false, size: 30
       add :first_name, :string, null: false, size: 30
       add :last_name, :string, null: false, size: 30

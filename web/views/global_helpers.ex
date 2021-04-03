@@ -2,23 +2,35 @@ defmodule KirruptTv.GlobalHelpers do
   use Phoenix.HTML
 
   def img_prefix(nil), do: nil
+
   def img_prefix(url) do
     cond do
-      image_exists(url) -> "#{KirruptTv.Endpoint.url}#{KirruptTv.Endpoint.static_path("/#{url}")}"
-      true -> old_server_url(url)
+      image_exists(url) ->
+        "#{KirruptTv.Endpoint.url()}#{KirruptTv.Endpoint.static_path("/#{url}")}"
+
+      true ->
+        old_server_url(url)
     end
   end
 
   def thumb(nil, _), do: nil
   def thumb(_, nil), do: nil
+
   def thumb(url, thumb_type) do
     cond do
       image_exists(url) ->
         case validate_thumb_type(thumb_type) do
-          true -> "#{KirruptTv.Endpoint.url}/thumbs/#{thumb_type}#{KirruptTv.Endpoint.static_path("/#{url}")}"
-          false -> img_prefix(url)
+          true ->
+            "#{KirruptTv.Endpoint.url()}/thumbs/#{thumb_type}#{
+              KirruptTv.Endpoint.static_path("/#{url}")
+            }"
+
+          false ->
+            img_prefix(url)
         end
-      true -> old_server_url(url)
+
+      true ->
+        old_server_url(url)
     end
   end
 
@@ -31,7 +43,7 @@ defmodule KirruptTv.GlobalHelpers do
 
   def limit_text(text) do
     cond do
-      text |> String.length > 500 -> "#{String.slice(text, 0, 500)}..."
+      text |> String.length() > 500 -> "#{String.slice(text, 0, 500)}..."
       true -> text
     end
   end
@@ -41,7 +53,7 @@ defmodule KirruptTv.GlobalHelpers do
   end
 
   defp image_exists(url) do
-    File.exists?("#{KirruptTv.Helpers.FileHelpers.root_folder}/static/#{url}")
+    File.exists?("#{KirruptTv.Helpers.FileHelpers.root_folder()}/static/#{url}")
   end
 
   defp old_server_url(url) do

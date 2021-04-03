@@ -2,23 +2,25 @@ defmodule KirruptTv.AccountController do
   use KirruptTv.Web, :controller
   use Timex
 
-  plug KirruptTv.Plugs.Authenticate
-  plug KirruptTv.Plugs.Authenticated when action in [:logout]
-  plug KirruptTv.Plugs.Authenticated.Redirect when action in [:login]
+  plug(KirruptTv.Plugs.Authenticate)
+  plug(KirruptTv.Plugs.Authenticated when action in [:logout])
+  plug(KirruptTv.Plugs.Authenticated.Redirect when action in [:login])
 
   def login_user(%{"login" => login}) do
     Model.User.authenticate(login["username"], login["password"])
   end
+
   def login_user(_), do: nil
 
   def login(conn, params) do
     user = login_user(params)
-  
+
     if user do
-      opts = case params["login"]["auto_login"] == "true" do
-        true  -> [max_age: 60 * 60 * 24 * 365]
-        false -> []
-      end
+      opts =
+        case params["login"]["auto_login"] == "true" do
+          true -> [max_age: 60 * 60 * 24 * 365]
+          false -> []
+        end
 
       conn
       |> put_resp_cookie("auto_hash", Model.User.get_auth_hash(user), opts)
@@ -56,7 +58,7 @@ defmodule KirruptTv.AccountController do
       |> redirect(to: recent_path(conn, :index))
     else
       changeset = %{changeset | action: :insert, errors: changeset.errors}
-      render conn, "register.html", %{title: "Register", changeset: changeset}
+      render(conn, "register.html", %{title: "Register", changeset: changeset})
     end
   end
 

@@ -3,7 +3,7 @@ defmodule KirruptTv.PageController do
   import KirruptTv.Helpers.RequestHelpers
   import KirruptTv.Helpers.BackgroundHelpers
 
-  plug KirruptTv.Plugs.Authenticate
+  plug(KirruptTv.Plugs.Authenticate)
 
   def search(conn, params) do
     shows = Model.Show.search(params["q"], conn.assigns[:current_user])
@@ -19,12 +19,18 @@ defmodule KirruptTv.PageController do
   def search_kirrupt(conn, params) do
     conn
     |> put_layout(false)
-    |> render("search_results.html", %{shows: Model.Show.find_shows_on_kirrupt(params["name"]), tvmaze: false})
+    |> render("search_results.html", %{
+      shows: Model.Show.find_shows_on_kirrupt(params["name"]),
+      tvmaze: false
+    })
   end
 
   def search_tvmaze(conn, params) do
     conn
     |> put_layout(false)
-    |> render("search_results.html", %{shows: Model.Show.find_shows_on_tvmaze(params["name"]), tvmaze: true})
+    |> render("search_results.html", %{
+      shows: Model.Show.find_shows_on_tvmaze(params["name"]),
+      tvmaze: true
+    })
   end
 end
