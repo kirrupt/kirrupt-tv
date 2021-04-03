@@ -14,7 +14,7 @@ defmodule KirruptTv.Endpoint do
   def should_cache_forever("shows"), do: true
   def should_cache_forever(_), do: false
 
-  #use Sentry.PlugCapture (needs upgraded sentry)
+  # use Sentry.PlugCapture (needs upgraded sentry)
   use Phoenix.Endpoint, otp_app: :kirrupt_tv
 
   socket("/socket", KirruptTv.UserSocket)
@@ -63,7 +63,8 @@ defmodule KirruptTv.Endpoint do
     pass: ["*/*"],
     json_decoder: Poison
   )
-  #plug Sentry.PlugContext (needs upgraded sentry)
+
+  # plug Sentry.PlugContext (needs upgraded sentry)
 
   plug(Plug.MethodOverride)
   plug(Plug.Head)
