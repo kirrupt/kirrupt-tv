@@ -1,5 +1,5 @@
 <div class="login_form" style="float:left;">
-  <%= form_for @changeset, account_path(@conn, :register_create), fn f -> %>
+  <%= form_for @changeset, Routes.account_path(@conn, :register_create), fn f -> %>
     <dl>
       <dt><label for="first_name">First name</label></dt>
       <dd><%= text_input f, :first_name %></dd>

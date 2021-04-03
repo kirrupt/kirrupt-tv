@@ -35,7 +35,7 @@ defmodule KirruptTv.Web do
       import Ecto
       import Ecto.Query
 
-      import KirruptTv.Router.Helpers
+      alias KirruptTv.Router.Helpers, as: Routes
       import KirruptTv.Gettext
     end
   end
@@ -50,7 +50,7 @@ defmodule KirruptTv.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import KirruptTv.Router.Helpers
+      alias KirruptTv.Router.Helpers, as: Routes
       import KirruptTv.ErrorHelpers
       import KirruptTv.Gettext
     end

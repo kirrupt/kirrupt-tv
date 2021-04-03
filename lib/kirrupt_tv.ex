@@ -12,7 +12,7 @@ defmodule KirruptTv do
       KirruptTv.Endpoint,
       # Start the scheduler
       KirruptTv.Scheduler,
-      {Phoenix.PubSub, name: HelloPhoenix.PubSub},
+      {Phoenix.PubSub, name: KirruptTv.PubSub},
       KirruptTv.Telemetry
       # Start your own worker by calling: KirruptTv.Worker.start_link(arg1, arg2, arg3)
       # worker(KirruptTv.Worker, [arg1, arg2, arg3]),

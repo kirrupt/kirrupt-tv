@@ -4,16 +4,16 @@
   		<%= for show <- @shows do %>
   				<div class="recent_episode">
   					<%= if !@tvmaze && Model.Show.show_thumb(show) do %>
-    					<a href="<%= show_path(@conn, :index, get_show_url(show)) %>">
+    					<a href="<%= Routes.show_path(@conn, :index, get_show_url(show)) %>">
     						<img src="<%= show |> Model.Show.show_thumb %>" />
     					</a>
   					<% else %>
-  						<img src="<%= static_path(@conn, "/images/logo.png") %>" />
+  						<img src="<%= Routes.static_path(@conn, "/images/logo.png") %>" />
   					<% end %>
 
   					<div style="width:410px;float:right">
 
-  						<a style="text-decoration:none" href="<%= if @tvmaze do show_path(@conn, :add_tvmaze, show[:tvmaze_id]) else show_path(@conn, :index, get_show_url(show)) end %>"><b><%= show.name %></b></a>
+  						<a style="text-decoration:none" href="<%= if @tvmaze do Routes.show_path(@conn, :add_tvmaze, show[:tvmaze_id]) else Routes.show_path(@conn, :index, get_show_url(show)) end %>"><b><%= show.name %></b></a>
   						<div class="clear"></div>
 
               <%= if @tvmaze do %>
@@ -23,7 +23,7 @@
               <% end %>
 
   						<span style="float:right">
-  							<a href="<%= if @tvmaze do show_path(@conn, :add_tvmaze, show[:tvmaze_id]) else show_path(@conn, :index, get_show_url(show)) end %>">more info</a>
+  							<a href="<%= if @tvmaze do Routes.show_path(@conn, :add_tvmaze, show[:tvmaze_id]) else Routes.show_path(@conn, :index, get_show_url(show)) end %>">more info</a>
   						</span>
 
   						<div class="clear"></div>

@@ -10,20 +10,20 @@
 <%= if @current_user && @current_user.is_editor do %>
   <div style="text-align:right;font-size:10px">
     Last updated: <%= @show.last_updated %>, last checked: <%= @show.last_checked %>, ID: <%= @show.id %>, TVMaze ID: <%= @show.tvmaze_id %>, 
-		<a href="<%= show_path(@conn, :update, get_show_url(@show)) %>">force update</a>
+		<a href="<%= Routes.show_path(@conn, :update, get_show_url(@show)) %>">force update</a>
     <br />
   </div>
 <% end %>
 <%= if assigns[:show_added] do %>
   <%= if assigns[:ignored] do %>
-    <a class="my_show" style="float:right;margin-left:10px" href="<%= show_path(@conn, :ignore, get_show_url(@show)) %>" title="Unignore this show">Unignore</a>
+    <a class="my_show" style="float:right;margin-left:10px" href="<%= Routes.show_path(@conn, :ignore, get_show_url(@show)) %>" title="Unignore this show">Unignore</a>
   <% else %>
-    <a class="my_show" style="float:right;margin-left:10px" href="<%= show_path(@conn, :ignore, get_show_url(@show)) %>" title="Ignore this show">Ignore</a>
+    <a class="my_show" style="float:right;margin-left:10px" href="<%= Routes.show_path(@conn, :ignore, get_show_url(@show)) %>" title="Ignore this show">Ignore</a>
   <% end %>
 <% end %>
 
 <%= if !assigns[:show_added] do %>
-	<a class="button" style="float:right" href="<%= show_path(@conn, :add_to_my_shows, get_show_url(@show)) %>" title="Add show to your shows">Add to my shows</a>
+	<a class="button" style="float:right" href="<%= Routes.show_path(@conn, :add_to_my_shows, get_show_url(@show)) %>" title="Add show to your shows">Add to my shows</a>
 <% else %>
 	<a class="my_show added" style="float:right" href="#" title="You are following this show">My show</a>
 <% end %>
@@ -42,7 +42,7 @@
 	<ul>
     <li>Seasons:</li>
 	  <%= for s <- Model.Show.seasons(@show) do %>
-      <li><a <%= if @season == s do %> class="active"<% end %> href="<%= show_path(@conn, :season, get_show_url(@show), s) %>#season"><%= s %></a></li>
+      <li><a <%= if @season == s do %> class="active"<% end %> href="<%= Routes.show_path(@conn, :season, get_show_url(@show), s) %>#season"><%= s %></a></li>
     <% end %>
 </ul>
 	<div class="clear"></div>

@@ -1,6 +1,6 @@
 <div id="body_right" style="width:600px">
 	<%= if @recent == [] && @soon == [] && @current_user do %>
-		<h2>Looks like you haven't added much shows. Wanna add a new one? <a href="<%= show_path(@conn, :add) %>">Add new show</a></h2>
+		<h2>Looks like you haven't added much shows. Wanna add a new one? <a href="<%= Routes.show_path(@conn, :add) %>">Add new show</a></h2>
 	<% end %>
 
 	<%= if @recent != [] do %>
@@ -19,14 +19,14 @@
 	<%= if @countdown != [] do %>
 	 <h2>countdown</h2>
   	<%= for episode <- @countdown do %>
-  		<a href="<%= show_path(@conn, :index, get_show_url(episode.show)) %>"><%= episode.show.name %></a><span style="float:right"><%= episode.airdate |> datediff %></span><br />
+  		<a href="<%= Routes.show_path(@conn, :index, get_show_url(episode.show)) %>"><%= episode.show.name %></a><span style="float:right"><%= episode.airdate |> datediff %></span><br />
   	<% end %>
 		<div class="clear" style="margin-bottom:30px"></div>
 
 		<h2>genres</h2>
 		<%= for genre <- @genres do %>
 			<%= if genre.url do %>
-				<a href="<%= genre_path(@conn, :index, genre.url) %>"><%= genre.name %></a> /
+				<a href="<%= Routes.genre_path(@conn, :index, genre.url) %>"><%= genre.name %></a> /
 			<% end %>
 		<% end %>
 	<% end %>

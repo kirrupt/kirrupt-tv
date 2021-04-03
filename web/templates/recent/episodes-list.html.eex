@@ -1,13 +1,13 @@
 <%= for episode <- @episodes do %>
   <div class="recent_episode" id="div_ep_<%= episode.id %>">
     <%= if episode |> Model.Episode.show_thumb do %>
-      <a href="<%= show_path(@conn, :index, get_show_url(episode.show)) %>">
+      <a href="<%= Routes.show_path(@conn, :index, get_show_url(episode.show)) %>">
         <img src="<%= episode |> Model.Episode.show_thumb %>" />
       </a>
     <% end %>
     <div style="width:510px;float:right">
 
-    <a style="text-decoration:none" href="<%= show_path(@conn, :index, get_show_url(episode.show)) %>"><b><%= episode.show.name %></b></a>
+    <a style="text-decoration:none" href="<%= Routes.show_path(@conn, :index, get_show_url(episode.show)) %>"><b><%= episode.show.name %></b></a>
     <span style="float:right;color:#666"><%= if episode.airdate do %><%= episode.airdate |> format_date %><% end %></span>
     <div class="clear"></div>
 
@@ -15,7 +15,7 @@
 
     <span style="float:right">
       <%= if @conn.assigns[:current_user] && @mark_as_watched do %>
-        <a href="javascript:void(0)" data-href="<%= episode_path(@conn, :mark_as_watched, episode.id) %>" class="mark_watched" id="ep_<%= episode.id %>">Mark as watched</a>
+        <a href="javascript:void(0)" data-href="<%= Routes.episde_path(@conn, :mark_as_watched, episode.id) %>" class="mark_watched" id="ep_<%= episode.id %>">Mark as watched</a>
       <% end %>
     </span>
     <div class="clear"></div>

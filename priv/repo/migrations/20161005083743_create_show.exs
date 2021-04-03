@@ -8,7 +8,7 @@ defmodule KirruptTv.Repo.Migrations.CreateShow do
       add :runtime, :integer, size: 255
       add :genre, :string, null: false
       add :status, :string, null: false
-      add :last_checked, :datetime
+      add :last_checked, :utc_datetime
       add :wikipedia_url, :string
       add :picture_url, :string
       add :thumbnail_url, :string

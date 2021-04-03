@@ -12,7 +12,7 @@ defmodule KirruptTv.Plugs.Authenticated do
       case conn.private[:pipeline_name] do
         :browser ->
           conn
-          |> Phoenix.Controller.redirect(to: KirruptTv.Router.Helpers.account_path(conn, :login))
+          |> Phoenix.Controller.redirect(to: Routes.account_path(conn, :login))
           |> halt
 
         _ ->

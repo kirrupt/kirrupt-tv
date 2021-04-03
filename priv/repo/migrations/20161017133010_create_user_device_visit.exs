@@ -5,7 +5,7 @@ defmodule KirruptTv.Repo.Migrations.CreateUserDeviceVisit do
     create table(:users_device_visit) do
       add :user_id, :bigint, null: false, size: 255
       add :device_id, :bigint, null: false, size: 255
-      add :date, :datetime, null: false
+      add :date, :utc_datetime, null: false
     end
   end
 end

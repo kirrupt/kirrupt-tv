@@ -8,7 +8,7 @@ defmodule KirruptTv.Repo.Migrations.CreateEpisode do
       add :season, :integer, null: false, size: 255
       add :episode, :integer, null: false, size: 255
       add :tvrage_url, :string, null: false
-      add :airdate, :datetime
+      add :airdate, :utc_datetime
       add :summary, :text
       add :screencap, :string
 

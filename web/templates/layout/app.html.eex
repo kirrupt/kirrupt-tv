@@ -3,11 +3,11 @@
 	<head>
 		<meta charset="utf-8">
 		<title><%= if assigns[:title] do %><%= assigns[:title] %> - <% end %>TV Episodes</title>
-    <link rel="stylesheet" href="<%= static_path(@conn, "/css-old/app.css") %>">
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css-old/app.css") %>">
 		<%= if assigns[:background] do %>
 			<style>
 			body{
-				background:#f4f4f4 url('<%= static_path(@conn, "/#{assigns[:background]}") %>') fixed;
+				background:#f4f4f4 url('<%= Routes.static_path(@conn, "/#{assigns[:background]}") %>') fixed;
 				background-position:center 97px;
 				background-size: 100% auto;
 			}
@@ -16,7 +16,7 @@
 		<%= if assigns[:show] && assigns[:show].fixed_background do %>
 			<style>
 			body{
-				background:#f4f4f4 url('<%= static_path(@conn, "/#{assigns[:show].fixed_background}") %>') fixed;
+				background:#f4f4f4 url('<%= Routes.static_path(@conn, "/#{assigns[:show].fixed_background}") %>') fixed;
 				background-position:center 97px;
 				background-size: 100% auto;
 			}
@@ -30,9 +30,9 @@
 			<div id="auth">
 				<ul>
 					<%= if @current_user do %>
-					<li><a href="<%= account_path(@conn, :logout) %>">logout</a></li>
+					<li><a href="<%= Routes.account_path(@conn, :logout) %>">logout</a></li>
 					<li style="margin-right:10px;padding-right:10px;border-right:1px #eee solid;">
-						<a href="<%= account_path(@conn, :account) %>"><%= @current_user.username %></a>
+						<a href="<%= Routes.account_path(@conn, :account) %>"><%= @current_user.username %></a>
 					</li>
 					<%= if @current_user.is_admin do %>
 						<li style="margin-right:10px;padding-right:10px;border-right:1px #eee solid;">
@@ -40,25 +40,25 @@
 						</li>
 					<% end %>
 					<% else %>
-					<li><a href="<%= account_path(@conn, :register_new) %>">register</a></li>
-					<li style="margin-right:10px;padding-right:10px;border-right:1px #eee solid;"><a href="<%= account_path(@conn, :login) %>">login</a></li>
+					<li><a href="<%= Routes.account_path(@conn, :register_new) %>">register</a></li>
+					<li style="margin-right:10px;padding-right:10px;border-right:1px #eee solid;"><a href="<%= Routes.account_path(@conn, :login) %>">login</a></li>
 					<% end %>
 				</ul>
 				<div class="clear"></div>
 			</div>
 			<div id="header" style="">
 				<div id="logo">
-					<a href="<%= recent_path(@conn, :index) %>"><div><img src="<%= static_path(@conn, "/images/logo.png") %>" /></div></a>
+					<a href="<%= Routes.recent_path(@conn, :index) %>"><div><img src="<%= Routes.static_path(@conn, "/images/logo.png") %>" /></div></a>
 				</div>
 
 				<div id="menu">
 					<ul>
 						<%= if @current_user do %>
-  						<li><a href="<%= recent_path(@conn, :index) %>"<%= if @conn.request_path == "/" do %> class="selected"<% end %>>recent</a></li>
-  						<li><a href="<%= show_path(@conn, :my_shows) %>"<%= if @conn.request_path == "/my-shows" || @conn.request_path == "/add" || assigns[:show] do %> class="selected"<% end %>>shows</a></li>
-  						<li><a href="<%= time_wasted_path(@conn, :index) %>"<%= if @conn.request_path == "/time-wasted" do %> class="selected"<% end %>>time wasted</a></li>
+  						<li><a href="<%= Routes.recent_path(@conn, :index) %>"<%= if @conn.request_path == "/" do %> class="selected"<% end %>>recent</a></li>
+  						<li><a href="<%= Routes.show_path(@conn, :my_shows) %>"<%= if @conn.request_path == "/my-shows" || @conn.request_path == "/add" || assigns[:show] do %> class="selected"<% end %>>shows</a></li>
+  						<li><a href="<%= Routes.time_wasted_path(@conn, :index) %>"<%= if @conn.request_path == "/time-wasted" do %> class="selected"<% end %>>time wasted</a></li>
 						<% else %>
-						  <li><a href="<%= recent_path(@conn, :index) %>" class="selected">recent</a></li>
+						  <li><a href="<%= Routes.recent_path(@conn, :index) %>" class="selected">recent</a></li>
 						<% end %>
 					</ul>
 					<div class="clear"></div>
@@ -93,7 +93,7 @@
 
 
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script src="<%= static_path(@conn, "/js-old/app.js") %>"></script>
+    <script src="<%= Routes.static_path(@conn, "/js-old/app.js") %>"></script>
 
     <%= render_existing @view_module, "scripts.html", assigns %>
 
@@ -103,9 +103,9 @@
 
     <script>
 			function mark_as_url(episode_id, mark_as_watched) {
-				var url = '<%= episode_path(@conn, :mark_as_watched, "replace") %>';
+				var url = '<%= Routes.episde_path(@conn, :mark_as_watched, "replace") %>';
 				if(!mark_as_watched) {
-					url = '<%= episode_path(@conn, :mark_as_unwatched, "replace") %>';
+					url = '<%= Routes.episde_path(@conn, :mark_as_unwatched, "replace") %>';
 				}
 
 				return url.replace("replace", episode_id)

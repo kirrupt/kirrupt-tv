@@ -6,8 +6,8 @@ defmodule KirruptTv.Repo.Migrations.CreateUserShow do
       add :user_id, :bigint, primary_key: true, size: 255
       add :show_id, :bigint, primary_key: true, size: 255
       add :ignored, :boolean
-      add :modified, :datetime, null: false
-      add :date_added, :datetime
+      add :modified, :utc_datetime, null: false
+      add :date_added, :utc_datetime
     end
   end
 end

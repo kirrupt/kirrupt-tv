@@ -3,7 +3,7 @@
 <% else %>
   <%= for show <- @shows do %>
   	<div class="show_episode search">
-  		<a style="color:#666" href="<%= show_path(@conn, :index, get_show_url(show)) %>">
+  		<a style="color:#666" href="<%= Routes.show_path(@conn, :index, get_show_url(show)) %>">
   			<h2><%= show.name %></h2>
   			<div style="float:left;width:220px">&nbsp;
   				<%= if show.fixed_thumb do %>
@@ -16,7 +16,7 @@
   				<div class="airdate"></div>
 
   				<%= if !is_my_show(@my_shows, show) do %>
-  					<a class="button" style="float:right" href="<%= show_path(@conn, :add_to_my_shows, get_show_url(show)) %>" title="Add show to your shows">Add to my shows</a>
+  					<a class="button" style="float:right" href="<%= Routes.show_path(@conn, :add_to_my_shows, get_show_url(show)) %>" title="Add show to your shows">Add to my shows</a>
   				<% end %>
 
   				<%
