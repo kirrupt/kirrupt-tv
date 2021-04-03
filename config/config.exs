@@ -32,12 +32,13 @@ config :kirrupt_tv, KirruptTv.Endpoint, live_view: [signing_salt: "FglqWk3uhmjKf
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:file, :line],
-  metadata: [:request_id]
+  metadata: [:request_id],
+  backends: [:console, Sentry.LoggerBackend]
 
 # Configures Sentry's Logger
 config :sentry,
   use_error_logger: true,
-  environment_name: :dev
+  dsn: System.get_env("SENTRY_DSN")
 
 config :phoenix, :json_library, Jason
 
