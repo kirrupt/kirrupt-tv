@@ -25,8 +25,3 @@ config :sentry,
   tags: %{
     env: "production"
   }
-
-config :kirrupt_tv, KirruptTv.Scheduler,
-  jobs: [
-    {{:extended, "*/30"}, {Model.Show, :update_any_show, []}}
-  ]

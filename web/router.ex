@@ -38,6 +38,7 @@ defmodule KirruptTv.Router do
   scope "/admin/", KirruptTv do
     pipe_through([:browser, :admin])
 
+    get("/update-all", SystemController, :update_all)
     live_dashboard("/dashboard", metrics: KirruptTv.Telemetry)
   end
 

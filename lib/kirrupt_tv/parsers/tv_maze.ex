@@ -170,4 +170,31 @@ defmodule KirruptTv.Parser.TVMaze do
       []
     end
   end
+
+  defp all_shows_page(page) do
+    IO.puts page
+    Enum.reduce(get_show_json("https://api.tvmaze.com/shows?page=#{page}"), [], fn show, acc ->
+      cond do
+        show ->
+          acc ++ [parse_show_data(show)]
+
+        true ->
+          acc
+      end
+    end)
+  end
+
+  def all_shows(page \\ 0, acc \\ []) do
+    shows = all_shows_page(page)
+
+    cond do
+      length(shows) > 0 ->
+        # prevent hitting rate-limit
+        Process.sleep(100)
+        acc + all_shows(page + 1)
+      
+      true ->
+        acc
+    end
+  end
 end

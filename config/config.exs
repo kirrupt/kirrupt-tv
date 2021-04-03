@@ -52,6 +52,12 @@ config :kirrupt_tv, KirruptTv.Repo,
   hostname: ConfigHelpers.get_env_with_fallback("MYSQL_HOST", "localhost"),
   pool_size: 10
 
+config :kirrupt_tv, KirruptTv.Scheduler,
+  jobs: [
+    {{:extended, "*/30"}, {Model.Show, :update_any_show, []}},
+    {{:extended, "@daily"}, {Model.SearchShow, :update_all, []}}
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
