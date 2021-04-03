@@ -82,7 +82,7 @@ defmodule KirruptTv.UserTest do
 
   # intentionally duplicated, to ensure that changes in `user.ex` don't break existing passwords
   defp validate_bcrypt(hashed, actual) do
-    Comeonin.Bcrypt.checkpw(actual, hashed)
+    Bcrypt.verify_pass(actual, hashed)
   end
 
   """

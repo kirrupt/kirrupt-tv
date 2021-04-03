@@ -56,29 +56,31 @@ defmodule KirruptTv.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.5"},
-      {:phoenix_pubsub, "~> 2.0"},
-      {:phoenix_ecto, "~> 3.0"},
-      {:mariaex, "~> 0.8.2"},
-      {:phoenix_html, "~> 2.14"},
-      {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:gettext, "~> 0.11"},
-      {:plug_cowboy, "~> 2.1"},
-      {:timex, "~> 3.0"},
-      {:timex_ecto, "~> 3.0"},
-      {:html_sanitize_ex, "~> 1.0.0"},
+      {:phoenix, ">= 0.0.0"},
+      {:phoenix_pubsub, ">= 0.0.0"},
+      {:phoenix_ecto, ">= 0.0.0"},
+      {:mariaex, ">= 0.0.0"},
+      {:phoenix_html, ">= 0.0.0"},
+      {:phoenix_live_reload, ">= 0.0.0", only: :dev},
+      {:gettext, ">= 0.0.0"},
+      {:plug_cowboy, ">= 0.0.0"},
+      {:timex, ">= 0.0.0"},
+      {:timex_ecto, ">= 0.0.0"},
+      {:html_sanitize_ex, ">= 0.0.0"},
+      # upgrading this breaks controllers
       {:sentry, "~> 6.0"},
-      {:sweet_xml, "~> 0.6.2"},
-      {:comeonin, "~> 2.5"},
-      {:arc, "~> 0.11.0"},
-      {:quantum, ">= 2.2.0"},
-      {:jason, "~> 1.2"},
-      {:phoenix_live_dashboard, "~> 0.1"},
-      {:telemetry_poller, "~> 0.4"},
-      {:telemetry_metrics, "~> 0.4"},
-      {:excoveralls, "~> 0.12"},
-      {:httpoison, "~> 1.8"},
-      {:elixir_uuid, "~> 1.2"}
+      {:sweet_xml, ">= 0.0.0"},
+      {:comeonin, ">= 0.0.0"},
+      {:arc, ">= 0.0.0"},
+      {:quantum, ">= 0.0.0"},
+      {:jason, ">= 0.0.0"},
+      {:phoenix_live_dashboard, ">= 0.0.0"},
+      {:telemetry_poller, ">= 0.0.0"},
+      {:telemetry_metrics, ">= 0.0.0"},
+      {:excoveralls, ">= 0.0.0"},
+      {:httpoison, ">= 0.0.0"},
+      {:elixir_uuid, ">= 0.0.0"},
+      {:bcrypt_elixir, ">= 0.0.0"}
     ]
   end
 
