@@ -31,14 +31,7 @@ config :kirrupt_tv, KirruptTv.Endpoint, live_view: [signing_salt: "FglqWk3uhmjKf
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
-  metadata: [:file, :line],
-  metadata: [:request_id],
-  backends: [:console, Sentry.LoggerBackend]
-
-# Configures Sentry's Logger
-config :sentry,
-  use_error_logger: true,
-  dsn: System.get_env("SENTRY_DSN")
+  metadata: [:file, :line]
 
 config :phoenix, :json_library, Jason
 

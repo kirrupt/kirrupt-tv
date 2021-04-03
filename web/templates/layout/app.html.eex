@@ -103,9 +103,9 @@
 
     <script>
 			function mark_as_url(episode_id, mark_as_watched) {
-				var url = '<%= Routes.episde_path(@conn, :mark_as_watched, "replace") %>';
+				var url = '<%= Routes.episode_path(@conn, :mark_as_watched, "replace") %>';
 				if(!mark_as_watched) {
-					url = '<%= Routes.episde_path(@conn, :mark_as_unwatched, "replace") %>';
+					url = '<%= Routes.episode_path(@conn, :mark_as_unwatched, "replace") %>';
 				}
 
 				return url.replace("replace", episode_id)

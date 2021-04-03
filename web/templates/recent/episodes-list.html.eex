@@ -15,7 +15,7 @@
 
     <span style="float:right">
       <%= if @conn.assigns[:current_user] && @mark_as_watched do %>
-        <a href="javascript:void(0)" data-href="<%= Routes.episde_path(@conn, :mark_as_watched, episode.id) %>" class="mark_watched" id="ep_<%= episode.id %>">Mark as watched</a>
+        <a href="javascript:void(0)" data-href="<%= Routes.episode_path(@conn, :mark_as_watched, episode.id) %>" class="mark_watched" id="ep_<%= episode.id %>">Mark as watched</a>
       <% end %>
     </span>
     <div class="clear"></div>

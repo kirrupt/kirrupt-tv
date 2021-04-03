@@ -3,7 +3,7 @@ defmodule KirruptTv.Parser.FanartTV do
   use Timex
 
   defp process_response_body(body) do
-    case body |> Poison.decode() do
+    case body |> Jason.decode() do
       {:ok, data} ->
         data
 

@@ -2,11 +2,6 @@ defmodule KirruptTv.Router do
   use KirruptTv.Web, :router
   import Phoenix.LiveDashboard.Router
 
-  if Application.get_env(:sentry, :dsn) do
-    use Plug.ErrorHandler
-    use Sentry.Plug
-  end
-
   defp inject_pipeline_name(conn, name) do
     Plug.Conn.put_private(conn, :pipeline_name, name)
   end

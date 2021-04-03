@@ -3,7 +3,7 @@ defmodule KirruptTv.Parser.TVMaze do
   use Timex
 
   def process_response_body(body) do
-    case body |> Poison.decode() do
+    case body |> Jason.decode() do
       {:ok, data} ->
         data
 
