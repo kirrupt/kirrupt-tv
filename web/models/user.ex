@@ -75,7 +75,7 @@ defmodule Model.User do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
         changeset
-        |> put_change(:password_new_hash, Comeonin.Bcrypt.hashpwsalt(pass))
+        |> put_change(:password_new_hash, Bcrypt.hash_pwd_salt(pass))
         |> put_change(:password, gen_sha1_password(pass))
 
       _ ->
@@ -365,7 +365,7 @@ defmodule Model.User do
   def authenticate(username, password) do
     if user = Repo.get_by(Model.User, username: username) do
       cond do
-        user.password_new_hash && Comeonin.Bcrypt.checkpw(password, user.password_new_hash) ->
+        user.password_new_hash && Bcrypt.verify_pass(password, user.password_new_hash) ->
           user
 
         (s = user.password |> String.split("$")) && Enum.count(s) == 3 ->

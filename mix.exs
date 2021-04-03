@@ -79,7 +79,8 @@ defmodule KirruptTv.Mixfile do
       {:telemetry_metrics, ">= 0.0.0"},
       {:excoveralls, ">= 0.0.0"},
       {:httpoison, ">= 0.0.0"},
-      {:elixir_uuid, ">= 0.0.0"}
+      {:elixir_uuid, ">= 0.0.0"},
+      {:bcrypt_elixir, ">= 0.0.0"}
     ]
   end
 
