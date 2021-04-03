@@ -66,7 +66,7 @@ defmodule KirruptTv.Mixfile do
       {:timex, ">= 0.0.0"},
       {:timex_ecto, ">= 0.0.0"},
       {:html_sanitize_ex, ">= 0.0.0"},
-      # upgrading this breaks controllers
+      {:sentry, ">= 0.0.0"},
       {:sweet_xml, ">= 0.0.0"},
       {:comeonin, ">= 0.0.0"},
       {:arc, ">= 0.0.0"},
