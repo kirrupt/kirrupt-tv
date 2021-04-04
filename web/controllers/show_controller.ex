@@ -95,7 +95,8 @@ defmodule KirruptTv.ShowController do
     if show_details do
       render(conn, "show.html", Map.merge(show_details, %{title: show_details[:show].name}))
     else
-      redirect(conn, to: Routes.recent_path(conn, :index))
+      conn
+      |> send_resp(:not_found, "404 not found\n")
     end
   end
 end

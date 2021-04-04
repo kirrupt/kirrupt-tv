@@ -80,8 +80,11 @@ defmodule Model.Show do
     end
   end
 
-  def find_by_id(id) do
+  def find_by_id(id) when is_integer(id) do
     Repo.get(Model.Show, id)
+  end
+
+  def find_by_id(id) do
   end
 
   def find_by_url_or_id(id_or_url) do
