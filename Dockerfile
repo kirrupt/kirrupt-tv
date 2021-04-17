@@ -29,14 +29,6 @@ ADD package.json /app/package.json
 
 RUN npm install
 
-WORKDIR /app/frontend
-ADD frontend/package* /app/frontend/
-ENV CYPRESS_INSTALL_BINARY 0
-RUN npm install
-
-ADD frontend/ /app/frontend/
-RUN npm run build
-
 WORKDIR /app
 
 ADD . /app
