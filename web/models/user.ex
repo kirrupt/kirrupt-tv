@@ -116,28 +116,31 @@ defmodule Model.User do
     |> where([e, s, us, we], is_nil(we.added))
   end
 
-  def overview(user \\ nil, search \\ "") do
+  def recent(user \\ nil) do
     today = Timex.today()
-    fourteendays_ago = time_delta(today, -14)
+    start_date = time_delta(today, -14)
+
+    Repo.all(
+      from(e in Episode)
+      |> join(:inner, [e], s in Model.Show, s.id == e.show_id)
+      |> overview_user_query(user)
+      |> where(
+        [e, s],
+        e.airdate > ^start_date and e.airdate < ^today and
+          fragment("DAY(?)", e.airdate) != 0
+      )
+      |> order_by([e], desc: e.airdate)
+      |> order_by([e, s], asc: s.name)
+      |> overview_limit_query(user)
+    )
+    |> Repo.preload([:show])
+  end
+
+  def overview(user \\ nil) do
+    today = Timex.today()
     onemonthfromtoday = time_delta(today, 30)
 
-    search = "%#{search}%"
-
-    recent =
-      Repo.all(
-        from(e in Episode)
-        |> join(:inner, [e], s in Model.Show, s.id == e.show_id)
-        |> overview_user_query(user)
-        |> where(
-          [e, s],
-          e.airdate > ^fourteendays_ago and e.airdate < ^today and
-            fragment("DAY(?)", e.airdate) != 0 and like(s.name, ^search)
-        )
-        |> order_by([e], desc: e.airdate)
-        |> order_by([e, s], asc: s.name)
-        |> overview_limit_query(user)
-      )
-      |> Repo.preload([:show])
+    recent = recent(user)
 
     soon =
       Repo.all(
@@ -146,7 +149,7 @@ defmodule Model.User do
         |> overview_user_query(user)
         |> where(
           [e, s],
-          e.airdate >= ^today and e.airdate < ^onemonthfromtoday and like(s.name, ^search)
+          e.airdate >= ^today and e.airdate < ^onemonthfromtoday
         )
         |> order_by([e], asc: e.airdate)
         |> order_by([e, s], asc: s.name)
@@ -159,7 +162,7 @@ defmodule Model.User do
         from(e in Episode)
         |> join(:inner, [e], s in Model.Show, s.id == e.show_id)
         |> overview_user_shows_query(user)
-        |> where([e, s], e.airdate >= ^today and like(s.name, ^search))
+        |> where([e, s], e.airdate >= ^today)
         # group_by: s.id,
         |> order_by([e], asc: e.airdate)
         |> order_by([e, s], asc: s.name)

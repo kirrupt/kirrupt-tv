@@ -1,6 +1,8 @@
 defmodule KirruptTv.Api.V2.ShowController do
   use KirruptTv.Web, :controller
 
+  import KirruptTv.DateHelpers
+
   plug(KirruptTv.Plugs.Authenticate)
 
   def index(conn, params) do
@@ -29,6 +31,16 @@ defmodule KirruptTv.Api.V2.ShowController do
 
     render(conn, "index.json",
       data: %{shows: Model.Show.get_shows(show_ids), ignored_show_ids: ignored_show_ids}
+    )
+  end
+
+  def recent(conn, _params) do
+    today = Timex.today()
+
+    render(
+      conn,
+      "recent.json",
+      episodes: Model.User.recent(conn.assigns[:current_user])
     )
   end
 

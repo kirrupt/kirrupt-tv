@@ -81,6 +81,7 @@ defmodule KirruptTv.Router do
     get("/user/info", Api.V2.AccountController, :user_info)
     get("/shows", Api.V2.ShowController, :index)
     post("/shows", Api.V2.ShowController, :index)
+    get("/shows/recent", Api.V2.ShowController, :recent)
     get("/shows/update-any-show", Api.V2.ShowController, :update_any_show)
     post("/shows/updated-dates", Api.V2.ShowController, :updated_dates)
     post("/shows/sync-ignored", Api.V2.ShowController, :sync_ignored)

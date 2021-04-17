@@ -10,6 +10,23 @@ defmodule KirruptTv.Api.V2.ShowView do
     end)
   end
 
+  def render("recent.json", %{episodes: episodes}) do
+    episodes
+    |> Enum.map(fn episode ->
+      %{
+        show: %{
+          id: episode.show.id,
+          name: episode.show.name
+        },
+        id: episode.id,
+        season: episode.season,
+        episode: episode.episode,
+        title: episode.title,
+        airdate: episode.airdate |> DateTime.to_iso8601()
+      }
+    end)
+  end
+
   def render("updated_dates.json", %{data: %{shows: shows, episodes: episodes}}) do
     shows
     |> Enum.map(fn [show_id, last_updated] ->
