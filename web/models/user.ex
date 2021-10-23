@@ -342,9 +342,7 @@ defmodule Model.User do
       end
     else
       Logger.error(
-        "add_device_visit: user_device shouldn\'t be null for user '#{user.id}' with device(type: '#{
-          device_type
-        }', code: '#{device_code}')"
+        "add_device_visit: user_device shouldn\'t be null for user '#{user.id}' with device(type: '#{device_type}', code: '#{device_code}')"
       )
 
       nil

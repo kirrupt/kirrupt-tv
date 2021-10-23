@@ -32,9 +32,7 @@ defmodule KirruptTv.Parser.FanartTV do
   def get_image_list(the_tv_db_id) do
     if data =
          get_json(
-           "http://webservice.fanart.tv/v3/tv/#{the_tv_db_id}?api_key=#{
-             Application.get_env(:kirrupt_tv, KirruptTv.Endpoint)[:fanart_key]
-           }"
+           "http://webservice.fanart.tv/v3/tv/#{the_tv_db_id}?api_key=#{Application.get_env(:kirrupt_tv, KirruptTv.Endpoint)[:fanart_key]}"
          ) do
       # available
       # clearlogo, hdtvlogo, seasonposter, tvthumb, showbackground, tvposter, tvbanner, clearart, hdclearart, seasonthumb, characterart, seasonbanner

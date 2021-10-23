@@ -11,15 +11,13 @@ defmodule KirruptTv.GlobalHelpers do
   def thumb(_, nil), do: nil
 
   def thumb(url, thumb_type) do
-      case validate_thumb_type(thumb_type) do
-        true ->
-          "#{KirruptTv.Endpoint.url()}/thumbs/#{thumb_type}#{
-            KirruptTv.Endpoint.static_path("/#{url}")
-          }"
+    case validate_thumb_type(thumb_type) do
+      true ->
+        "#{KirruptTv.Endpoint.url()}/thumbs/#{thumb_type}#{KirruptTv.Endpoint.static_path("/#{url}")}"
 
-        false ->
-          img_prefix(url)
-      end
+      false ->
+        img_prefix(url)
+    end
   end
 
   def leading_zero(num) do

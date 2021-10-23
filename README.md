@@ -56,6 +56,11 @@ docker-compose up dev
 docker-compose up prod
 ```
 
+### fix formatting
+```bash
+mix format
+```
+
 ### unit tests
 ```bash
 mix coveralls
