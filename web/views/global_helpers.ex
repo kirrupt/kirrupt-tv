@@ -4,34 +4,22 @@ defmodule KirruptTv.GlobalHelpers do
   def img_prefix(nil), do: nil
 
   def img_prefix(url) do
-    cond do
-      image_exists(url) ->
-        "#{KirruptTv.Endpoint.url()}#{KirruptTv.Endpoint.static_path("/#{url}")}"
-
-      true ->
-        old_server_url(url)
-    end
+    url
   end
 
   def thumb(nil, _), do: nil
   def thumb(_, nil), do: nil
 
   def thumb(url, thumb_type) do
-    cond do
-      image_exists(url) ->
-        case validate_thumb_type(thumb_type) do
-          true ->
-            "#{KirruptTv.Endpoint.url()}/thumbs/#{thumb_type}#{
-              KirruptTv.Endpoint.static_path("/#{url}")
-            }"
+      case validate_thumb_type(thumb_type) do
+        true ->
+          "#{KirruptTv.Endpoint.url()}/thumbs/#{thumb_type}#{
+            KirruptTv.Endpoint.static_path("/#{url}")
+          }"
 
-          false ->
-            img_prefix(url)
-        end
-
-      true ->
-        old_server_url(url)
-    end
+        false ->
+          img_prefix(url)
+      end
   end
 
   def leading_zero(num) do
@@ -50,14 +38,6 @@ defmodule KirruptTv.GlobalHelpers do
 
   def get_show_url(show) do
     show.url || show.id
-  end
-
-  defp image_exists(url) do
-    File.exists?("#{KirruptTv.Helpers.FileHelpers.root_folder()}/static/#{url}")
-  end
-
-  defp old_server_url(url) do
-    "https://kirrupt.com/tv/static/#{url}"
   end
 
   defp validate_thumb_type(type) do

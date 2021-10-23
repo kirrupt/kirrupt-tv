@@ -15,7 +15,7 @@ seed:
 .PHONY: cypress
 cypress:
 	make seed
-	cd e2e/ && ./node_modules/.bin/cypress run
+	cd e2e/ && npm i && ./node_modules/.bin/cypress run
 
 .PHONY: cypress-docker
 cypress-docker:

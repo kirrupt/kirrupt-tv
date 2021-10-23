@@ -101,23 +101,15 @@ defmodule Model.Episode do
     end
   end
 
-  defp download_and_save_image(url) do
-    KirruptTv.Helpers.FileHelpers.download_and_save_file(
-      url,
-      "#{KirruptTv.Helpers.FileHelpers.root_folder()}/static",
-      "shows"
-    )
-  end
-
   defp get_picture_url_changes(episode, e_data, changes) do
     cond do
       # if picture is specified, check if the file actually exists
-      episode.screencap && KirruptTv.Helpers.FileHelpers.file_exists(episode.screencap) ->
+      episode.screencap && String.contains?(episode.screencap, ["http:", "https:"]) ->
         changes
 
       # picture is not specified or doesn't exists, check if tvmaze has url to it
       e_data[:screencap] && String.contains?(e_data[:screencap], ["tvrage", "tvmaze"]) ->
-        Map.merge(changes, %{screencap: download_and_save_image(e_data[:screencap])})
+        Map.merge(changes, %{screencap: e_data[:screencap]})
 
       # picture is specified but it doesn't exists, tvmaze doesn't have it
       episode.screencap ->

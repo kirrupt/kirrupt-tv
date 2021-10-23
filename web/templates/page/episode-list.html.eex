@@ -4,12 +4,7 @@
 		{% for episode in episodes %}
 			<div class="recent_episode" id="div_ep_{{episode.episodeid}}">
 				{% if episode.screencap %}
-					{% if 'tvrage' in episode.screencap %}
-						<img src="{{episode.screencap}}" />
-
-					{% else %}
-						<img src="{{url_for('static', filename=episode.screencap)}}" />
-					{% endif %}
+					<img src="{{episode.screencap}}" />
 				{% else %}
 
 				{% endif %}
