@@ -1,10 +1,4 @@
 <script type="text/javascript">
-<%= if assigns[:show] do %>
-(function($) {
-  $('#recommendations').recommendations({'url':'show/<%= assigns[:show].id %>'}); // TODO
-})(jQuery);
-<% end %>
-
   $(document).ready(function() {
 		// show.html
 		$('.watched_icon').click(function() {

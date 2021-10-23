@@ -38,7 +38,7 @@ Run:
 ```bash
 npm install
 mix deps.get
-mix phx.server
+make server
 ```
 to start the server locally.
 
@@ -63,7 +63,7 @@ mix format
 
 ### unit tests
 ```bash
-mix coveralls
+make test
 ```
 
 ### e2e tests
@@ -72,13 +72,13 @@ Pre-requirement is to start the server (either locally or via Docker).
 Then you can use:
 ```bash
 # Run cypress tests locally.
-make cypress
+make e2e
 
 # Run cypress tests via their GUI (good for development and debugging).
-make cypress-dev
+make e2e-dev
 
 # Run cypress via Docker like on CI.
-make cypress-docker
+make e2e-docker
 ```
 
 ### Helpful commands
@@ -90,5 +90,5 @@ make import
 
 #### Database migration
 ```bash
-docker-compose exec dev mix ecto.migrate
+mix ecto.migrate
 ```

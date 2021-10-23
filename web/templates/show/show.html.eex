@@ -9,7 +9,7 @@
 
 <%= if @current_user && @current_user.is_editor do %>
   <div style="text-align:right;font-size:10px">
-    Last updated: <%= @show.last_updated %>, last checked: <%= @show.last_checked %>, ID: <%= @show.id %>, TVMaze ID: <%= @show.tvmaze_id %>, 
+    Last updated: <%= @show.last_updated %>, last checked: <%= @show.last_checked %>, ID: <%= @show.id %>, TVMaze ID: <%= @show.tvmaze_id %>,
 		<a href="<%= Routes.show_path(@conn, :update, get_show_url(@show)) %>">force update</a>
     <br />
   </div>
@@ -58,8 +58,3 @@
 <%= for episode <- @latest_episodes do %>
   <%= render_existing @view_module, "episode.html", %{conn: @conn, show_added: @show_added, episode: episode, watched: episode_watched?(episode, @watched_episodes)} %>
 <% end %>
-
-
-
-<h2 style="margin-top:20px">Similar shows</h2>
-<div id="recommendations"></div>

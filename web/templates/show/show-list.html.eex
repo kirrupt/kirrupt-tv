@@ -56,6 +56,3 @@
 	<% end %>
 </div>
 <div class="clear"></div>
-
-<h2 style="margin-top:20px">Similar shows</h2>
-<div id="recommendations"></div>

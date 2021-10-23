@@ -7,7 +7,7 @@
 		<%= if assigns[:background] do %>
 			<style>
 			body{
-				background:#f4f4f4 url('<%= Routes.static_path(@conn, "/#{assigns[:background]}") %>') fixed;
+				background:#f4f4f4 url('<%= assigns[:background] %>') fixed;
 				background-position:center 97px;
 				background-size: 100% auto;
 			}
@@ -16,7 +16,7 @@
 		<%= if assigns[:show] && assigns[:show].fixed_background do %>
 			<style>
 			body{
-				background:#f4f4f4 url('<%= Routes.static_path(@conn, "/#{assigns[:show].fixed_background}") %>') fixed;
+				background:#f4f4f4 url('<%= assigns[:show].fixed_background %>') fixed;
 				background-position:center 97px;
 				background-size: 100% auto;
 			}
@@ -83,7 +83,7 @@
 
 
 			<div id="footer" style="text-align:right;margin-top:20px">
-				&copy; Kirrupt 2020
+				&copy; Kirrupt 2021
 			</div>
 			</div>
 

@@ -492,43 +492,6 @@ body.christmas #body:after {
 	height: 220px;
 }
 
-/* Recommendations */
-.recommendations {
-	width: 100%;
-	height: 110px;
-	text-align: center;
-}
-
-.recommendations li {
-	float:left;
-	width:200px;
-	margin-right: 32px;
-	list-style: none;
-}
-
-.recommendations li:nth-child(4) {
-	margin-right: 0px;
-}
-
-.recommendations li img {
-	width: 200px;
-	border-radius: 5px;
-}
-
-.recommendations .loader {
-	width:31px;
-	height:31px;
-	margin: 0px auto;
-	padding-top: 35px;
-
-}
-
-.recommendations .loader div {
-	background: url('/images/ajax-loader.gif') no-repeat;
-	width:31px;
-	height:31px;
-}
-
 #account #title { height: auto; text-align: left;}
 
 #alert-box { position: absolute; left: 0; right: 0; width: 920px; top: 100px; margin: auto; z-index: 10;}
