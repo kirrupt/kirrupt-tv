@@ -12,18 +12,26 @@ seed:
 	docker-compose exec -T mariadb mysql -u root -ppassword -e "CREATE DATABASE kirrupt_test"
 	docker-compose exec -T mariadb mysql -u root -ppassword kirrupt < scripts/seed.sql
 
-.PHONY: cypress
-cypress:
+.PHONY: server
+server:
+	mix phx.server
+
+.PHONY: test
+test:
+	mix coveralls
+
+.PHONY: e2e
+e2e:
 	make seed
 	cd e2e/ && npm i && ./node_modules/.bin/cypress run
 
-.PHONY: cypress-docker
-cypress-docker:
+.PHONY: e2e-docker
+e2e-docker:
 	make seed
 	docker-compose run -T -e CYPRESS_baseUrl=http://tv:8080/ --entrypoint=cypress cypress run
 
-.PHONY: cypress-dev
-cypress-dev:
+.PHONY: e2e-dev
+e2e-dev:
 	make seed
 	cd e2e/ && ./node_modules/.bin/cypress open
 

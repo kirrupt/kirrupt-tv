@@ -33,8 +33,3 @@
 </div>
 
 <div class="clear"></div>
-
-<%= if (@recent != [] || @soon != []) && @current_user do %>
-	<h2 style="margin-top:20px">You might also like</h2>
-	<div id="recommendations"></div>
-<% end %>

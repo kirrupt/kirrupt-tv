@@ -1,8 +1,4 @@
 <script type="text/javascript">
-(function($) {
-	$('#recommendations').recommendations({'url':'my'});
-})(jQuery);
-
 $(document).ready(function() {
 	$('#search_q').val('');
 	$('#search_q').focus();

@@ -73,25 +73,4 @@ defmodule KirruptTv.Router do
     # TODO PATCH
     get("/episode/:id/mark_as_unwatched", EpisodeController, :mark_as_unwatched)
   end
-
-  scope "/api/v2/", KirruptTv do
-    pipe_through(:api)
-
-    post("/login", Api.V2.AccountController, :login)
-    get("/user/info", Api.V2.AccountController, :user_info)
-    get("/shows", Api.V2.ShowController, :index)
-    post("/shows", Api.V2.ShowController, :index)
-    get("/shows/recent", Api.V2.ShowController, :recent)
-    get("/shows/update-any-show", Api.V2.ShowController, :update_any_show)
-    post("/shows/updated-dates", Api.V2.ShowController, :updated_dates)
-    post("/shows/sync-ignored", Api.V2.ShowController, :sync_ignored)
-    post("/shows/episodes", Api.V2.ShowController, :episodes)
-    post("/shows/episodes/full", Api.V2.ShowController, :episodes_full)
-    post("/search/kirrupt", Api.V2.SearchController, :search_kirrupt)
-    post("/search/external", Api.V2.SearchController, :search_external)
-    get("/add/show/:id", Api.V2.ShowController, :add_shows)
-    get("/add/show/:external_id/external", Api.V2.ShowController, :add_external_show)
-    get("/recommendations/my", Api.V2.RecommendationsController, :my)
-    get("/recommendations/show/:id", Api.V2.RecommendationsController, :show)
-  end
 end
