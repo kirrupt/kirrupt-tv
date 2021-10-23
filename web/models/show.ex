@@ -93,8 +93,8 @@ defmodule Model.Show do
 
   def show_thumb(show) do
     cond do
-      show.fixed_thumb -> "/#{show.fixed_thumb}"
-      show.picture_url -> "/#{show.picture_url}"
+      show.fixed_thumb -> "#{show.fixed_thumb}"
+      show.picture_url -> "#{show.picture_url}"
       true -> nil
     end
   end
@@ -278,14 +278,6 @@ defmodule Model.Show do
     |> Enum.reject(fn x -> Enum.member?(our_show_tvmaze_ids, x[:tvmaze_id]) end)
   end
 
-  defp download_and_save_image(url) do
-    KirruptTv.Helpers.FileHelpers.download_and_save_file(
-      url,
-      "#{KirruptTv.Helpers.FileHelpers.root_folder()}/static",
-      "shows"
-    )
-  end
-
   defp insert_tvmaze_show(tvmaze_id) do
     info = KirruptTv.Parser.TVMaze.show_info(tvmaze_id)
 
@@ -298,7 +290,7 @@ defmodule Model.Show do
         runtime: info[:runtime],
         genre: "",
         wikipedia_checked: false,
-        picture_url: download_and_save_image(info[:image]),
+        picture_url: info[:image],
         last_checked: Timex.now()
       }
 
@@ -348,12 +340,12 @@ defmodule Model.Show do
   defp get_picture_url_changes(s_obj, info, changes) do
     cond do
       # if picture is specified, check if the file actually exists
-      s_obj.picture_url && KirruptTv.Helpers.FileHelpers.file_exists(s_obj.picture_url) ->
+      s_obj.picture_url && String.contains?(s_obj.picture_url, ["http:", "https:"]) ->
         changes
 
       # picture is not specified or doesn't exists, check if tvmaze has url to it
       info[:image] ->
-        Map.merge(changes, %{picture_url: download_and_save_image(info[:image])})
+        Map.merge(changes, %{picture_url: info[:image]})
 
       # picture is specified but it doesn't exists, tvmaze doesn't have it
       s_obj.picture_url ->
@@ -459,7 +451,7 @@ defmodule Model.Show do
   defp get_fanart_image_changes(changes, s_obj, images, attr, fanart_attr) do
     cond do
       # if picture is specified, check if the file actually exists
-      Map.get(s_obj, attr) && KirruptTv.Helpers.FileHelpers.file_exists(s_obj.fixed_thumb) ->
+      Map.get(s_obj, attr) && String.contains?(s_obj.fixed_thumb, ["http:", "https:"]) ->
         changes
 
       # picture is not specified or doesn't exists, check if fanart has url to it
@@ -467,7 +459,7 @@ defmodule Model.Show do
         Map.put(
           changes,
           attr,
-          download_and_save_image(Map.get(images, fanart_attr) |> List.first())
+          Map.get(images, fanart_attr) |> List.first()
         )
 
       # picture is specified but it doesn't exists, fanart doesn't have it

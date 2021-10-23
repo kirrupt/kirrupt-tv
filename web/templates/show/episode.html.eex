@@ -1,11 +1,7 @@
 <div class="show_episode">
   <div style="float:left;width:220px">&nbsp;
     <%= if @episode.screencap do %>
-      <%= if @episode.screencap |> String.contains?("tvrage") do %>
-        <img src="<%= @episode.screencap %>" />
-      <% else %>
-        <img src="<%= Routes.static_path(@conn, "/#{@episode.screencap}") %>" />
-      <% end %>
+      <img src="<%= @episode.screencap %>" />
     <% end %>
   </div>
 
